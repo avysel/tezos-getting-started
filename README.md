@@ -1,13 +1,4 @@
 # tezos-getting-started
-Getting started with Tezos (installation, first smart contract)
-
-
-Typescript framework : Taquito https://tezostaquito.io/docs/quick_start
-
-(Typescript https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
-
-https://medium.com/chain-accelerator/i-tested-tezos-b254504775be
-https://medium.com/chain-accelerator/how-to-use-tezos-rpcs-16c362f45d64
 
 ## Présentation
 
@@ -74,3 +65,17 @@ On peut aussi utiliser le client Tezos
 Taquito est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
 ## Premier smart contract
+
+## Docs
+
+https://medium.com/chain-accelerator/i-tested-tezos-b254504775be
+
+https://medium.com/chain-accelerator/how-to-use-tezos-rpcs-16c362f45d64
+
+https://training.nomadic-labs.com/download/interact_with_the_blockchain.pdf
+
+https://hackernoon.com/how-to-build-a-tezos-dapp-using-taquito-and-the-beacon-sdk-0n183ymn (obsolète)
+
+Tezos RPC guide https://tezos.gitlab.io/007/rpc.html
+
+Taquito https://tezostaquito.io/docs/quick_start
