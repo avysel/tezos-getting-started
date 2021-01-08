@@ -27,7 +27,7 @@ Le deuxième génération est représentée par Ethereum et ses semblables. Elle
 
 La troisième génération, dont Tezos fait partie, ajoute une gouvernance _on-chain_. C'est à dire que le mécanisme d'évolution de ses paramètres est intégré à son fonctionnement. Pour faire évoluer certaines choses, il est ainsi possible de publier sur le réseau une proposition d'évolution. Les membres vont voter pour ou contre. En cas d'acceptation, l'évolution sera automatiquement appliquée. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
 
-**Tezos est une blockchain issue de la recherche française**
+**But alors you are french ?**
 
 Proposée par Arthur et Kathleen Breitman, Tezos est issue de la recherche française. Elle est écrite en OCaml. Ses équipes travaillent en étroite collaboration avec les créateurs de ce langage.
 
