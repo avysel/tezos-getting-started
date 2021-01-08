@@ -1,7 +1,8 @@
 import { TezosToolkit } from '@taquito/taquito';
 
-//const tezos = new TezosToolkit('https://127.0.0.1:8732');
-const tezos = new TezosToolkit('https://api.tez.ie/rpc/carthagenet');
+const tezos = new TezosToolkit('http://127.0.0.1:8732');
+//const tezos = new TezosToolkit('https://api.tez.ie/rpc/carthagenet');
+//const tezos = new TezosToolkit('https://api.tez.ie/rpc/mainnet');
 
 tezos.tz
   .getBalance('tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d')
