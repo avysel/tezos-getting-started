@@ -1,7 +1,7 @@
 import { TezosToolkit } from '@taquito/taquito';
 
 const tezos = new TezosToolkit('http://127.0.0.1:8732');
-//const tezos = new TezosToolkit('https://api.tez.ie/rpc/carthagenet');
+//const tezos = new TezosToolkit('https://api.tez.ie/rpc/delphinet');
 //const tezos = new TezosToolkit('https://api.tez.ie/rpc/mainnet');
 
 tezos.tz
