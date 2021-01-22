@@ -35,15 +35,38 @@ Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
 ## Fonctionnement
 
+Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au temps nécessaire à la création de 4096 blocs. Avec un rythme d'environ 1 bloc par minute, 1 cycle dure donc environ 2 jours, 20 heures et 15 minutes.
+
+### Transactions
+
+liste des transactions ? (transfert, delegating, baking candidate ...)
+
+### Processus de baking
+
+Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les noeuds qui se sont déclarés comme baker, proportionnellement au montant de XTZ verrouillés. Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
+Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
+
+Tezos repose aussi sur les **endorser**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
+
+Les bakers et les endorser sont choisi au début de chaque cycle, pour tous les blocs du cycle.
+
+Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
+
+On trouve aussi les **accuser**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'_endorser_. L'autre partie est brûlée.
+
+### Processus d'évolution
+
 doc : https://blog.octo.com/tezos-une-blockchain-auto-evolutive-partie-1-3/
 
+L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. 
 
-Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au minage de 4096 blocs. L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. Premièrement, le _proposal_, pendant laquel les évolutions seront soumises à la communauté.
+Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté.
 
-Tezos élit un **baker**
+Ensuite, l'**exploration vote**,
 
-Tezos repose sur les **endorser**
+Puis le **testing**,
 
+Et enfin, le **promote vote**,
 
 ## Architecture
 
@@ -51,6 +74,7 @@ Tezos repose sur les **endorser**
 - **tezos-client** : il permet d'interagit avec tezos-node.
 - **tezos-baker** : le baker, il permet de participer au consensus en créant de nouveaux blocs.
 - **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
+- **tezos-accuser** : l'accusateur
 
 Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire tourner un noeud pour accéder aux données de la blockchain ou envoyer des transactions.
 
