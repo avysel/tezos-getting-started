@@ -1,4 +1,4 @@
-# tezos-getting-started
+# Tezos getting started
 
 ## Présentation
 
@@ -6,25 +6,25 @@ Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 20
 
 **Tezos est une blockchain à preuve d'enjeu**
 
-Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est à dire que les membres du réseau vont verrouiller une partie de leurs tokens pour obtenir le droit de créer un bloc. Le créateur du prochain block, appeler le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné.
+Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'il ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. A tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillé et se retirer du processus de _baking_.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer. En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut déverrouiller sa délégation à tout moment pour les utiliser ou les déléguer à un autre baker). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
 
 **Tezos est une blockchain de troisième génération**
 
-La première génération étant Bitcoin et les blockchains similaires, qui se contentent de gérer principalement des transactions de transfert de tokens, avec éventuellement des possibilités de scriptage assez simples.
+La première génération de blockchain est Bitcoin et les blockchains similaires, qui se contentent de gérer principalement des transactions de transfert de tokens, avec éventuellement des possibilités de scriptage assez simples.
 
 La deuxième génération est représentée par Ethereum et ses semblables. Elle se démarque de la première par l'ajout des smart contracts et la possibilité de réaliser des applications complètes, entièrement décentralisées.
 
-La troisième génération, dont Tezos fait partie, apporte une gouvernance _on-chain_. C'est-à-dire que le mécanisme d'évolution de ses paramètres est intégré à son fonctionnement. Pour faire évoluer certaines choses, une nouvelle version du protocole sera publiée sur un réseau de test. Les membres vont voter pour ou contre. En cas d'acceptation, l'évolution sera automatiquement appliquée sur le mainnet. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
+La troisième génération, dont Tezos fait partie, apporte une gouvernance _on-chain_. C'est-à-dire que le mécanisme d'évolution de ses paramètres est intégré à son fonctionnement. Pour faire évoluer certaines choses, une nouvelle version du protocole sera publiée sur un réseau de test. Les membres (les possesseurs de tokens) vont voter pour ou contre. En cas d'acceptation, l'évolution sera automatiquement appliquée sur le mainnet. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
 
 **But alors you are french ?**
 
 Proposée par Arthur et Kathleen Breitman, Tezos est issue de la recherche française. Elle est écrite en OCaml. Ses équipes travaillent en étroite collaboration avec les créateurs de ce langage.
 
-Tezos a été certifiée par l'ANSSI pour être utilisée dans des projets sensibles concernant les intérêts français.
+Tezos a été certifiée par [l'ANSSI](https://www.ssi.gouv.fr/) pour son respect du protocole [eIDAS](https://www.ssi.gouv.fr/entreprise/reglementation/confiance-numerique/le-reglement-eidas/). Elle peut être utilisée dans des projets sensibles concernant les intérêts français.
 
-Le langage d'écriture des smart contracts est le Michelson. C'est un langage à pile d'exécution, Turing complet qui permet une validation fonctionnelle lors de la compilation, qui détecte les erreurs en avance de phase. Cela évite de nombreuses erreurs lors de l'exécution qu'on retrouve souvent dans les smart contracts des blockchains de deuxième génération.
+Le langage d'écriture des smart contracts est le Michelson. C'est un langage à pile d'exécution, Turing complet, qui permet une vérification formelle des smart contracts à la compilation. Cela évite de nombreuses erreurs lors de l'exécution qu'on retrouve souvent dans les smart contracts des blockchains de deuxième génération.
 
 **Dune Network ?**
 
@@ -32,7 +32,31 @@ En explorant l'écosystème Tezos, on trouve régulièrement mention du projet D
 
 Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
+
+## Fonctionnement
+
+doc : https://blog.octo.com/tezos-une-blockchain-auto-evolutive-partie-1-3/
+
+
+Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au minage de 4096 blocs. L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. Premièrement, le _proposal_, pendant laquel les évolutions seront soumises à la communauté.
+
+Tezos élit un **baker**
+
+Tezos repose sur les **endorser**
+
+
+## Architecture
+
+- **tezos-node** : c'est le coeur de la blockchain, il gère le protocole.
+- **tezos-client** : il permet d'interagit avec tezos-node.
+- **tezos-baker** : le baker, il permet de participer au consensus en créant de nouveaux blocs.
+- **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
+
+Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire tourner un noeud pour accéder aux données de la blockchain ou envoyer des transactions.
+
 ## Installation
+
+### Via apt
 
 Sur Ubuntu, il est facile d'installer Tezos via le gestionnaire paquets :
 ```
@@ -40,6 +64,9 @@ sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
 sudo apt-get install tezos-client
 sudo apt-get install tezos-node
 ```
+
+### Depuis les sources
+
 
 ## Création de l'identité et des comptes
 
@@ -56,7 +83,9 @@ Un fichier ```identity.json``` sera généré dans le répertoire ```~/.tezos-no
 
 Pour lancer le noeud Tezos local, on utilise la commande suivante :
 
-```tezos-node run --rpc-addr 127.0.0.1:8732```
+```
+tezos-node run --rpc-addr 127.0.0.1:8732
+```
 
 On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le noeud.
 Par défaut, elle se lance sur le port 8732, il n'est donc pas obligatoire de le préciser.
@@ -66,13 +95,16 @@ Lors du premier lancement, il sera nécessaire d'attendre un long moment (plusie
 
 ## Connexion au noeud via RPC
 
-Il est maintenant possible de se connecter au noeud et de l'interroger via RPC. Par exemple, pour connaitre la version exécutée :
-On peut interroger l'URL suivante en GET via cURL, Postman ...
+Il est maintenant possible de se connecter au noeud et de l'interroger via RPC. Par exemple, pour connaitre la version du protocole qui est exécutée, on peut interroger l'URL suivante en GET via cURL, Postman ... : 
 
-```127.0.0.1:8732/network/version```
+```
+curl 127.0.0.1:8732/network/version
+```
 
 On peut aussi utiliser le client Tezos
-```tezos-client rpc get /network/version```
+```
+tezos-client rpc get /network/version
+```
 
 ## Wallet et comptes
 
@@ -84,7 +116,7 @@ tezos-client get timestamp
 ```
 Si cette commande affiche une date et une heure dans le passé, c'est que le noeud n'est pas synchronisé, il faut donc attendre encore un peu.
 
-Un fois synchronisé, nous pouvons créer des comptes, le ```tezos-client``` jouant également le rôle de wallet. Commençons par 2 comptes :
+Une fois synchronisé, nous pouvons créer des comptes, le ```tezos-client``` jouant également le rôle de wallet. Commençons par 2 comptes :
 
 ```
 tezos-client gen keys alex
@@ -143,8 +175,10 @@ Le ꜩ a bien été transféré.
 [Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
 
+---------------
 
-## Les smart contracts sur Tezos
+
+# Les smart contracts sur Tezos
 
 Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés, plus faciles d'utilisation et destinés à être compilés en Michelson, afin de faciliter le développement des smart contracts.
 
