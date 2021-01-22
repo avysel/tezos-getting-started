@@ -2,7 +2,7 @@
 
 ## Présentation
 
-Tezos a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (symbole **XTZ** ou **ꜩ**) 
+Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**) 
 
 **Tezos est une blockchain à preuve d'enjeu**
 
@@ -26,6 +26,11 @@ Tezos a été certifiée par l'ANSSI pour être utilisée dans des projets sensi
 
 Le langage d'écriture des smart contracts est le Michelson. C'est un langage à pile d'exécution, Turing complet qui permet une validation fonctionnelle lors de la compilation, qui détecte les erreurs en avance de phase. Cela évite de nombreuses erreurs lors de l'exécution qu'on retrouve souvent dans les smart contracts des blockchains de deuxième génération.
 
+**Dune Network ?**
+
+En explorant l'écosystème Tezos, on trouve régulièrement mention du projet Dune Network. Il s'agit d'un projet concurrent émanant d'une scission de la communauté Tezos. L'équipe de OCamlPro aurait souhaité prendre ses distance avec l'équipe de Tezos, suite à des divergences d'ordre financier, et aurait forké le protocole pour en faire sa propre blockchain, avec une vision un peu différente de la gouvernance _on-chain_.
+
+Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
 ## Installation
 
@@ -135,11 +140,31 @@ Le ꜩ a bien été transféré.
 
 ## Utilisation du framework Taquito
 
-Taquito est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
+[Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
-## Premier smart contract
 
-Les smart contracts sur Tezos sont écrits en Michelson. Ce langage est assez compliqué à utiliser. Le Langage Ligo a été créé pour faciliter leur écriture. Il est transpilé en Michelson par la suite afin d'être injecté sur la blockchain.
+
+## Les smart contracts sur Tezos
+
+Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés, plus faciles d'utilisation et destinés à être compilés en Michelson, afin de faciliter le développement des smart contracts.
+
+- [Ligo](https://ligolang.org/) : il propose 3 syntaxes différentes, ReasonLIGO, PascalLIGO et CamlLIGO, inspirées respectivement de [ReasonML](https://reasonml.github.io/), Pascal et Caml.
+- [Liquidity](https://www.liquidity-lang.org/) : dévelopé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/), 
+- [SmartPy](https://smartpy.io/) : bilbiothèque Python pour le développement de smart contracts Tezos en Python.
+
+Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javacript.
+
+## Premier smart contract, SimpleStorage
+
+## Compilation
+
+## Déploiement
+
+## Test du smart contract 
+
+### Avec tezos-client
+
+### Avec Taquito
 
 ## Docs
 

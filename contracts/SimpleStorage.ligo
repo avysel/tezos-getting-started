@@ -15,7 +15,7 @@ let add = ((storage, count): (int, int)): int => storage + count;
 let sub = ((storage, count): (int, int)): int => storage - count;
 
 // Définition du point d'entrée du smart contract
-let main = ((p,s): (action, storage)) => {
+let main = ((a,s): (action, storage)) => {
     let storage =
         switch (p) {
             | Increment(n) => add((s, n))
