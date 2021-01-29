@@ -43,7 +43,7 @@ liste des transactions ? (transfert, delegating, baking candidate ...)
 
 ### Processus de baking
 
-Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les noeuds qui se sont déclarés comme baker, proportionnellement au montant de XTZ verrouillés. Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
+Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme baker, proportionnellement à la somme de XTZ verrouillés. Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
 Tezos repose aussi sur les **endorser**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
@@ -76,7 +76,7 @@ Et enfin, le **promote vote**,
 - **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
 - **tezos-accuser** : l'accusateur
 
-Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire tourner un noeud pour accéder aux données de la blockchain ou envoyer des transactions.
+Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire tourner un nœud pour accéder aux données de la blockchain ou envoyer des transactions.
 
 ## Installation
 
@@ -96,7 +96,7 @@ sudo apt-get install tezos-node
 Un répertoire ```.tezos-node``` est créé à la racine du compte qui a servi à l'installation.
 On y trouve un fichier ```config.json```.
 
-Editons le pour préciser sur quel noeud se connecter, avec le champ ```network``` :
+Modifions-le pour préciser sur quel nœud se connecter, avec le champ ```network``` :
 
 ```
 {
@@ -109,39 +109,39 @@ Editons le pour préciser sur quel noeud se connecter, avec le champ ```network`
 }
 ```
 
-Vérifiez bien quel est le testnet du moment (https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul noeud connecté, vous ne pourrez pas faire grand-chose.
+Vérifiez bien quel est le testnet du moment (https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul nœud connecté, vous ne pourrez pas faire grand-chose.
 Ici, nous nous connectons sur Delphinet.
 
 Dorénavant, en étant connecté sur un testnet, le résultat de toutes nos commandes via ```tezos-client``` seront précédés d'un avertissement indiquant que nous ne sommes pas sur le mainnet.
 
 ## Création de l'identité et des comptes
 
-Afin de pouvoir faire partie sur réseau Tezos, il faut que notre noeud puisse être identifié. Il faut générer une identité :
+Afin de pouvoir faire partie sur réseau Tezos, il faut que notre nœud puisse être identifié. Il faut générer une identité :
 
 ```
 tezos-node identity generate
 ```
 
-Un fichier ```identity.json``` sera généré dans le répertoire ```~/.tezos-node```. Il contiendra nos clés publiques et privées. A conserver soigneusement et en sécurité !
+Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json``` sera ensuite généré dans le répertoire ```~/.tezos-node```. Il contiendra nos clés publiques et privées. A conserver soigneusement et en sécurité !
 
 
-## Lancement du noeud
+## Lancement du nœud
 
-Pour lancer le noeud Tezos local, on utilise la commande suivante :
+Pour lancer le nœud Tezos local, on utilise la commande suivante :
 
 ```
 tezos-node run --rpc-addr 127.0.0.1:8732
 ```
 
-On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le noeud.
+On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le nœud.
 Par défaut, elle se lance sur le port 8732, il n'est donc pas obligatoire de le préciser.
 
-Lors du premier lancement, il sera nécessaire d'attendre un long moment (plusieurs heures voire plusieurs jours) pour qu'il se synchronise avec le réseau et récupère tout l'historique du réseau auquel il est connecté.
+Lors du premier lancement, il sera nécessaire d'attendre un long moment (plusieurs heures voire plusieurs jours) pour qu'il se synchronise avec le réseau et récupère tout l'historique de ce qui a été fait avant notre arrivée.
 
 
-## Connexion au noeud via RPC
+## Connexion au nœud via RPC
 
-Il est maintenant possible de se connecter au noeud et de l'interroger via RPC. Par exemple, pour connaitre la version du protocole qui est exécutée, on peut interroger l'URL suivante en GET via cURL, Postman ... : 
+Il est maintenant possible de se connecter au nœud et de l'interroger via RPC. Par exemple, pour connaitre la version du protocole qui est exécutée, on peut interroger l'URL suivante en GET via cURL, Postman ... : 
 
 ```
 curl 127.0.0.1:8732/network/version
@@ -154,33 +154,33 @@ tezos-client rpc get /network/version
 
 ## Wallet et comptes
 
-Pour passer à la phase suivante, celle de l'utilisation du wallet et des comptes, il faut que notre noeud se soit synchronisé avec le réseau.
+Pour passer à la phase suivante, celle de l'utilisation du wallet et des comptes, il faut que notre nœud se soit synchronisé avec le réseau.
 Pour le vérifier :
 
 ```
 tezos-client get timestamp
 ```
-Si cette commande affiche une date et une heure dans le passé, c'est que le noeud n'est pas synchronisé, il faut donc attendre encore un peu.
+Si cette commande affiche une date et une heure dans le passé, c'est que le nœud n'est pas synchronisé, il faut donc attendre encore un peu.
 
-Une fois synchronisé, nous pouvons créer des comptes, le ```tezos-client``` jouant également le rôle de wallet. Commençons par 2 comptes :
+Une fois synchronisé, nous pouvons créer des comptes, le ```tezos-client``` joue également le rôle de wallet. Commençons par 2 comptes :
 
 ```
 tezos-client gen keys alex
 tezos-client gen keys bob
 ```
-Ces commandes vont créer deux alias de comptes, alex et bob. 
+Ces commandes vont créer deux alias de comptes, Alex et Bob. 
 
 Vérifions que les comptes ont bien été créés :
 
 ```
-tezos-client list known contracts
-> alex: tz1.....
-> bob: tz1......
+> tezos-client list known contracts
+alex: tz1.....
+bob: tz1......
 ```
 
 Les deux alias doivent s'afficher, ainsi que leurs adresses.
 
-Comme nous sommes sur le testnet, nous pouvons les alimenter avec des XTZ obtenus via le faucet : https://faucet.tzalpha.net/
+Comme nous sommes sur le testnet, nous pouvons les alimenter avec des ꜩ obtenus via le faucet : https://faucet.tzalpha.net/
 
 Générons deux fichiers d'identités et enregistrons les sous les noms ```alex.json``` et ```bob.json```.
 
@@ -195,19 +195,19 @@ Ces opérations en seront pas immédiates, il faudra attendre que la transaction
 
 Vérifions les balances :
 ```
-tezos-client get balance for alex
-> 654.65 ꜩ
-tezos-client get balance for bob
-> 23432.76 ꜩ
+> tezos-client get balance for alex
+6492.631450 ꜩ
+> tezos-client get balance for bob
+43540.194615 ꜩ
 ```
-Et voilà, nous sommes riches !
+Et voilà, nous sommes riches ! Bob semble avoir eu plus de chance qu'Alex. Le faucet est aléatoire sur les sommes distribuées.
 
-Nous allons tester un premier transfert de 1ꜩ de alex vers bob :
+Nous allons tester un premier transfert de 1 ꜩ d'Alex vers Bob :
 ```
 tezos-client transfer 1 from alex to bob --dry-run
 ```
 
-L'option ```--dry-run``` permet de simuler la transaction sans l'envoyer sur le réseau, pour la tester. Nous obtenons alors la description de tout ce qui changera grâce cette transaction : les changements de balances, les frais, le gas utilisé, les adresses impactés ...
+L'option ```--dry-run``` permet de simuler la transaction sans l'envoyer sur le réseau, pour la tester. Nous obtenons alors la description de tout ce qui changera grâce cette transaction : les changements de balances, les frais, le gaz utilisé, les adresses impactées ...
 
 Après vérification, nous allons lancer la transaction pour de bon cette fois, en enlevant le ```--dry-run``` : 
 ```
@@ -217,10 +217,10 @@ Là encore, il faut attendre un petit moment que la transaction soit prise en co
 
 Vérifions les balances à nouveau :
 ```
-tezos-client get balance for alex
-> 653.65 ꜩ
-tezos-client get balance for bob
-> 23433.76 ꜩ
+> tezos-client get balance for alex
+6491.631450 ꜩ
+> tezos-client get balance for bob
+43541.194615 ꜩ
 ```
 Le ꜩ a bien été transféré.
 
@@ -231,7 +231,7 @@ Maintenant, nous allons créer un troisième compte :
 tezos-client gen keys carl
 ```
 
-Nous allons immédiatement lui transférer 1 XTZ depuis alex :
+Nous allons immédiatement lui transférer 1 ꜩ depuis Alex :
 ```
 tezos-client transfer 1 from alex to carl
 ```
@@ -241,15 +241,15 @@ Nous obtenons une erreur :
 Use `--burn-cap 0.06425` to emit this operation.``
 
 Nos deux premiers comptes ont été initialisés grâce à un faucet, qui les a en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
-Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 XTZ. Nous devons donc indiquer que nous somme prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
+Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 ꜩ. Nous devons donc indiquer que nous somme prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
 
 Elle devient donc :
 ```
 tezos-client transfer 1 from alex to carl --burn-cap 0.06425
 ```
-Comme d'habitude, une fois inclue dans la blockchain, nous obtenons le résumé de son exécution et nous pouvons y lire que 0.06425 XTZ ont été brûlés depuis le compte de alex, en plus des frais de transaction et de la somme transférée.
+Comme d'habitude, une fois inclue dans la blockchain, nous obtenons le résumé de son exécution et nous pouvons y lire que 0.06425 ꜩ ont été brûlés depuis le compte d'Alex, en plus des frais de transaction et de la somme transférée.
 
-Vérifions un dernière fois nos balances :
+Vérifions une dernière fois nos balances :
 
 ```
 > tezos-client get balance for alex
@@ -262,17 +262,27 @@ Vérifions un dernière fois nos balances :
 1 ꜩ
 ```
 
+## Commandes disponibles
+
+```tezos-client man``` vous donne un aperçu de toutes les commandes disponibles. Et il y en a un sacré paquet !
+
+## Baking et délégation
+
+
+
 ## Utilisation du framework Taquito
 
-[Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
+Nous allons réaliser un petit script Node.js pour se connecter à la blockchain.
+
+[Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un nœud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
 Installons-le : 
 
 ```
-npm install taquito
+npm install @taquito/taquito
 ```
 
-Nous allons pour le moment, faire un simple script qui va se connecter au noeud local et récupérer les balances de nos 3 comptes : 
+Nous allons pour le moment, faire un simple script qui va se connecter au nœud local et récupérer les balances de nos 3 comptes : 
 
 ```
 import { TezosToolkit } from '@taquito/taquito';
@@ -280,31 +290,26 @@ import { TezosToolkit } from '@taquito/taquito';
 const tezos = new TezosToolkit('http://127.0.0.1:8732');
 
 tezos.tz
-  .getBalance('tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d')
+  .getBalance('tz1...')
   .then((balance) => console.log(`Alex : ${balance.toNumber() / 1000000} ꜩ`))
   .catch((error) => console.error(JSON.stringify(error)));
 
 tezos.tz
-    .getBalance('tz1TCoi1XMdjgazx3311Eax1ejgBeQftbq6U')
+    .getBalance('tz1...')
     .then((balance) => console.log(`Bob : ${balance.toNumber() / 1000000} ꜩ`))
     .catch((error) => console.error(JSON.stringify(error)));
 
 tezos.tz
-  .getBalance('tz1LcjVm8PXmV2WRfM6aMnwB4VWhXMU62qzG')
+  .getBalance('tz1...')
   .then((balance) => console.log(`Carl : ${balance.toNumber() / 1000000} ꜩ`))
   .catch((error) => console.error(JSON.stringify(error)));
 ```
 
-On compile et on exécute le fichier javascript généré :
+On compile et on exécute le fichier javascript généré ; et on obtient le même résultat qu'avec le tezos-client :
 
 ```
-tsc index.ts
-node index.js
-```
-
-Et on obtient le même résultat qu'avec le tezos-client :
-
-```
+> tsc index.ts
+> node index.js
 Alex : 6488.565316 ꜩ
 Bob : 43543.194615 ꜩ
 Carl : 1 ꜩ
