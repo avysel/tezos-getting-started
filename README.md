@@ -82,12 +82,14 @@ Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire
 
 ### Via apt
 
-Sur Ubuntu, il est facile d'installer Tezos via le gestionnaire paquets :
+Sur Ubuntu, il est facile d'installer Tezos via le gestionnaire de paquets :
 ```
 sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
 sudo apt-get install tezos-client
 sudo apt-get install tezos-node
 ```
+A noter que seuls ```tezos-node``` et ```tezos-client ```sont disponibles via cette façon de faire.
+Pour avoir l'intégralité des exécutables, il faut installer à partir des sources.
 
 ### Depuis les sources
 
@@ -180,6 +182,9 @@ bob: tz1......
 
 Les deux alias doivent s'afficher, ainsi que leurs adresses.
 
+Pour la suite, nous pourrons utiliser indifféremment les adresses tz1 ou leurs alias.
+
+
 Comme nous sommes sur le testnet, nous pouvons les alimenter avec des ꜩ obtenus via le faucet : https://faucet.tzalpha.net/
 
 Générons deux fichiers d'identités et enregistrons les sous les noms ```alex.json``` et ```bob.json```.
@@ -211,7 +216,7 @@ L'option ```--dry-run``` permet de simuler la transaction sans l'envoyer sur le 
 
 Après vérification, nous allons lancer la transaction pour de bon cette fois, en enlevant le ```--dry-run``` : 
 ```
-tezos-client transfer 1 from alex to bob --dry-run
+tezos-client transfer 1 from alex to bob
 ```
 Là encore, il faut attendre un petit moment que la transaction soit prise en compte.
 
@@ -240,8 +245,10 @@ Nous obtenons une erreur :
 ``The operation will burn ꜩ0.06425 which is higher than the configured burn cap (ꜩ0).
 Use `--burn-cap 0.06425` to emit this operation.``
 
-Nos deux premiers comptes ont été initialisés grâce à un faucet, qui les a en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
+Nos deux premiers comptes ont été initialisés grâce à un faucet qui les a, en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
 Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 ꜩ. Nous devons donc indiquer que nous somme prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
+
+(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irreversible, qui ne doit pas être effectuée à la légère)
 
 Elle devient donc :
 ```
@@ -262,15 +269,49 @@ Vérifions une dernière fois nos balances :
 1 ꜩ
 ```
 
-## Commandes disponibles
+## Ressources supplémentaires
 
 ```tezos-client man``` vous donne un aperçu de toutes les commandes disponibles. Et il y en a un sacré paquet !
 
+Nous pouvons inspecter nos transactions sur l'explorateur de blocks https://delphinet.tezblock.io/
+
 ## Baking et délégation
 
+### Le baker
 
+Pour pouvoir participer au fonctionnement du réseau en devenant baker, il faut impérativement passer par l'installation via les sources.
 
-## Utilisation du framework Taquito
+### Déléguer
+
+Si nous ne pouvons pas ou ne voulons pas exploiter un _baker_, nous pouvons déléguer nos ꜩ à un _baker_ de notre choix.
+
+Pour notre exemple, sur Delphinet, nous pouvons trouver la liste des _bakers_ sur [Tezblock](https://delphinet.tezblock.io/baker/list)
+Une liste des _bakers_ est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
+
+Le choix d'un _baker_ à qui déléger nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est à dire ne pas être off trop souvent, ne pas chercher à contourner les règles aux risque d'être repéré par un _accuser_ ...
+
+On peut aussi regarder le taux de rentabilité qu'il propose, de quel pays il vient, quelle organisation le soutient ... Bref, le choix n'est pas uniquement technique mais bien en ensemble de critères qui peuvent être propres à chacun.
+
+Une fois notre _baker_ choisi, let's delegate !
+
+```
+tezis-client set delegate for carl to <adresse tz1 du baker choisi>
+```
+
+Déléguer son compte à un baker se fait en deux étapes (bien visibles dans le résumé de la transaction). D'abord, et uniquement lors de la première délégation d'un compte, sa clé publique doit être révélée.
+Ensuite, la délégation proprement dite est réalisée. Chaque étape coûte quelques ꜩ.
+
+Et voilà, nous avons délégué le compte de Carl à un _baker_. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
+
+Les sommes perçues seront versées sur l'adresse que nous avons déléguées, elles viendront donc grossir notre délégation.
+
+Et pour mettre fin à la délégation :
+
+```
+tezos-client withdraw delegate from carl
+```
+
+## Tezos + Node.js = Taquito
 
 Nous allons réaliser un petit script Node.js pour se connecter à la blockchain.
 
