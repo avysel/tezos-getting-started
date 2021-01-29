@@ -8,7 +8,7 @@ Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 20
 
 Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut déverrouiller sa délégation à tout moment pour les utiliser ou les déléguer à un autre baker). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum, un *__roll__*) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut déverrouiller sa délégation à tout moment pour les utiliser ou les déléguer à un autre baker). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
 
 **Tezos est une blockchain de troisième génération**
 
@@ -34,14 +34,9 @@ En explorant l'écosystème Tezos, on trouve régulièrement mention du projet D
 
 Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
-
 ## Fonctionnement
 
 Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au temps nécessaire à la création de 4096 blocs. Avec un rythme d'environ 1 bloc par minute, 1 cycle dure donc environ 2 jours, 20 heures et 15 minutes.
-
-### Transactions
-
-liste des transactions ? (transfert, delegating, baking candidate ...)
 
 ### Processus de baking
 
@@ -89,9 +84,10 @@ Sur Ubuntu, il est facile d'installer Tezos via le gestionnaire de paquets :
 sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
 sudo apt-get install tezos-client
 sudo apt-get install tezos-node
+sudo apt-get install tezos-baker-007-psdelph1
 ```
-À noter que seuls ```tezos-node``` et ```tezos-client ```sont disponibles via cette façon de faire.
-Pour avoir l'intégralité des exécutables, il faut installer à partir des sources.
+À noter que seuls ```tezos-node```, ```tezos-client ``` et le ```tezos-baker``` du testnet actuel sont disponibles via cette façon de faire.
+Pour avoir l'intégralité des exécutables (accuser, endorser), il faut installer à partir des sources.
 
 ### Depuis les sources
 
@@ -275,13 +271,34 @@ Vérifions une dernière fois nos balances :
 
 Pour avoir la liste de toutes les commandes disponibles : ```tezos-client man```. Et il y en a un sacré paquet !
 
-Nous pouvons inspecter nos transactions sur l'explorateur de blocks https://delphinet.tezblock.io/
+Elles sont aussi disponibles sur le [GitLab de Tezos](https://tezos.gitlab.io/alpha/cli-commands.html)
+
+Nous pouvons inspecter nos transactions sur l'explorateur de blocks [Tezblock Delphinet](https://delphinet.tezblock.io/)
 
 ## Baking et délégation
 
 ### Le baker
 
-Pour pouvoir participer au fonctionnement du réseau en devenant baker, il faut impérativement passer par l'installation via les sources.
+Dans un premier temps, nous allons enregistrer le compte d'Alex en tant que _baker_ délégué :
+
+``` 
+tezos-client register key alex as delegate
+```
+
+Une fois enregistré, il faut un peu de patience. Notre _baker_ ne sera autorisé qu'après 7 cycles, soit un peu moins de 3 semaines.
+
+...
+
+3 semaines plus tard ...
+
+Nous avons installé le _baker_ précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le noeud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
+
+Pour le lancer, pour le compte d'Alex :
+```
+tezos-baker-007-PsDELPH1 run with local node ~/.tezos-node alex
+```
+
+Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'affiche, c'est que notre baker n'a obtenu encore le droit de créer de bloc.
 
 ### Déléguer
 
