@@ -6,7 +6,7 @@ Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 20
 
 **Tezos est une blockchain à preuve d'enjeu**
 
-Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'il ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. A tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillé et se retirer du processus de _baking_.
+Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
 
 Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut déverrouiller sa délégation à tout moment pour les utiliser ou les déléguer à un autre baker). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
 
@@ -18,9 +18,11 @@ La deuxième génération est représentée par Ethereum et ses semblables. Elle
 
 La troisième génération, dont Tezos fait partie, apporte une gouvernance _on-chain_. C'est-à-dire que le mécanisme d'évolution de ses paramètres est intégré à son fonctionnement. Pour faire évoluer certaines choses, une nouvelle version du protocole sera publiée sur un réseau de test. Les membres (les possesseurs de tokens) vont voter pour ou contre. En cas d'acceptation, l'évolution sera automatiquement appliquée sur le mainnet. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
 
-**But alors you are french ?**
+**But alors you are French ?**
 
 Proposée par Arthur et Kathleen Breitman, Tezos est issue de la recherche française. Elle est écrite en OCaml. Ses équipes travaillent en étroite collaboration avec les créateurs de ce langage.
+
+Pourquoi OCaml ? Tout simplement parce que c'est un langage fonctionnel, qui cherche la sécurité en se basant sur la validation formelle, une technique qui permet de valider mathématiquement un code avant son exécution. En gros, une fois validé et compilé, le code ne pourra pas planter à l'exécution.
 
 Tezos a été certifiée par [l'ANSSI](https://www.ssi.gouv.fr/) pour son respect du protocole [eIDAS](https://www.ssi.gouv.fr/entreprise/reglementation/confiance-numerique/le-reglement-eidas/). Elle peut être utilisée dans des projets sensibles concernant les intérêts français.
 
@@ -28,7 +30,7 @@ Le langage d'écriture des smart contracts est le Michelson. C'est un langage à
 
 **Dune Network ?**
 
-En explorant l'écosystème Tezos, on trouve régulièrement mention du projet Dune Network. Il s'agit d'un projet concurrent émanant d'une scission de la communauté Tezos. L'équipe de OCamlPro aurait souhaité prendre ses distance avec l'équipe de Tezos, suite à des divergences d'ordre financier, et aurait forké le protocole pour en faire sa propre blockchain, avec une vision un peu différente de la gouvernance _on-chain_.
+En explorant l'écosystème Tezos, on trouve régulièrement mention du projet Dune Network. Il s'agit d'un projet concurrent émanant d'une scission de la communauté Tezos. L'équipe d’OCamlPro aurait souhaité prendre ses distance avec l'équipe de Tezos, suite à des divergences d'ordre financier, et aurait forké le protocole pour en faire sa propre blockchain, avec une vision un peu différente de la gouvernance _on-chain_.
 
 Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
@@ -88,7 +90,7 @@ sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
 sudo apt-get install tezos-client
 sudo apt-get install tezos-node
 ```
-A noter que seuls ```tezos-node``` et ```tezos-client ```sont disponibles via cette façon de faire.
+À noter que seuls ```tezos-node``` et ```tezos-client ```sont disponibles via cette façon de faire.
 Pour avoir l'intégralité des exécutables, il faut installer à partir des sources.
 
 ### Depuis les sources
@@ -124,7 +126,7 @@ Afin de pouvoir faire partie sur réseau Tezos, il faut que notre nœud puisse �
 tezos-node identity generate
 ```
 
-Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json``` sera ensuite généré dans le répertoire ```~/.tezos-node```. Il contiendra nos clés publiques et privées. A conserver soigneusement et en sécurité !
+Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json``` sera ensuite généré dans le répertoire ```~/.tezos-node```. Il contiendra nos clés publiques et privées. À conserver soigneusement et en sécurité !
 
 
 ## Lancement du nœud
@@ -271,7 +273,7 @@ Vérifions une dernière fois nos balances :
 
 ## Ressources supplémentaires
 
-```tezos-client man``` vous donne un aperçu de toutes les commandes disponibles. Et il y en a un sacré paquet !
+Pour avoir la liste de toutes les commandes disponibles : ```tezos-client man```. Et il y en a un sacré paquet !
 
 Nous pouvons inspecter nos transactions sur l'explorateur de blocks https://delphinet.tezblock.io/
 
@@ -288,7 +290,7 @@ Si nous ne pouvons pas ou ne voulons pas exploiter un _baker_, nous pouvons dél
 Pour notre exemple, sur Delphinet, nous pouvons trouver la liste des _bakers_ sur [Tezblock](https://delphinet.tezblock.io/baker/list)
 Une liste des _bakers_ est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
 
-Le choix d'un _baker_ à qui déléger nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est à dire ne pas être off trop souvent, ne pas chercher à contourner les règles aux risque d'être repéré par un _accuser_ ...
+Le choix d'un _baker_ à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un _accuser_ ...
 
 On peut aussi regarder le taux de rentabilité qu'il propose, de quel pays il vient, quelle organisation le soutient ... Bref, le choix n'est pas uniquement technique mais bien en ensemble de critères qui peuvent être propres à chacun.
 
@@ -303,7 +305,7 @@ Ensuite, la délégation proprement dite est réalisée. Chaque étape coûte qu
 
 Et voilà, nous avons délégué le compte de Carl à un _baker_. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
 
-Les sommes perçues seront versées sur l'adresse que nous avons déléguées, elles viendront donc grossir notre délégation.
+Les sommes perçues seront versées sur l'adresse que nous avons déléguée, elles viendront donc grossir notre délégation.
 
 Et pour mettre fin à la délégation :
 
@@ -315,7 +317,7 @@ tezos-client withdraw delegate from carl
 
 Nous allons réaliser un petit script Node.js pour se connecter à la blockchain.
 
-[Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un nœud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
+Nous utiliserons [Taquito](https://tezostaquito.io/docs/quick_start), un framework écrit en Typescript qui permet de communiquer avec un nœud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
 Installons-le : 
 
@@ -364,10 +366,10 @@ Carl : 1 ꜩ
 Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés, plus faciles d'utilisation et destinés à être compilés en Michelson, afin de faciliter le développement des smart contracts.
 
 - [Ligo](https://ligolang.org/) : il propose 3 syntaxes différentes, ReasonLIGO, PascalLIGO et CamlLIGO, inspirées respectivement de [ReasonML](https://reasonml.github.io/), Pascal et Caml.
-- [Liquidity](https://www.liquidity-lang.org/) : dévelopé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/), 
-- [SmartPy](https://smartpy.io/) : bilbiothèque Python pour le développement de smart contracts Tezos en Python.
+- [Liquidity](https://www.liquidity-lang.org/) : développé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/), 
+- [SmartPy](https://smartpy.io/) : bibliothèque Python pour le développement de smart contracts Tezos en Python.
 
-Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javacript.
+Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript.
 
 ## Premier smart contract, SimpleStorage
 
