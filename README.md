@@ -279,7 +279,23 @@ Nous pouvons inspecter nos transactions sur l'explorateur de blocks [Tezblock De
 
 ### Le baker
 
-Dans un premier temps, nous allons enregistrer le compte d'Alex en tant que _baker_ délégué :
+Pour devenir baker, la première condition et de détenir 8000 ꜩ. Avec le faucet, il est facile de réunir cette somme sur le testnet. Sur le mainnet, pas le choix, il faut passer à la caisse.
+
+Si je souhaite qu'Alex devienne baker, je vais lui transférer quelques milliers de ꜩ depuis le compte de Bob pour qu'il atteigne les 8000 ꜩ. Nous sommes maintenant experts dans cette manipulation :
+
+```
+tezos-client transfer 5000 from bob to alex
+```
+
+Puis pour vérifier :
+
+``` 
+> tezos-client get balance for alex
+11488.564958 ꜩ
+```
+Et hop, une bonne chose de faite.
+
+Ensuite, nous devons enregistrer le compte d'Alex en tant que _baker_ délégué :
 
 ``` 
 tezos-client register key alex as delegate
