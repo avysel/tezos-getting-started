@@ -48,11 +48,11 @@ Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le
 
 Tezos repose aussi sur les **endorser**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
-Les bakers et les endorser sont choisi au début de chaque cycle, pour tous les blocs du cycle.
+Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous les blocs du cycle.
 
-Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
+Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
 
-On trouve aussi les **accuser**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'_endorser_. L'autre partie est brûlée.
+On trouve aussi les **accuser**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le _baker_ ou l'_endorser_. L'autre partie est brûlée.
 
 ### Processus d'évolution
 
@@ -71,7 +71,7 @@ Et enfin, le **promote vote**,
 ## Architecture
 
 - **tezos-node** : c'est le coeur de la blockchain, il gère le protocole.
-- **tezos-client** : il permet d'interagit avec tezos-node.
+- **tezos-client** : il permet d'interagir avec tezos-node.
 - **tezos-baker** : le baker, il permet de participer au consensus en créant de nouveaux blocs.
 - **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
 - **tezos-accuser** : l'accusateur
@@ -91,6 +91,28 @@ sudo apt-get install tezos-node
 
 ### Depuis les sources
 
+## Connexion au bon réseau
+
+Un répertoire ```.tezos-node``` est créé à la racine du compte qui a servi à l'installation.
+On y trouve un fichier ```config.json```.
+
+Editons le pour préciser sur quel noeud se connecter, avec le champ ```network``` :
+
+```
+{
+  "p2p": {
+    "bootstrap-peers": [
+      ...
+    ]
+  },
+  "network": "delphinet"
+}
+```
+
+Vérifiez bien quel est le testnet du moment (https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul noeud connecté, vous ne pourrez pas faire grand-chose.
+Ici, nous nous connectons sur Delphinet.
+
+Dorénavant, en étant connecté sur un testnet, le résultat de toutes nos commandes via ```tezos-client``` seront précédés d'un avertissement indiquant que nous ne sommes pas sur le mainnet.
 
 ## Création de l'identité et des comptes
 
@@ -169,6 +191,8 @@ tezos-client activate account alex with "alex.json"
 tezos-client activate account bob with "bob.json"
 ```
 
+Ces opérations en seront pas immédiates, il faudra attendre que la transaction soit inclue dans un bloc.
+
 Vérifions les balances :
 ```
 tezos-client get balance for alex
@@ -180,10 +204,16 @@ Et voilà, nous sommes riches !
 
 Nous allons tester un premier transfert de 1ꜩ de alex vers bob :
 ```
-tezos-client transfer 1 from alice to bob --dry-run
+tezos-client transfer 1 from alex to bob --dry-run
 ```
 
-L'option ```--dry-run``` permet de simuler la transaction sans l'envoyer sur le réseau, pour la tester.
+L'option ```--dry-run``` permet de simuler la transaction sans l'envoyer sur le réseau, pour la tester. Nous obtenons alors la description de tout ce qui changera grâce cette transaction : les changements de balances, les frais, le gas utilisé, les adresses impactés ...
+
+Après vérification, nous allons lancer la transaction pour de bon cette fois, en enlevant le ```--dry-run``` : 
+```
+tezos-client transfer 1 from alex to bob --dry-run
+```
+Là encore, il faut attendre un petit moment que la transaction soit prise en compte.
 
 Vérifions les balances à nouveau :
 ```
@@ -194,10 +224,91 @@ tezos-client get balance for bob
 ```
 Le ꜩ a bien été transféré.
 
+## Création de compte sans faucet
+
+Maintenant, nous allons créer un troisième compte :
+```
+tezos-client gen keys carl
+```
+
+Nous allons immédiatement lui transférer 1 XTZ depuis alex :
+```
+tezos-client transfer 1 from alex to carl
+```
+
+Nous obtenons une erreur :
+``The operation will burn ꜩ0.06425 which is higher than the configured burn cap (ꜩ0).
+Use `--burn-cap 0.06425` to emit this operation.``
+
+Nos deux premiers comptes ont été initialisés grâce à un faucet, qui les a en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
+Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 XTZ. Nous devons donc indiquer que nous somme prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
+
+Elle devient donc :
+```
+tezos-client transfer 1 from alex to carl --burn-cap 0.06425
+```
+Comme d'habitude, une fois inclue dans la blockchain, nous obtenons le résumé de son exécution et nous pouvons y lire que 0.06425 XTZ ont été brûlés depuis le compte de alex, en plus des frais de transaction et de la somme transférée.
+
+Vérifions un dernière fois nos balances :
+
+```
+> tezos-client get balance for alex
+6488.565316 ꜩ
+
+> tezos-client get balance for bob
+43543.194615 ꜩ
+
+> tezos-client get balance for carl
+1 ꜩ
+```
+
 ## Utilisation du framework Taquito
 
 [Taquito](https://tezostaquito.io/docs/quick_start) est un framework écrit en Typescript qui permet de communiquer avec un noeud Tezos. Si vous êtes familier d'Ethereum, il est l'équivalent de Web3.js.
 
+Installons-le : 
+
+```
+npm install taquito
+```
+
+Nous allons pour le moment, faire un simple script qui va se connecter au noeud local et récupérer les balances de nos 3 comptes : 
+
+```
+import { TezosToolkit } from '@taquito/taquito';
+
+const tezos = new TezosToolkit('http://127.0.0.1:8732');
+
+tezos.tz
+  .getBalance('tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d')
+  .then((balance) => console.log(`Alex : ${balance.toNumber() / 1000000} ꜩ`))
+  .catch((error) => console.error(JSON.stringify(error)));
+
+tezos.tz
+    .getBalance('tz1TCoi1XMdjgazx3311Eax1ejgBeQftbq6U')
+    .then((balance) => console.log(`Bob : ${balance.toNumber() / 1000000} ꜩ`))
+    .catch((error) => console.error(JSON.stringify(error)));
+
+tezos.tz
+  .getBalance('tz1LcjVm8PXmV2WRfM6aMnwB4VWhXMU62qzG')
+  .then((balance) => console.log(`Carl : ${balance.toNumber() / 1000000} ꜩ`))
+  .catch((error) => console.error(JSON.stringify(error)));
+```
+
+On compile et on exécute le fichier javascript généré :
+
+```
+tsc index.ts
+node index.js
+```
+
+Et on obtient le même résultat qu'avec le tezos-client :
+
+```
+Alex : 6488.565316 ꜩ
+Bob : 43543.194615 ꜩ
+Carl : 1 ꜩ
+```
 
 ---------------
 
