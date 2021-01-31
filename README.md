@@ -8,7 +8,7 @@ Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 20
 
 Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum, un *__roll__*) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut déverrouiller sa délégation à tout moment pour les utiliser ou les déléguer à un autre baker). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum, un *__roll__*) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
 
 **Tezos est une blockchain de troisième génération**
 
@@ -36,11 +36,11 @@ Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
 
 ## Fonctionnement
 
-Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au temps nécessaire à la création de 4096 blocs. Avec un rythme d'environ 1 bloc par minute, 1 cycle dure donc environ 2 jours, 20 heures et 15 minutes.
+Tezos fonctionne en **cycles**. Un cycle est une unité temporelle équivalente à la durée nécessaire pour créer 4096 blocs. Avec un rythme d'environ 1 bloc par minute, 1 cycle dure donc environ 2 jours, 20 heures et 15 minutes.
 
 ### Processus de baking
 
-Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme baker, proportionnellement à la somme de XTZ verrouillés. Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
+Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ verrouillés (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
@@ -50,6 +50,8 @@ Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous
 Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
 
 On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le _baker_ ou l'_endorser_. L'autre partie est brûlée.
+
+(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irreversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
 
 ### Processus d'évolution
 
@@ -67,8 +69,9 @@ Et enfin, le **promote vote**,
 
 ## Architecture
 
-- **tezos-node** : c'est le coeur de la blockchain, il gère le protocole.
-- **tezos-client** : il permet d'interagir avec tezos-node.
+- **tezos-node** : c'est le cœur de la blockchain, il gère le protocole.
+- **tezos-client** : il permet d'interagir avec ```tezos-node```.
+- **tezos-admin-client** : un outil d'administration pour le ```tezos-node```
 - **tezos-baker** : le baker, il permet de participer au consensus en créant de nouveaux blocs.
 - **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
 - **tezos-accuser** : l'accusateur
@@ -109,7 +112,7 @@ Modifions-le pour préciser sur quel nœud se connecter, avec le champ ```networ
 }
 ```
 
-Vérifiez bien quel est le testnet du moment (https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul nœud connecté, vous ne pourrez pas faire grand-chose.
+[Vérifiez bien quel est le testnet du moment](https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul nœud connecté, vous ne pourrez pas faire grand-chose.
 Ici, nous nous connectons sur Delphinet.
 
 Dorénavant, en étant connecté sur un testnet, le résultat de toutes nos commandes via ```tezos-client``` seront précédés d'un avertissement indiquant que nous ne sommes pas sur le mainnet.
@@ -246,9 +249,8 @@ Nous obtenons une erreur :
 Use `--burn-cap 0.06425` to emit this operation.``
 
 Nos deux premiers comptes ont été initialisés grâce à un faucet qui les a, en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
-Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 ꜩ. Nous devons donc indiquer que nous somme prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
+Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 ꜩ. Nous devons donc indiquer que nous sommes prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
 
-(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irreversible, qui ne doit pas être effectuée à la légère)
 
 Elle devient donc :
 ```
@@ -281,7 +283,7 @@ Nous pouvons inspecter nos transactions sur l'explorateur de blocks [Tezblock De
 
 ### Le baker
 
-Pour devenir baker, la première condition et de détenir 8000 ꜩ. Avec le faucet, il est facile de réunir cette somme sur le testnet. Sur le mainnet, pas le choix, il faut passer à la caisse.
+Pour devenir baker, la première condition est de détenir 8000 ꜩ. Avec le faucet, il est facile de réunir cette somme sur le testnet. Sur le mainnet, pas le choix, il faut passer à la caisse.
 
 Si je souhaite qu'Alex devienne baker, je vais lui transférer quelques milliers de ꜩ depuis le compte de Bob pour qu'il atteigne les 8000 ꜩ. Nous sommes maintenant experts dans cette manipulation :
 
@@ -298,7 +300,7 @@ Puis pour vérifier :
 Et hop, une bonne chose de faite.
 
 Ensuite, nous devons enregistrer le compte d'Alex en tant que _baker_ délégué :
-=======
+
 Dans un premier temps, nous allons enregistrer le compte d'Alex en tant que _baker_ délégué :
 
 ``` 
@@ -333,7 +335,7 @@ Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'af
 
 Si nous ne pouvons pas ou ne voulons pas exploiter un _baker_, nous pouvons déléguer nos ꜩ à un _baker_ de notre choix.
 
-Pour notre exemple, sur Delphinet, nous pouvons trouver la liste des _bakers_ sur [Tezblock](https://delphinet.tezblock.io/baker/list)
+Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des _bakers_ sur Tezblock](https://delphinet.tezblock.io/baker/list)
 Une liste des _bakers_ est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
 
 Le choix d'un _baker_ à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un _accuser_ ...
@@ -342,12 +344,20 @@ On peut aussi regarder le taux de rentabilité qu'il propose, de quel pays il vi
 
 Une fois notre _baker_ choisi, let's delegate !
 
+
+
+Déléguer son compte à un baker se fait en deux étapes. D'abord, notre clé publique doit être révélée :
+```
+tezos-client reveal key for carl
+```
+
+Ensuite, la délégation : 
+
 ```
 tezos-client set delegate for carl to <adresse tz1 du baker choisi>
 ```
 
-Déléguer son compte à un baker se fait en deux étapes (bien visibles dans le résumé de la transaction). D'abord, et uniquement lors de la première délégation d'un compte, sa clé publique doit être révélée.
-Ensuite, la délégation proprement dite est réalisée. Chaque étape coûte quelques ꜩ.
+Chaque étape coûte quelques ꜩ. La révélation peut être omise. Dans ce cas, elle sera effectuée automatiquement lors de la délégation.
 
 Et voilà, nous avons délégué le compte de Carl à un _baker_. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
 
@@ -408,7 +418,7 @@ Carl : 1 ꜩ
 
 Nous avons vu que les testnets de Tezos se succèdent en se remplaçant. Il faudra donc de temps en temps se connecter à nouveau réseau pour se préparer à un changement ou changer de testnet.
 
-Nous allons devoir initialiser un autre nœud Tezos. Heureusement, il y a des commandes d'initialisation facile à utiliser (que nous aurions aussi pu utiliser pour notre réseau initial).
+Nous allons devoir initialiser un autre nœud Tezos. Heureusement, il y a des commandes d'initialisation faciles à utiliser (que nous aurions aussi pu utiliser pour notre réseau initial).
 
 Notre nœud actuel est connecté à Delphinet. Nous allons donc nous connecter au suivant, Edonet, pour être prêt le jour où ce dernier prendra la main sur Delphinet.
 
