@@ -301,8 +301,6 @@ Et hop, une bonne chose de faite.
 
 Ensuite, nous devons enregistrer le compte d'Alex en tant que _baker_ délégué :
 
-Dans un premier temps, nous allons enregistrer le compte d'Alex en tant que _baker_ délégué :
-
 ``` 
 tezos-client register key alex as delegate
 ```
@@ -315,10 +313,10 @@ Une fois enregistré, il faut un peu de patience. Notre _baker_ ne sera autoris�
 
 ...
 
-Heureusement, sur les testnets, le nombre de blocs par cycles n'est que de 2048 au lieu de 4096 et qu'un bloc est créé toutes lse 30 secondes au lieu de toutes les minutes. Ce qui donne des cycles d'environ 17 heures.
+Heureusement, nous sommes sur un testnet. Et sur les testnets, le nombre de blocs par cycles n'est que de 2048 au lieu de 4096 et qu'un bloc est créé toutes les 30 secondes au lieu de toutes les minutes. Ce qui donne des cycles d'environ 17 heures. 7 cycles ne vont durer que 5 jours.
 ...
 
-Donc, 17 heures plus tard finalement, si nous sommes toujours sur un testnet ...
+Donc, 5 jours plus tard ...
 
 ...
 
