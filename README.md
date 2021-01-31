@@ -296,6 +296,8 @@ Puis pour vérifier :
 Et hop, une bonne chose de faite.
 
 Ensuite, nous devons enregistrer le compte d'Alex en tant que _baker_ délégué :
+=======
+Dans un premier temps, nous allons enregistrer le compte d'Alex en tant que _baker_ délégué :
 
 ``` 
 tezos-client register key alex as delegate
@@ -330,7 +332,7 @@ On peut aussi regarder le taux de rentabilité qu'il propose, de quel pays il vi
 Une fois notre _baker_ choisi, let's delegate !
 
 ```
-tezis-client set delegate for carl to <adresse tz1 du baker choisi>
+tezos-client set delegate for carl to <adresse tz1 du baker choisi>
 ```
 
 Déléguer son compte à un baker se fait en deux étapes (bien visibles dans le résumé de la transaction). D'abord, et uniquement lors de la première délégation d'un compte, sa clé publique doit être révélée.
