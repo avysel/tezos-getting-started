@@ -43,13 +43,13 @@ Tezos fonctionne en **cycles**. Un cycle est une unité de temps équivalent au 
 Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme baker, proportionnellement à la somme de XTZ verrouillés. Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
-Tezos repose aussi sur les **endorser**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
+Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
 Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous les blocs du cycle.
 
 Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
 
-On trouve aussi les **accuser**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le _baker_ ou l'_endorser_. L'autre partie est brûlée.
+On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le _baker_ ou l'_endorser_. L'autre partie est brûlée.
 
 ### Processus d'évolution
 
@@ -130,11 +130,13 @@ Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json
 Pour lancer le nœud Tezos local, on utilise la commande suivante :
 
 ```
-tezos-node run --rpc-addr 127.0.0.1:8732
+tezos-node run --rpc-addr 127.0.0.1:8732 --data-dir ~/tezos-delphinet --network delphinet
 ```
 
 On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le nœud.
 Par défaut, elle se lance sur le port 8732, il n'est donc pas obligatoire de le préciser.
+
+Il est possible de définir le répertoire où seront stockées les données avec ```--data-dir``` (par défaut, dans ```.tezos-node```) et de préciser sur quel réseau se connecter avec ```--network``` (si nous ne l'avons pas précisé dans ```config.json```, et par défaut, ```mainnet```).
 
 Lors du premier lancement, il sera nécessaire d'attendre un long moment (plusieurs heures voire plusieurs jours) pour qu'il se synchronise avec le réseau et récupère tout l'historique de ce qui a été fait avant notre arrivée.
 
@@ -309,7 +311,16 @@ Une fois enregistré, il faut un peu de patience. Notre _baker_ ne sera autoris�
 
 3 semaines plus tard ...
 
-Nous avons installé le _baker_ précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le noeud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
+...
+
+Heureusement, sur les testnets, le nombre de blocs par cycles n'est que de 2048 au lieu de 4096 et qu'un bloc est créé toutes lse 30 secondes au lieu de toutes les minutes. Ce qui donne des cycles d'environ 17 heures.
+...
+
+Donc, 17 heures plus tard finalement, si nous sommes toujours sur un testnet ...
+
+...
+
+Nous avons installé le _baker_ précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
 
 Pour le lancer, pour le compte d'Alex :
 ```
@@ -392,6 +403,36 @@ Alex : 6488.565316 ꜩ
 Bob : 43543.194615 ꜩ
 Carl : 1 ꜩ
 ```
+
+## Changer de testnet
+
+Nous avons vu que les testnets de Tezos se succèdent en se remplaçant. Il faudra donc de temps en temps se connecter à nouveau réseau pour se préparer à un changement ou changer de testnet.
+
+Nous allons devoir initialiser un autre nœud Tezos. Heureusement, il y a des commandes d'initialisation facile à utiliser (que nous aurions aussi pu utiliser pour notre réseau initial).
+
+Notre nœud actuel est connecté à Delphinet. Nous allons donc nous connecter au suivant, Edonet, pour être prêt le jour où ce dernier prendra la main sur Delphinet.
+
+Créons un répertoire qui contiendra tous les éléments de notre nœud Edonet :
+```
+mkdir ~/tezos-edonet
+```
+
+On crée ensuite la configuration, qui initialise la connexion à Edonet et la liste des bootstrap peers :
+```
+tezos-node config init --data-dir ~/tezos-edonet --network edonet
+```
+
+Puis l'identité :
+```
+tezos-node identity generate --data-dir ~/tezos-edonet
+```
+
+Et finalement, nous pouvons le lancer, avec un port RPC différent que celui qui tourne déjà sur Delphinet :
+```
+tezos-node run --rpc-addr 127.0.0.1:8733 --data-dir ~/tezos-edonet
+```
+
+Le jour où Delphinet sera arrêté, nous pourrons supprimer le répertoire ```.tezos-node``` dans lequel nous avions laissé, par défaut, les données de notre nœud.
 
 ---------------
 
