@@ -322,6 +322,8 @@ Donc, 17 heures plus tard finalement, si nous sommes toujours sur un testnet ...
 
 ...
 
+Nous devons apparaître daans la [liste des _bakers_ de Delphinet](https://delphinet.tezblock.io/baker/list).
+
 Nous avons installé le _baker_ précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
 
 Pour le lancer, pour le compte d'Alex :
@@ -335,7 +337,7 @@ Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'af
 
 Si nous ne pouvons pas ou ne voulons pas exploiter un _baker_, nous pouvons déléguer nos ꜩ à un _baker_ de notre choix.
 
-Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des _bakers_ sur Tezblock](https://delphinet.tezblock.io/baker/list)
+Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des _bakers_](https://delphinet.tezblock.io/baker/list), comme vu précédemment.
 Une liste des _bakers_ est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
 
 Le choix d'un _baker_ à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un _accuser_ ...
