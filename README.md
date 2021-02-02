@@ -94,6 +94,45 @@ Pour avoir l'intégralité des exécutables (accuser, endorser), il faut install
 
 ### Depuis les sources
 
+Tezos étant développé en OCaml, nous devons passer par Opam, le package manager OCaml, pour l'installer via les sources :
+
+```shell
+# install opam
+sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh
+opam init --bare
+
+# switch to right compiler version
+opam switch create for_tezos 4.09.1
+eval $(opam env)
+
+# install dependencies
+opam install depext
+opam depext tezos
+
+
+# install all binaries
+opam install tezos
+```
+Les binaires se trouveront dans ```~/.opam/for_tezos/bin``` :
+
+```
+tezos-accuser-007-PsDELPH1
+tezos-accuser-008-PtEdoTez
+tezos-admin-client
+tezos-baker-007-PsDELPH1
+tezos-baker-008-PtEdoTez
+tezos-client
+tezos-endorser-007-PsDELPH1
+tezos-endorser-008-PtEdoTez
+tezos-node
+```
+
+On trouve un seul ```tezos-node```. L'exécutable évolue au fil du temps pour prendre en charge les nouveaux testnets et se débarraser des anciens. Par exemple, ici avec ```tezos-node``` v8.1, nous pouvons nous connecter au mainnet, à Delphinet et à Edonet. Le testnet précédent, Carthagenet, a été supprimé et n'est plus utilisable.
+
+Nous pouvons aussi voir que les accuser, baker et endorser sont, quant à eux, spécifique à une version du protocole. Le build nous en a construit pour Delphinet et Edonet.
+
+Un seul ```tezos-node``` pour les gouverner tous, mais des binaires dépendants du protocole pour contribuer à la sécurisation du réseau.
+
 ## Connexion au bon réseau
 
 Un répertoire ```.tezos-node``` est créé à la racine du compte qui a servi à l'installation.
