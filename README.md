@@ -45,7 +45,8 @@ Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
-Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous les blocs du cycle.
+Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
+Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
 Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
 
@@ -98,7 +99,7 @@ Tezos étant développé en OCaml, nous devons passer par Opam, le package manag
 
 ```shell
 # install opam
-sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh
+sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
 opam init --bare
 
 # switch to right compiler version
@@ -248,6 +249,7 @@ Vérifions les balances :
 43540.194615 ꜩ
 ```
 Et voilà, nous sommes riches ! Bob semble avoir eu plus de chance qu'Alex. Le faucet est aléatoire sur les sommes distribuées.
+(Petite précision : n'essayez pas de trafiquer le fichier json pour avoir encore plus de ꜩ, ça ne fonctionnera pas :) ).
 
 Nous allons tester un premier transfert de 1 ꜩ d'Alex vers Bob :
 ```
