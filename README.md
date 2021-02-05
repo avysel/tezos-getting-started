@@ -58,7 +58,7 @@ Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses a
 
 On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'accuser qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'endorser. L'autre partie est brûlée.
 
-(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irreversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
+(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irréversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
 
 ### Processus d'évolution
 
@@ -68,13 +68,13 @@ Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises
 
 Ensuite, l'**exploration vote**. Les bakers vont voter afin de déterminer si la proposition qui a obtenu le plus de suffrages à l'étape précédente doit être, ou non, testée de façon plus approfondie. 
 
-Puis le **testing**. Si la proposition est plébicitée, un testnet qui l'embarque sera déployé. Tout le monde peut ainsi tester son fonctionnement.
+Puis le **testing**. Si la proposition est plébiscitée, un testnet qui l'embarque sera déployé. Tout le monde peut ainsi tester son fonctionnement.
 
 Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaine principale. Si elle est acceptée, elle sera automatiquement injectée.
 
 La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
-## Architecture
+## Composants
 
 - **tezos-node** : c'est le cœur de la blockchain, il gère le protocole.
 - **tezos-client** : il permet d'interagir avec ```tezos-node```.
@@ -176,7 +176,7 @@ tezos-node identity generate
 Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json``` sera ensuite généré dans le répertoire ```~/.tezos-node```. Il contiendra nos clés publiques et privées. À conserver soigneusement et en sécurité !
 
 
-## Lancement du nœud
+## Lancement du nœud local
 
 Pour lancer le nœud Tezos local, on utilise la commande suivante :
 
@@ -372,7 +372,7 @@ Donc, 5 jours plus tard ...
 
 ...
 
-Nous devons apparaître daans la [liste des bakers de Delphinet](https://delphinet.tezblock.io/baker/list).
+Nous devons apparaître dans la [liste des bakers de Delphinet](https://delphinet.tezblock.io/baker/list).
 
 Nous avons installé le baker précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
 
