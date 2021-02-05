@@ -2,7 +2,7 @@
 
 ## Présentation
 
-Tezos est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**) 
+[Tezos](https://tezos.com/) est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**) 
 
 **Tezos est une blockchain à preuve d'enjeu**
 
@@ -175,7 +175,7 @@ Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json
 Pour lancer le nœud Tezos local, on utilise la commande suivante :
 
 ```
-tezos-node run --rpc-addr 127.0.0.1:8732 --data-dir ~/tezos-delphinet --network delphinet
+tezos-node run --rpc-addr 127.0.0.1:8732 --data-dir ~/.tezos-node --network delphinet
 ```
 
 On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le nœud.
@@ -198,6 +198,9 @@ On peut aussi utiliser le client Tezos
 ```
 tezos-client rpc get /network/version
 ```
+
+L'intégralité des commandes RPC générales est [disponible sur le site de Tezos](https://tezos.gitlab.io/shell/rpc.html#rpc-index-shell)
+
 
 ## Wallet et comptes
 
@@ -328,7 +331,7 @@ Nous pouvons inspecter nos transactions sur l'explorateur de blocks [Tezblock De
 
 Pour devenir baker, la première condition est de détenir 8000 ꜩ. Avec le faucet, il est facile de réunir cette somme sur le testnet. Sur le mainnet, pas le choix, il faut passer à la caisse.
 
-Si je souhaite qu'Alex devienne baker, je vais lui transférer quelques milliers de ꜩ depuis le compte de Bob pour qu'il atteigne les 8000 ꜩ. Nous sommes maintenant experts dans cette manipulation :
+Si nous souhaitons qu'Alex devienne baker, nous devons lui transférer quelques milliers de ꜩ depuis le compte de Bob pour qu'il atteigne les 8000 ꜩ. Nous sommes maintenant experts dans cette manipulation :
 
 ```
 tezos-client transfer 5000 from bob to alex
@@ -403,8 +406,6 @@ tezos-client set delegate for carl to <adresse tz1 du baker choisi>
 Chaque étape coûte quelques ꜩ. La révélation peut être omise. Dans ce cas, elle sera effectuée automatiquement lors de la délégation.
 
 Et voilà, nous avons délégué le compte de Carl à un _baker_. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
-
-Les sommes perçues seront versées sur l'adresse que nous avons déléguée, elles viendront donc grossir notre délégation.
 
 Et pour mettre fin à la délégation :
 
