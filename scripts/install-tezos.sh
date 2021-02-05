@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install opam
-sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh
+sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
 opam init --bare
 
 # switch to right compiler version
