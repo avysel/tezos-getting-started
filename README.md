@@ -1,5 +1,7 @@
 # Démarrer avec Tezos
 
+Partons à la découverte de Tezos, une blockchain de troisième génération et issue de la recherche française. Nous allons découvrir son fonctionnement et comment rejoindre le réseau, l'utiliser et participer à son fonctionnement.
+
 ## Présentation
 
 [Tezos](https://tezos.com/) est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**) 
@@ -20,9 +22,9 @@ DPoS : nombre de bakers fixe (création d'une sorte de "conseil d'administration
 
 La première génération de blockchain est Bitcoin et les blockchains similaires, qui se contentent de gérer principalement des transactions de transfert de tokens, avec éventuellement des possibilités de scriptage assez simples.
 
-La deuxième génération est représentée par Ethereum et ses semblables. Elle se démarque de la première par l'ajout des smart contracts et la possibilité de réaliser des applications complètes, entièrement décentralisées.
+Ethereum et ses semblables représentent la deuxième génération. Elle se démarque de la première par l'ajout des smart contracts et la possibilité de réaliser des applications complètes, entièrement décentralisées.
 
-La troisième génération, dont Tezos fait partie, apporte une gouvernance _on-chain_. C'est-à-dire que le mécanisme d'évolution de ses paramètres est intégré à son fonctionnement. Pour faire évoluer certaines choses, une nouvelle version du protocole sera publiée sur un réseau de test. Les membres (les possesseurs de tokens) vont voter pour ou contre. En cas d'acceptation, l'évolution sera automatiquement appliquée sur le mainnet. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
+La troisième génération, dont Tezos fait partie, apporte une gouvernance on-chain. C'est-à-dire qu'elle intègre nativement le mécanisme d'évolution du protocole. Pour faire évoluer certaines choses, un réseau de test va permettre de tester une évolution avant que le mainnet ne l'intègre automatiquement, si les membres du réseau votent pour. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
 
 **But alors you are French ?**
 
@@ -51,7 +53,7 @@ Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
-Les bakers et les endorsers sont choisis au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
+Le protocole va élire les bakers et les endorsers au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 32 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
 Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
@@ -226,7 +228,7 @@ tezos-client gen keys bob
 ```
 Ces commandes vont créer deux alias de comptes, Alex et Bob. 
 
-Vérifions que les comptes ont bien été créés :
+Vérifions que nous avons bien nos comptes :
 
 ```
 > tezos-client list known contracts
@@ -259,7 +261,7 @@ Vérifions les balances :
 > tezos-client get balance for bob
 43540.194615 ꜩ
 ```
-Et voilà, nous sommes riches ! Bob semble avoir eu plus de chance qu'Alex. Le faucet est aléatoire sur les sommes distribuées.
+Et voilà, nous sommes riches ! Bob semble avoir eu plus de chance qu'Alex. Le faucet distribue des sommes aléatoires.
 (Petite précision : n'essayez pas de trafiquer le fichier json pour avoir encore plus de ꜩ, ça ne fonctionnera pas :) ).
 
 Nous allons tester un premier transfert de 1 ꜩ d'Alex vers Bob :
@@ -273,7 +275,7 @@ Après vérification, nous allons lancer la transaction pour de bon cette fois, 
 ```
 tezos-client transfer 1 from alex to bob
 ```
-Là encore, il faut attendre un petit moment que la transaction soit prise en compte.
+Là encore, il faut attendre un petit moment que le réseau ne valide la transaction.
 
 Vérifions les balances à nouveau :
 ```
@@ -296,7 +298,7 @@ Nous allons immédiatement lui transférer 1 ꜩ depuis Alex :
 tezos-client transfer 1 from alex to carl
 ```
 
-Nous obtenons une erreur :
+Echec, une erreur s'affiche :
 ``The operation will burn ꜩ0.06425 which is higher than the configured burn cap (ꜩ0).
 Use `--burn-cap 0.06425` to emit this operation.``
 
@@ -398,7 +400,7 @@ Une fois notre baker choisi, let's delegate !
 
 
 
-Déléguer son compte à un baker se fait en deux étapes. D'abord, notre clé publique doit être révélée :
+Déléguer son compte à un baker se fait en deux étapes. D'abord, nous devons révéler notre clé publique :
 ```
 tezos-client reveal key for carl
 ```
@@ -409,7 +411,7 @@ Ensuite, la délégation :
 tezos-client set delegate for carl to <adresse tz1 du baker choisi>
 ```
 
-Chaque étape coûte quelques ꜩ. La révélation peut être omise. Dans ce cas, elle sera effectuée automatiquement lors de la délégation.
+Chaque étape coûte quelques ꜩ. Nous pouvons omettre la révélation. Dans ce cas, elle sera effectuée automatiquement lors de la délégation.
 
 Et voilà, nous avons délégué le compte de Carl à un baker. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
 
@@ -470,7 +472,7 @@ Nous avons vu que les testnets de Tezos se succèdent en se remplaçant. Il faud
 
 Nous allons devoir initialiser un autre nœud Tezos. Heureusement, il y a des commandes d'initialisation faciles à utiliser (que nous aurions aussi pu utiliser pour notre réseau initial).
 
-Notre nœud actuel est connecté à Delphinet. Nous allons donc nous connecter au suivant, Edonet, pour être prêt le jour où ce dernier prendra la main sur Delphinet.
+Nous avons connecté notre nœud actuel à Delphinet. Nous allons donc nous connecter au suivant, Edonet, pour être prêt le jour où ce dernier prendra la main sur Delphinet.
 
 Créons un répertoire qui contiendra tous les éléments de notre nœud Edonet :
 ```
@@ -498,7 +500,7 @@ Le jour où Delphinet sera arrêté, nous pourrons supprimer le contenu du répe
 
 Nous savons maintenant :
 - Comment fonctionne Tezos
-- L'installer, depuis les sources ou un repository
+- L'installer, depuis les sources ou un dépôt
 - Lancer le nœud local
 - Créer des comptes 
 - Effectuer des opérations simples comme transférer des ꜩ ou vérifier les balances
