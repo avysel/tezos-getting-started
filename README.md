@@ -6,9 +6,9 @@
 
 **Tezos est une blockchain à preuve d'enjeu**
 
-Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un _baker_ peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
+Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un baker peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir _baker_ est très importante (8000 XTZ minimum, un *__roll__*) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un _baker_ afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du _baking_, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir baker est très importante (8000 XTZ minimum, un _roll_) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un baker afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du baking, proportionnellement à leur participation.
 
 **Tezos est une blockchain de troisième génération**
 
@@ -45,12 +45,12 @@ Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
-Les _bakers_ et les _endorsers_ sont choisis au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
+Les bakers et les endorsers sont choisis au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
-Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
+Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
 
-On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'_accuser_ qui l'a émise récupère une partie des fonds qui ont été gelés par le _baker_ ou l'_endorser_. L'autre partie est brûlée.
+On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'accuser qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'endorser. L'autre partie est brûlée.
 
 (Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irreversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
 
@@ -345,13 +345,13 @@ Puis pour vérifier :
 ```
 Et hop, une bonne chose de faite.
 
-Ensuite, nous devons enregistrer le compte d'Alex en tant que _baker_ délégué :
+Ensuite, nous devons enregistrer le compte d'Alex en tant que baker délégué :
 
 ``` 
 tezos-client register key alex as delegate
 ```
 
-Une fois enregistré, il faut un peu de patience. Notre _baker_ ne sera autorisé qu'après 7 cycles, soit un peu moins de 3 semaines.
+Une fois enregistré, il faut un peu de patience. Notre baker ne sera autorisé qu'après 7 cycles, soit un peu moins de 3 semaines.
 
 ...
 
@@ -366,9 +366,9 @@ Donc, 5 jours plus tard ...
 
 ...
 
-Nous devons apparaître daans la [liste des _bakers_ de Delphinet](https://delphinet.tezblock.io/baker/list).
+Nous devons apparaître daans la [liste des bakers de Delphinet](https://delphinet.tezblock.io/baker/list).
 
-Nous avons installé le _baker_ précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
+Nous avons installé le baker précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
 
 Pour le lancer, pour le compte d'Alex :
 ```
@@ -379,16 +379,16 @@ Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'af
 
 ### Déléguer
 
-Si nous ne pouvons pas ou ne voulons pas exploiter un _baker_, nous pouvons déléguer nos ꜩ à un _baker_ de notre choix.
+Si nous ne pouvons pas ou ne voulons pas exploiter un baker, nous pouvons déléguer nos ꜩ à un baker de notre choix.
 
-Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des _bakers_](https://delphinet.tezblock.io/baker/list), comme vu précédemment.
-Une liste des _bakers_ est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
+Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des bakers](https://delphinet.tezblock.io/baker/list), comme vu précédemment.
+Une liste des bakers est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
 
-Le choix d'un _baker_ à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un _accuser_ ...
+Le choix d'un baker à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un accuser ...
 
 On peut aussi regarder le taux de rentabilité qu'il propose, de quel pays il vient, quelle organisation le soutient ... Bref, le choix n'est pas uniquement technique mais bien en ensemble de critères qui peuvent être propres à chacun.
 
-Une fois notre _baker_ choisi, let's delegate !
+Une fois notre baker choisi, let's delegate !
 
 
 
@@ -405,7 +405,7 @@ tezos-client set delegate for carl to <adresse tz1 du baker choisi>
 
 Chaque étape coûte quelques ꜩ. La révélation peut être omise. Dans ce cas, elle sera effectuée automatiquement lors de la délégation.
 
-Et voilà, nous avons délégué le compte de Carl à un _baker_. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
+Et voilà, nous avons délégué le compte de Carl à un baker. Il faudra attendre la fin du cycle pour que notre délégation soit prise en compte. Puis, à chaque cycle où notre baker sera sélectionné pour créer ou soutenir un block, nous recevrons une partie de la récompense. 
 
 Et pour mettre fin à la délégation :
 
