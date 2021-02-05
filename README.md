@@ -1,4 +1,4 @@
-# Tezos getting started
+# Démarrer avec Tezos
 
 ## Présentation
 
@@ -8,7 +8,13 @@
 
 Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un baker peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu déléguée**. La quantité de XTZ à verrouiller pour devenir baker est très importante (8000 XTZ minimum, un _roll_) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un baker afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du baking, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu liquide** (ou LPoS, Liquid Proof of Stake). La quantité de XTZ à verrouiller pour devenir baker est très importante (8000 XTZ minimum, un _roll_) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un baker afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du baking, proportionnellement à leur participation.
+
+La LPoS ne doit pas être confondue avec la DPoS, ou preuve d'enjeu déléguée (Delegated Proof of Stake), utilisée par Tron ou EOS par exemple : 
+
+LPoS : nombre de bakers illimité (tout le monde peut participer), délégation optionnelle
+
+DPoS : nombre de bakers fixe (création d'une sorte de "conseil d'administration"), délégation obligatoire
 
 **Tezos est une blockchain de troisième génération**
 
@@ -500,45 +506,4 @@ Nous savons maintenant :
 - Gérer des répertoires différents ou par défaut pour plusieurs nœuds
 - Connecter un framework JS à notre nœud local
 
----------------
-
-
-# Les smart contracts sur Tezos
-
-Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés, plus faciles d'utilisation et destinés à être compilés en Michelson, afin de faciliter le développement des smart contracts.
-
-- [Ligo](https://ligolang.org/) : il propose 3 syntaxes différentes, ReasonLIGO, PascalLIGO et CamlLIGO, inspirées respectivement de [ReasonML](https://reasonml.github.io/), Pascal et Caml.
-- [Liquidity](https://www.liquidity-lang.org/) : développé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/), 
-- [SmartPy](https://smartpy.io/) : bibliothèque Python pour le développement de smart contracts Tezos en Python.
-
-Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript.
-
-## Premier smart contract, SimpleStorage
-
-## Compilation
-
-## Déploiement
-
-## Test du smart contract 
-
-### Avec tezos-client
-
-### Avec Taquito
-
-## Docs
-
-https://medium.com/chain-accelerator/i-tested-tezos-b254504775be
-
-https://medium.com/chain-accelerator/how-to-use-tezos-rpcs-16c362f45d64
-
-https://training.nomadic-labs.com/download/interact_with_the_blockchain.pdf
-
-https://hackernoon.com/how-to-build-a-tezos-dapp-using-taquito-and-the-beacon-sdk-0n183ymn (obsolète)
-
-Tezos RPC guide https://tezos.gitlab.io/007/rpc.html
-
-Taquito https://tezostaquito.io/docs/quick_start
-
-Liquidity compiler https://www.liquidity-lang.org/edit/
-
-Ligo https://ligolang.org/docs/next/language-basics/types
+Au prochain épisode, nous verrons comment [écrire des smart contracts et développer des DApp pour Tezos](smartcontracts.md).
