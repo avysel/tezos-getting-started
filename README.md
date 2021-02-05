@@ -45,7 +45,7 @@ Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
-Les _bakers_ et les _endorsers_ sont choisi au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
+Les _bakers_ et les _endorsers_ sont choisis au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 31 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
 Pour créer en bloc ou le soutenir, un _baker_ va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
@@ -56,17 +56,17 @@ On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker
 
 ### Processus d'évolution
 
-doc : https://blog.octo.com/tezos-une-blockchain-auto-evolutive-partie-1-3/
-
 L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. 
 
-Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté.
+Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté. Les développeurs vont soumettre des propositions, tout en mettant à disposition le code de celles-ci. Les membres du réseau vont pouvoir les tester et voter pour la proposition qu'il préfèrent.
 
-Ensuite, l'**exploration vote**,
+Ensuite, l'**exploration vote**. Les bakers vont voter afin de déterminer si la proposition qui a obtenu le plus de suffrages à l'étape précédente doit être, ou non, testée de façon plus approfondie. 
 
-Puis le **testing**,
+Puis le **testing**. Si la proposition est plébicitée, un testnet qui l'embarque sera déployé. Tout le monde peut ainsi tester son fonctionnement.
 
-Et enfin, le **promote vote**,
+Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaine principale. Si elle est acceptée, elle sera automatiquement injectée.
+
+La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
 ## Architecture
 
@@ -92,6 +92,8 @@ sudo apt-get install tezos-baker-007-psdelph1
 ```
 À noter que seuls ```tezos-node```, ```tezos-client ``` et le ```tezos-baker``` du testnet actuel sont disponibles via cette façon de faire.
 Pour avoir l'intégralité des exécutables (accuser, endorser), il faut installer à partir des sources.
+
+Les correctifs sont également moins mis à jour via cette solution. Pour travailler sur un testnet récent, donc sujet à des bugs potentiels et des correctifs, l'installation via les sources sera une meilleure solution.
 
 ### Depuis les sources
 
@@ -483,7 +485,19 @@ Et finalement, nous pouvons le lancer, avec un port RPC différent que celui qui
 tezos-node run --rpc-addr 127.0.0.1:8733 --data-dir ~/tezos-edonet
 ```
 
-Le jour où Delphinet sera arrêté, nous pourrons supprimer le répertoire ```.tezos-node``` dans lequel nous avions laissé, par défaut, les données de notre nœud.
+Le jour où Delphinet sera arrêté, nous pourrons supprimer le contenu du répertoire ```.tezos-node``` dans lequel nous avions laissé, par défaut, les données de notre nœud.
+
+## Conclusion
+
+Nous savons maintenant :
+- Comment fonctionne Tezos
+- L'installer, depuis les sources ou un repository
+- Lancer le nœud local
+- Créer des comptes 
+- Effectuer des opérations simples comme transférer des ꜩ ou vérifier les balances
+- Participer au fonctionnement réseau avec un baker ou un délégateur
+- Gérer des répertoires différents ou par défaut pour plusieurs nœuds
+- Connecter un framework JS à notre nœud local
 
 ---------------
 
