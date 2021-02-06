@@ -1,16 +1,15 @@
 # Démarrer avec Tezos
 
-Partons à la découverte de Tezos, une blockchain de troisième génération et issue de la recherche française. Nous allons découvrir son fonctionnement et comment rejoindre le réseau, l'utiliser et participer à son fonctionnement.
-
+Partons à la découverte de Tezos, une blockchain de troisième génération. Nous allons découvrir son fonctionnement et comment rejoindre le réseau, l’utiliser et participer à son consensus.
 ## Présentation
 
-[Tezos](https://tezos.com/) est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**) 
+[Tezos](https://tezos.com/) est une blockchain qui a été présentée en 2014 et mise en oeuvre en 2017. Elle est le support de la cryptomonnaie du même nom dont les tokens sont appelés **Tez** (**XTZ** ou **ꜩ**). Elle propose une plateforme de smart contracts et se positionne parmi les concurrents d’Ethereum.
 
 **Tezos est une blockchain à preuve d'enjeu**
 
-Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats. Au plus il aura verrouillé de XTZ, au plus il aura de chance d'être sélectionné. À tout moment, un baker peut récupérer les tokens qu'il a verrouillés et se retirer du processus de _baking_.
+Pour réaliser son consensus, Tezos implémente la preuve d'enjeu. C'est-à-dire que les membres du réseau vont verrouiller une partie de leurs tokens, qu'ils ne pourront plus utiliser par ailleurs, pour obtenir le droit de créer un bloc. Le créateur du prochain bloc, appelé le _baker_, sera choisi aléatoirement parmi tous les candidats en fonction du nombre de tokens possédés.
 
-Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu liquide** (ou LPoS, Liquid Proof of Stake). La quantité de XTZ à verrouiller pour devenir baker est très importante (8000 XTZ minimum, un _roll_) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un baker afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de verrouiller ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du baking, proportionnellement à leur participation.
+Plus précisément, le mécanisme mis en oeuvre est celui de la **preuve d'enjeu liquide** (ou LPoS, Liquid Proof of Stake). La quantité de XTZ à posséder pour devenir baker est très importante (8000 XTZ minimum, un _roll_) et n'est pas à la portée de tout le monde. Il est donc possible pour les plus petits porteurs de déléguer leurs XTZ à un baker afin de le renforcer (Il ne s'agit pas de "donner" ses XTZ à un baker, mais de déposer ses XTZ au profit d'un baker. On peut retirer sa délégation, ou changer de baker délégué, à tout moment). En échange, celui-ci va redistribuer à ses délégateurs une partie de ses gains issus du baking, proportionnellement à leur participation.
 
 La LPoS ne doit pas être confondue avec la DPoS, ou preuve d'enjeu déléguée (Delegated Proof of Stake), utilisée par Tron ou EOS par exemple : 
 
@@ -24,8 +23,7 @@ La première génération de blockchain est Bitcoin et les blockchains similaire
 
 Ethereum et ses semblables représentent la deuxième génération. Elle se démarque de la première par l'ajout des smart contracts et la possibilité de réaliser des applications complètes, entièrement décentralisées.
 
-La troisième génération, dont Tezos fait partie, apporte une gouvernance on-chain. C'est-à-dire qu'elle intègre nativement le mécanisme d'évolution du protocole. Pour faire évoluer certaines choses, un réseau de test va permettre de tester une évolution avant que le mainnet ne l'intègre automatiquement, si les membres du réseau votent pour. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
-
+La troisième génération, dont Tezos fait partie, apporte une gouvernance on-chain. C'est-à-dire qu'elle intègre nativement le mécanisme d'évolution du protocole. Pour apporter une modification, un réseau de test va permettre de tester une proposition d'évolution avant que le mainnet ne l'intègre automatiquement, si les membres du réseau votent pour. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
 **But alors you are French ?**
 
 Proposée par Arthur et Kathleen Breitman, Tezos est issue de la recherche française. Elle est écrite en OCaml. Ses équipes travaillent en étroite collaboration avec les créateurs de ce langage.
@@ -36,11 +34,9 @@ Tezos a été certifiée par [l'ANSSI](https://www.ssi.gouv.fr/) pour son respec
 
 Le langage d'écriture des smart contracts est le Michelson. C'est un langage à pile d'exécution, Turing complet, qui permet une vérification formelle des smart contracts à la compilation. Cela évite de nombreuses erreurs lors de l'exécution qu'on retrouve souvent dans les smart contracts des blockchains de deuxième génération.
 
-**Dune Network ?**
+Pour le clin d'œil, Michelson est un scientifique qui a démontré au 19ème siècle, que l'ether (substance supposée permettre de véhiculer la lumière, dans les théories de l'époque) n'existait pas.
 
-En explorant l'écosystème Tezos, on trouve régulièrement mention du projet Dune Network. Il s'agit d'un projet concurrent émanant d'une scission de la communauté Tezos. L'équipe d’OCamlPro aurait souhaité prendre ses distance avec l'équipe de Tezos, suite à des divergences d'ordre financier, et aurait forké le protocole pour en faire sa propre blockchain, avec une vision un peu différente de la gouvernance _on-chain_.
-
-Ses ambitions et façons de faire semblent plutôt opaques à l'heure actuelle.
+De nombreuses entreprises et organisations françaises sont impliquées dans le développement de Tezos et de son écosystème, telles que [Nomadic Labs](https://www.nomadic-labs.com/) et l'[INRIA](https://www.inria.fr/fr).
 
 ## Fonctionnement
 
@@ -48,7 +44,7 @@ Tezos fonctionne en **cycles**. Un cycle est une unité temporelle équivalente 
 
 ### Processus de baking
 
-Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ verrouillés (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
+Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ qu'il possède (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
 Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
@@ -56,9 +52,11 @@ Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner
 Le protocole va élire les bakers et les endorsers au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 32 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
-Pour créer en bloc ou le soutenir, un baker va devoir geler une partie de ses avoirs, qui ne seront disponibles que 5 cycles plus tard.
+Pour créer un bloc ou le soutenir, **un baker va devoir geler une partie de ses tokens**, qui ne seront disponibles que 5 cycles plus tard.
 
 On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'accuser qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'endorser. L'autre partie est brûlée.
+
+Toute tentative de fraude d'un baker est donc immédiatement sanctionnée par un coup au portefeuille !
 
 (Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irréversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
 
