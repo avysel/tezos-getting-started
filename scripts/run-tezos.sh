@@ -46,7 +46,7 @@ case $1 in
 esac
 
 echo "Go to "$BIN_DIR
-cd $BIN_DIRg
+cd $BIN_DIR
 
 echo "Run node: ./"$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG
 ./$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG &
