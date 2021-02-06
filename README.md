@@ -24,6 +24,7 @@ La première génération de blockchain est Bitcoin et les blockchains similaire
 Ethereum et ses semblables représentent la deuxième génération. Elle se démarque de la première par l'ajout des smart contracts et la possibilité de réaliser des applications complètes, entièrement décentralisées.
 
 La troisième génération, dont Tezos fait partie, apporte une gouvernance on-chain. C'est-à-dire qu'elle intègre nativement le mécanisme d'évolution du protocole. Pour apporter une modification, un réseau de test va permettre de tester une proposition d'évolution avant que le mainnet ne l'intègre automatiquement, si les membres du réseau votent pour. On évite ainsi le douloureux mécanisme de hard fork des générations précédentes.
+
 **But alors you are French ?**
 
 Proposée par Arthur et Kathleen Breitman, Tezos est issue de la recherche française. Elle est écrite en OCaml. Ses équipes travaillent en étroite collaboration avec les créateurs de ce langage.
