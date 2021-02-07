@@ -65,7 +65,7 @@ Toute tentative de fraude d'un baker est donc immédiatement sanctionnée par un
 
 L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. 
 
-Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté. Les développeurs vont soumettre des propositions, tout en mettant à disposition le code de celles-ci. Les membres du réseau vont pouvoir les tester et voter pour la proposition qu'il préfèrent.
+Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté. Les développeurs vont soumettre des propositions, tout en mettant à disposition le code de celles-ci. Les membres du réseau vont pouvoir les tester et voter pour la proposition qu'ils préfèrent.
 
 Ensuite, l'**exploration vote**. Les bakers vont voter afin de déterminer si la proposition qui a obtenu le plus de suffrages à l'étape précédente doit être, ou non, testée de façon plus approfondie. 
 
@@ -74,6 +74,8 @@ Puis le **testing**. Si la proposition est plébiscitée, un testnet qui l'embar
 Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaine principale. Si elle est acceptée, elle sera automatiquement injectée.
 
 La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
+
+La mise à jour du protocole version **Edo**, qui devrait arriver courant février 2021, va un peu modifier ce principe. Une 5ème période va être ajoutée après le _promote vote_, l'**adoption**. Rien de spécial ne sera fait pendant cette période, si ce n'est qu'elle agira comme une période tampon pendant laquelle les utilisateurs auront le temps de mettre leurs nœud à jour. De plus, la durée de chaque période va être réduite à 5 cycles au lieu de 8. Ce qui donnera une durée totale de 25 cycles (2 mois et 10 jours), au lieu de 32 (3 mois), pour appliquer une évolution.
 
 ## Composants
 
