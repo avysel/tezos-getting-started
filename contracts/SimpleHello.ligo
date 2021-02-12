@@ -1,16 +1,29 @@
-// Définition de type
-type storage = string;
-
 // Définition de type "variant"
-type action =
+type entryPoint =
 | UpdateName(string)
-| SayHello();
+| SayHello;
 
-let changeName = ( (storage, newName): (storage, string) ) => {
-    storage = name;
+// Met à jour le nom stocké
+let changeName = ( ( newName): ( string) ): string => {
+
+    newName;
 };
 
-let main = ( (a,s): (action, storage) ) => {
+// Dis hello avec le nom stocké
+let hello = ( (contractStorage): (string) ): string => {
 
+    // Concatenate "hello" and the name into a string
+    let result : string = "hello"  ++ contractStorage;
 
+    // Return result
+    result;
 }
+
+let main = ((action, contractStorage): (entryPoint, string)) => {
+    let newStorage =
+    switch (action) {
+    | UpdateName(newName) => changeName((newName))
+    | SayHello => hello((contractStorage))
+  };
+(([] : list (operation)), newStorage);
+};

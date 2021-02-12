@@ -8,9 +8,54 @@ Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'ex
 
 Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript.
 
-## Premier smart contract, SimpleStorage
+## LIGO
+
+### Installation
+
+```shell
+wget https://ligolang.org/bin/linux/ligo
+chmod +x ./ligo
+sudo cp ./ligo /usr/local/bin
+```
+
+## Premier smart contract, SimpleHello
+
+```
+// Définition de type "variant"
+type entryPoint =
+| UpdateName(string)
+| SayHello;
+
+// Met à jour le nom stocké
+let changeName = ( ( newName): ( string) ): string => {
+
+    newName;
+};
+
+// Dis hello avec le nom stocké
+let hello = ( (contractStorage): (string) ): string => {
+
+    // Concatenate "hello" and the name into a string
+    let result : string = "hello"  ++ contractStorage;
+
+    // Return result
+    result;
+}
+
+let main = ((action, contractStorage): (entryPoint, string)) => {
+    let newStorage =
+    switch (action) {
+    | UpdateName(newName) => changeName((newName))
+    | SayHello => hello((contractStorage))
+  };
+(([] : list (operation)), newStorage);
+};
+```
 
 ## Compilation
+```
+ligo dry-run SimpleHello.ligo main "changeName(toto)" "initialName"
+```
 
 ## Déploiement
 
