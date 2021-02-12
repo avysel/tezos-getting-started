@@ -45,10 +45,10 @@ Tezos fonctionne en **cycles**. Un cycle est une unité temporelle équivalente 
 
 ### Processus de baking
 
-Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ qu'il possède (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
+Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ qu'il possède (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaîne et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
-Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir approuver le bloc nouvellement créé, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
+Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir approuver le bloc nouvellement créé, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaîne.
 
 Le protocole va élire les bakers et les endorsers au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 32 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
@@ -71,7 +71,7 @@ Ensuite, l'**exploration vote**. Les bakers vont voter afin de déterminer si la
 
 Puis le **testing**. Si la proposition est plébiscitée, un testnet qui l'embarque sera déployé. Tout le monde peut ainsi tester son fonctionnement.
 
-Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaine principale. Si elle est acceptée, elle sera automatiquement injectée.
+Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaîne principale. Si elle est acceptée, elle sera automatiquement injectée.
 
 La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
