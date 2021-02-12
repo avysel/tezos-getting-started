@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# How to run:
+# ./run-tezos.sh [delphinet|edonet] [8732] [xtz1...|alias]
+# $1: name of network
+# $2: port of node
+# $3: address or alias of account to use as baker
+#
+# This script will start a tezos node (using given port), baker, endorser (linked to previously started node) for the given network.
+# Data must be changed diretclty in the script: path to tezos binaries, names of binaries, ip address (default 127.0.0.1), data dir.
+
+
 BIN_DIR=$HOME"/.opam/for_tezos/bin"
 PORT=$2
 ACCOUNT=$3
