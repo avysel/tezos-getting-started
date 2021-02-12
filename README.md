@@ -48,18 +48,18 @@ Tezos fonctionne en **cycles**. Un cycle est une unité temporelle équivalente 
 Tezos élit des **bakers**, aléatoirement, parmi la liste de tous les nœuds qui se sont déclarés comme _délégué_, proportionnellement à la somme de XTZ qu'il possède (un baker est un délégué, un utilisateur qui délègue ses XTZ est un délégateur. A noter qu'un baker n'a pas obligatoirement besoin de délégateurs pour fonctionner, il peut se la jouer solo, mais il a moins de chances d'être sélectionné pour le baking). Le baker ainsi sélectionné va pouvoir créer le prochain bloc à ajouter à la chaine et le communiquer au réseau. Il va recevoir un certain nombre de XTZ en récompense.
 Plusieurs bakers sont élu pour créer un bloc, avec une liste de priorités. Le plus prioritaire va essayer de créer un bloc. S'il n'y parvient pas dans le délai imparti, la main passera au suivant. Un bloc généré par le baker n'ayant pas la priorité sera tout simplement invalide et refusé par le réseau.
 
-Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir "tamponner" le bloc nouvellement créé pour le soutenir, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
+Tezos repose aussi sur les **endorsers**, des bakers qui vont pouvoir approuver le bloc nouvellement créé, moyennent, là aussi, récompense. Ensuite, chaque autre membre du réseau va devoir valider le bloc sur sa propre version de la chaine.
 
 Le protocole va élire les bakers et les endorsers au début de chaque cycle, pour tous les blocs du cycle. Pour chaque bloc, le protocole établi une liste de 64 bakers, par priorité, et attribue 32 slots d'endorsement à différents bakers. Un baker peut se voir attribuer plusieurs slots. Si un endorser n'est pas en mesure de remplir son slot (parce qu'il est down à ce moment là par exemple), le slot correspondant restera vide.
 Au plus un baker est "riche", au plus il aura de chance de se trouver en bonne place pour le baking et d'avoir beaucoup de slots d'endorsement.
 
-Pour créer un bloc ou le soutenir, **un baker va devoir geler une partie de ses tokens**, qui ne seront disponibles que 5 cycles plus tard.
+Pour créer un bloc ou l'approuver, **un baker va devoir geler une partie de ses tokens**, qui ne lui seront rendu disponibles que 5 cycles plus tard.
 
 On trouve aussi les **accusers**. Ces membres du réseau surveillent qu'un baker ne crée pas deux blocs concurrents en même temps ou ne soutienne pas deux fois un bloc. Dans le cas où une accusation est correcte, l'accuser qui l'a émise récupère une partie des fonds qui ont été gelés par le baker ou l'endorser. L'autre partie est brûlée.
 
 Toute tentative de fraude d'un baker est donc immédiatement sanctionnée par un coup au portefeuille !
 
-(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irréversible, qui ne doit pas être effectuée à la légère. Elle peut-être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
+(Pour rappel, brûler une cryptomonnaie revient à en détruire une quantité donnée. C'est une action irréversible, qui ne doit pas être effectuée à la légère. Elle peut être effectuée dans le cadre du protocole lui-même dans certain cas, ou par un utilisateur, volontairement ou par erreur, en envoyant des fonds à une adresse n'appartenant à personne.)
 
 ### Processus d'évolution
 
@@ -75,7 +75,7 @@ Et enfin, le **promote vote**. C'est le sprint final. Après la période de test
 
 La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
-La mise à jour du protocole version **Edo**, qui devrait arriver courant février 2021, va un peu modifier ce principe. Une 5ème période va être ajoutée après le _promote vote_, l'**adoption**. Rien de spécial ne sera fait pendant cette période, si ce n'est qu'elle agira comme une période tampon pendant laquelle les utilisateurs auront le temps de mettre leurs nœud à jour. De plus, la durée de chaque période va être réduite à 5 cycles au lieu de 8. Ce qui donnera une durée totale de 25 cycles (2 mois et 10 jours), au lieu de 32 (3 mois), pour appliquer une évolution.
+La mise à jour du protocole version **Edo**, qui devrait arriver courant février 2021, va un peu modifier ce principe. Une 5ème période va être ajoutée après le _promote vote_, l'**adoption**. Rien de spécial ne sera fait pendant cette période, si ce n'est qu'elle agira comme une période tampon pendant laquelle les utilisateurs auront le temps de mettre leurs nœuds à jour. De plus, la durée de chaque période va être réduite à 5 cycles au lieu de 8. Ce qui donnera une durée totale de 25 cycles (2 mois et 10 jours), au lieu de 32 (3 mois), pour appliquer une évolution.
 
 ## Composants
 
@@ -192,6 +192,8 @@ Par défaut, elle se lance sur le port 8732, il n'est donc pas obligatoire de le
 
 Il est possible de définir le répertoire où seront stockées les données avec ```--data-dir``` (par défaut, dans ```.tezos-node```) et de préciser sur quel réseau se connecter avec ```--network``` (si nous ne l'avons pas précisé dans ```config.json```, et par défaut, ```mainnet```).
 
+De façon générale, il existe un certain nombre d'options pour le lancement d'un nœud (réseau de connexion, type de nœud : complet, léger ou archive ...) qui peuvent être soit définie par les paramètres en ligne de commande soit dans le fichier ```config.json```. Elles sont disponibles avec ```tezos-node --help```.
+
 Lors du premier lancement, il sera nécessaire d'attendre un long moment (plusieurs heures voire plusieurs jours) pour qu'il se synchronise avec le réseau et récupère tout l'historique de ce qui a été fait avant notre arrivée.
 
 
@@ -242,7 +244,7 @@ Les deux alias doivent s'afficher, ainsi que leurs adresses.
 Pour la suite, nous pourrons utiliser indifféremment les adresses tz1 ou leurs alias.
 
 
-Comme nous sommes sur le testnet, nous pouvons les alimenter avec des ꜩ obtenus via le faucet : https://faucet.tzalpha.net/
+Comme nous sommes sur le testnet, nous pouvons les alimenter avec des ꜩ obtenus via le faucet : https://faucet.tzalpha.net/. Un certain nombre de comptes de tests sont pré-créés et initialisés sur chaque réseau de test. Le faucet permet d'en obtenir un, sous forme d'un fichier json qui contient la définition de ce compte. Les comptes obtenus ainsi sont utilisables sur n'importe quel testnet.
 
 Générons deux fichiers d'identités et enregistrons les sous les noms ```alex.json``` et ```bob.json```.
 
@@ -301,7 +303,7 @@ tezos-client transfer 1 from alex to carl
 
 Echec, une erreur s'affiche :
 ``The operation will burn ꜩ0.06425 which is higher than the configured burn cap (ꜩ0).
-Use `--burn-cap 0.06425` to emit this operation.``
+Use '--burn-cap 0.06425' to emit this operation.``
 
 Nos deux premiers comptes ont été initialisés grâce à un faucet qui les a, en quelque sorte, pré créés sur la blockchain. Notre troisième compte est quant à lui initialisé de façon tout à fait standard.
 Quand une adresse est créée sur un client Tezos, elle n'est pas créée sur la blockchain tant qu'elle n'est pas utilisée dans une transaction. Lors de sa première transaction, elle sera diffusée sur le réseau. Afin de limiter le risque de création d'adresses en masse, cette opération requiert de brûler 0.06425 ꜩ. Nous devons donc indiquer que nous sommes prêt à brûler cette somme en ajoutant ```--burn-cap 0.06425``` à notre commande.
