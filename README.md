@@ -393,7 +393,7 @@ Nous avons installé le baker précédemment. Il s'agit d'un exécutable qui va 
 
 Pour le lancer, pour le compte d'Alex :
 ```
-tezos-baker-007-PsDELPH1 run with local node ~/.tezos-node alex
+tezos-baker-008-ptedo2zk run with local node ~/.tezos-node alex
 ```
 
 Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'affiche, c'est que notre baker n'a obtenu encore le droit de créer de bloc.
