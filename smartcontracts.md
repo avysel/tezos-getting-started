@@ -52,12 +52,20 @@ let main = ((action, contractStorage): (entryPoint, string)) => {
 };
 ```
 
+## IDE 
+
+https://ide.ligolang.org/
+
 ## Compilation
 ```
-ligo dry-run SimpleHello.ligo main "changeName(toto)" "initialName"
+ligo dry-run SimpleHello.ligo --syntax reasonligo main "changeName(\"toto\")"
 ```
 
 ## Déploiement
+
+https://better-call.dev/
+
+https://tezosacademy.io/reason/chapter-fa12
 
 ## Test du smart contract
 
