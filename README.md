@@ -63,7 +63,7 @@ Toute tentative de fraude d'un baker est donc immédiatement sanctionnée par un
 
 ### Processus d'évolution
 
-L'évolution du processus se fait en 4 étapes qui durent 8 cycles chacune. 
+L'évolution du processus se fait en 4 étapes qui durent 5 cycles chacune. La durée initiale était de 8 cycles, jusqu'à la version Edo, qui a été déployée mi février 2021.
 
 Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté. Les développeurs vont soumettre des propositions, tout en mettant à disposition le code de celles-ci. Les membres du réseau vont pouvoir les tester et voter pour la proposition qu'ils préfèrent.
 
@@ -71,11 +71,11 @@ Ensuite, l'**exploration vote**. Les bakers vont voter afin de déterminer si la
 
 Puis le **testing**. Si la proposition est plébiscitée, un testnet qui l'embarque sera déployé. Tout le monde peut ainsi tester son fonctionnement.
 
-Et enfin, le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaîne principale. Si elle est acceptée, elle sera automatiquement injectée.
+Puis vient le **promote vote**. C'est le sprint final. Après la période de test, les bakers vont pouvoir voter pour activer définitivement la proposition sur la chaîne principale. Si elle est acceptée, elle sera automatiquement injectée.
 
-La promotion d'une nouvelle fonctionnalité prend donc environ 3 mois. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
+Enfin, la période d'**adoption**, ajoutée par le protocole Edo en février 2021. Rien de spécial ne se passe pendant cette période, elle sert surtout de période tampon pour permettre aux membres du réseau de se mettre à jour.
 
-La mise à jour du protocole version **Edo**, qui devrait arriver courant février 2021, va un peu modifier ce principe. Une 5ème période va être ajoutée après le _promote vote_, l'**adoption**. Rien de spécial ne sera fait pendant cette période, si ce n'est qu'elle agira comme une période tampon pendant laquelle les utilisateurs auront le temps de mettre leurs nœuds à jour. De plus, la durée de chaque période va être réduite à 5 cycles au lieu de 8. Ce qui donnera une durée totale de 25 cycles (2 mois et 10 jours), au lieu de 32 (3 mois), pour appliquer une évolution.
+La promotion d'une nouvelle fonctionnalité prend donc 25 cycles, soit environ 2 mois et 10 jours. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
 ## Composants
 
@@ -86,9 +86,18 @@ La mise à jour du protocole version **Edo**, qui devrait arriver courant févri
 - **tezos-endorser** : l'endorser, il permet de participer au consensus en validant les blocs créés par d'autres bakers.
 - **tezos-accuser** : l'accusateur
 
-Le baker et l'endorser ne sont pas obligatoire si on cherche simplement à faire tourner un nœud pour accéder aux données de la blockchain ou envoyer des transactions.
+Le baker, l'endorser et l'accuser ne sont pas obligatoires si on cherche simplement à faire tourner un nœud pour accéder aux données de la blockchain ou envoyer des transactions.
 
 ## Installation
+
+### Point d'attention
+
+A l'heure où cet article est rédigé, le protocole Edo vient tout juste d'être publié.
+
+Nous croiserons les termes suivants :
+- **Carthage** : version 6 du protocole, son réseau Carthagenet a été supprimé mi décembre 2020
+- **Deplhi** : version 7 du protocole, son réseau Delphinet est encore en activité mais elle n'est plus active sur le mainnet.
+- **Edo** : version 8 du protocole, qui vient d'être activée sur le mainnet. Elle se décompose en 2 sous versions, PtEdoTez qui a été supprimée et remplacée par PtEdo2Zk. Attention à ne bien manipuler que PtEdo2Zk. Toute mention à PtEdoTez dans des exécutables ou des logs signifierait que ce n'est pas la bonne version qui tourne. La synchronisation ne sera pas bonne et le nœud ne pourra pas être exploité.
 
 ### Via apt
 
@@ -97,12 +106,13 @@ Sur Ubuntu, il est facile d'installer Tezos via le gestionnaire de paquets :
 sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
 sudo apt-get install tezos-client
 sudo apt-get install tezos-node
-sudo apt-get install tezos-baker-007-psdelph1
+sudo apt-get install tezos-admin-client
+sudo apt-get install tezos-baker-008-ptedo2zk
+sudo apt-get install tezos-endorser-008-ptedo2zk
+sudo apt-get install tezos-accuser-008-ptedo2zk
 ```
-À noter que seuls ```tezos-node```, ```tezos-client ``` et le ```tezos-baker``` du testnet actuel sont disponibles via cette façon de faire.
-Pour avoir l'intégralité des exécutables (accuser, endorser), il faut installer à partir des sources.
 
-Les correctifs sont également moins mis à jour via cette solution. Pour travailler sur un testnet récent, donc sujet à des bugs potentiels et des correctifs, l'installation via les sources sera une meilleure solution.
+Les correctifs sont moins mis à jour via cette solution. Pour travailler sur un testnet récent, donc sujet à des bugs potentiels et des correctifs, l'installation via les sources sera probablement une meilleure solution.
 
 ### Depuis les sources
 
@@ -129,17 +139,17 @@ Les binaires se trouveront dans ```~/.opam/for_tezos/bin``` :
 
 ```
 tezos-accuser-007-PsDELPH1
-tezos-accuser-008-PtEdoTez
+tezos-accuser-008-PtEdo2Zk
 tezos-admin-client
 tezos-baker-007-PsDELPH1
-tezos-baker-008-PtEdoTez
+tezos-accuser-008-PtEdo2Zk
 tezos-client
 tezos-endorser-007-PsDELPH1
-tezos-endorser-008-PtEdoTez
+tezos-accuser-008-PtEdo2Zk
 tezos-node
 ```
 
-On trouve un seul ```tezos-node```. L'exécutable évolue au fil du temps pour prendre en charge les nouveaux testnets et se débarraser des anciens. Par exemple, ici avec ```tezos-node``` v8.1, nous pouvons nous connecter au mainnet, à Delphinet et à Edonet. Le testnet précédent, Carthagenet, a été supprimé et n'est plus utilisable.
+On trouve un seul ```tezos-node```. L'exécutable évolue au fil du temps pour prendre en charge les nouveaux testnets et se débarrasser des anciens. Par exemple, ici avec ```tezos-node``` v8.2, nous pouvons nous connecter au mainnet, à Delphinet et à Edonet. Le testnet précédent, Carthagenet, a été supprimé et n'est plus utilisable.
 
 Nous pouvons aussi voir que les accuser, baker et endorser sont, quant à eux, spécifique à une version du protocole. Le build nous en a construit pour Delphinet et Edonet.
 
@@ -159,12 +169,12 @@ Modifions-le pour préciser sur quel nœud se connecter, avec le champ ```networ
       ...
     ]
   },
-  "network": "delphinet"
+  "network": "edonet"
 }
 ```
 
 [Vérifiez bien quel est le testnet du moment](https://tezos.gitlab.io/introduction/test_networks.html). Si vous utilisez un testnet abandonné car l'évolution qu'il contient a déjà été intégrée au mainnet, vous risquez d'être le seul nœud connecté, vous ne pourrez pas faire grand-chose.
-Ici, nous nous connectons sur Delphinet.
+Ici, nous nous connectons sur Edonet.
 
 Dorénavant, en étant connecté sur un testnet, le résultat de toutes nos commandes via ```tezos-client``` seront précédés d'un avertissement indiquant que nous ne sommes pas sur le mainnet.
 
@@ -184,7 +194,7 @@ Ca prendra un peu de temps pour générer les clés. Un fichier ```identity.json
 Pour lancer le nœud Tezos local, on utilise la commande suivante :
 
 ```
-tezos-node run --rpc-addr 127.0.0.1:8732 --data-dir ~/.tezos-node --network delphinet
+tezos-node run --rpc-addr 127.0.0.1:8732 --data-dir ~/.tezos-node --network edonet
 ```
 
 On précise le paramètre ```--rpc-addr url:port``` pour activer l'interface RPC qui permettra de communiquer avec le nœud.
@@ -334,7 +344,7 @@ Pour avoir la liste de toutes les commandes disponibles : ```tezos-client man```
 
 Elles sont aussi disponibles sur le [GitLab de Tezos](https://tezos.gitlab.io/alpha/cli-commands.html)
 
-Nous pouvons inspecter nos transactions sur l'explorateur de blocks [Tezblock Delphinet](https://delphinet.tezblock.io/)
+Nous pouvons inspecter nos transactions sur l'explorateur de blocks [TzStats Edonet](https://edo.tzstats.com/) (ou sur n'importe quel autre explorateur)
 
 ## Baking et délégation
 
@@ -377,7 +387,7 @@ Donc, 5 jours plus tard ...
 
 ...
 
-Nous devons apparaître dans la [liste des bakers de Delphinet](https://delphinet.tezblock.io/baker/list).
+Nous devons apparaître dans la [liste des bakers d'Edonet](https://edo.tzstats.com/bakers).
 
 Nous avons installé le baker précédemment. Il s'agit d'un exécutable qui va s'appuyer sur le nœud local pour créer des blocs, et il va le faire pour le compte d'un utilisateur.
 
@@ -392,7 +402,7 @@ Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'af
 
 Si nous ne pouvons pas ou ne voulons pas exploiter un baker, nous pouvons déléguer nos ꜩ à un baker de notre choix.
 
-Pour notre exemple, sur Delphinet, nous pouvons trouver la [liste des bakers](https://delphinet.tezblock.io/baker/list), comme vu précédemment.
+Pour notre exemple, sur Edonet, nous pouvons trouver la [liste des bakers](https://edo.tzstats.com/bakers), comme vu précédemment.
 Une liste des bakers est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
 
 Le choix d'un baker à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un accuser ...
@@ -475,9 +485,9 @@ Nous avons vu que les testnets de Tezos se succèdent en se remplaçant. Il faud
 
 Nous allons devoir initialiser un autre nœud Tezos. Heureusement, il y a des commandes d'initialisation faciles à utiliser (que nous aurions aussi pu utiliser pour notre réseau initial).
 
-Nous avons connecté notre nœud actuel à Delphinet. Nous allons donc nous connecter au suivant, Edonet, pour être prêt le jour où ce dernier prendra la main sur Delphinet.
+Si nous avions connecté notre nœud à Delphinet, nous aurions pu anticiper la venue d'Edonet. Nous allons donc créer un second nœud qui sera connecté lui aussi à Edonet, mais qui pourrait très bien être connecté au prochain testnet, dès qu'il sera connu. Nous aurons donc deux instances qui vont fonctionner en parallèle.
 
-Créons un répertoire qui contiendra tous les éléments de notre nœud Edonet :
+Créons un répertoire qui contiendra tous les éléments de notre second nœud Edonet :
 ```
 mkdir ~/tezos-edonet
 ```
@@ -492,12 +502,12 @@ Puis l'identité :
 tezos-node identity generate --data-dir ~/tezos-edonet
 ```
 
-Et finalement, nous pouvons le lancer, avec un port RPC différent que celui qui tourne déjà sur Delphinet :
+Et finalement, nous pouvons le lancer, avec un port RPC différent que celui qui tourne déjà sur Edonet :
 ```
 tezos-node run --rpc-addr 127.0.0.1:8733 --data-dir ~/tezos-edonet
 ```
 
-Le jour où Delphinet sera arrêté, nous pourrons supprimer le contenu du répertoire ```.tezos-node``` dans lequel nous avions laissé, par défaut, les données de notre nœud.
+Le jour où Edonet sera arrêté, nous pourrons supprimer le contenu du répertoire ```.tezos-node``` dans lequel nous avions laissé, par défaut, les données de notre nœud.
 
 ## Conclusion
 
