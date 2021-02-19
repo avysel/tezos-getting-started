@@ -15,7 +15,7 @@
 
 
 # BIN_DIR=$HOME"/.opam/for_tezos/bin"
-BIN_DIR="/usr/local/bin/tezos/8.2"
+BIN_DIR=$HOME#"/usr/local/bin/tezos/8.2"
 PORT=$2
 ACCOUNT=$3
 
