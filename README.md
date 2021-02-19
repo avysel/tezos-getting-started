@@ -63,7 +63,7 @@ Toute tentative de fraude d'un baker est donc immédiatement sanctionnée par un
 
 ### Processus d'évolution
 
-L'évolution du processus se fait en 4 étapes qui durent 5 cycles chacune. La durée initiale était de 8 cycles, jusqu'à la version Edo, qui a été déployée mi février 2021.
+L'évolution du processus se fait en 5 étapes qui durent 5 cycles chacune. La durée initiale était de 8 cycles, jusqu'à la version Edo, qui a été déployée mi février 2021.
 
 Premièrement, le **proposal**, pendant laquelle les évolutions seront soumises à la communauté. Les développeurs vont soumettre des propositions, tout en mettant à disposition le code de celles-ci. Les membres du réseau vont pouvoir les tester et voter pour la proposition qu'ils préfèrent.
 
@@ -344,7 +344,7 @@ Pour avoir la liste de toutes les commandes disponibles : ```tezos-client man```
 
 Elles sont aussi disponibles sur le [GitLab de Tezos](https://tezos.gitlab.io/alpha/cli-commands.html)
 
-Nous pouvons inspecter nos transactions sur l'explorateur de blocks [TzStats Edonet](https://edo.tzstats.com/) (ou sur n'importe quel autre explorateur)
+Nous pouvons inspecter nos transactions sur l'explorateur de blocks [TzStats Edonet](https://edo.tzstats.com/) (ou sur n'importe quel autre explorateur).
 
 ## Baking et délégation
 
