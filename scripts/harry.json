@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "entry",
+    "tennis",
+    "weather",
+    "climb",
+    "fragile",
+    "guilt",
+    "pen",
+    "stamp",
+    "donor",
+    "gate",
+    "short",
+    "quote",
+    "elite",
+    "omit",
+    "outside"
+  ],
+  "secret": "414c89584489bae633824f9f02b4a7801a147081",
+  "amount": "27983676690",
+  "pkh": "tz1QeagYyK9R8bEP122shcMxN4Rp2kn9eoX7",
+  "password": "niHn7kNWcO",
+  "email": "gxeobbzy.xlnfeqya@tezos.example.org"
+}

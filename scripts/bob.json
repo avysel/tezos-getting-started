@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "pulse",
+    "staff",
+    "unusual",
+    "venue",
+    "wagon",
+    "harvest",
+    "garbage",
+    "erupt",
+    "magnet",
+    "funny",
+    "latin",
+    "disease",
+    "noodle",
+    "grace",
+    "drip"
+  ],
+  "secret": "170d671d89801293ef59762821667333ac0fcb50",
+  "amount": "43540194615",
+  "pkh": "tz1TCoi1XMdjgazx3311Eax1ejgBeQftbq6U",
+  "password": "VgtOxxQYFH",
+  "email": "bnjbchyg.jdwutehd@tezos.example.org"
+}

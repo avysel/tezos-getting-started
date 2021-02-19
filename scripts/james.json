@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "rain",
+    "praise",
+    "yellow",
+    "mule",
+    "loop",
+    "proof",
+    "adjust",
+    "unlock",
+    "decline",
+    "manual",
+    "throw",
+    "scorpion",
+    "shrimp",
+    "someone",
+    "apology"
+  ],
+  "secret": "b22d305914abe7d8b716895675d62be3f0e281b4",
+  "amount": "65579810685",
+  "pkh": "tz1Lm63fz2JVpt59rekFVh69tfZcpw8ns3R9",
+  "password": "pIlk93uyOG",
+  "email": "eijtjvrv.vxeomqsc@tezos.example.org"
+}

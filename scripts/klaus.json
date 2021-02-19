@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "stock",
+    "discover",
+    "little",
+    "strike",
+    "coast",
+    "economy",
+    "guide",
+    "move",
+    "pet",
+    "connect",
+    "home",
+    "swallow",
+    "seat",
+    "image",
+    "gloom"
+  ],
+  "secret": "45b4af89ca8e287be13dae55476ad9e81f225fed",
+  "amount": "113224557585",
+  "pkh": "tz1LS3ZyMgM1ag14jJaV2nxxUt6QusYoWebX",
+  "password": "pyEz3j6E6r",
+  "email": "npkhebvq.mwmokdhl@tezos.example.org"
+}

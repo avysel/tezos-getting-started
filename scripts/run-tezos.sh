@@ -10,7 +10,8 @@
 # Data must be changed diretclty in the script: path to tezos binaries, names of binaries, ip address (default 127.0.0.1), data dir.
 
 
-BIN_DIR=$HOME"/.opam/for_tezos/bin"
+# BIN_DIR=$HOME"/.opam/for_tezos/bin"
+BIN_DIR="/usr/local/bin/tezos/8.2"
 PORT=$2
 ACCOUNT=$3
 
@@ -21,8 +22,8 @@ DELPHINET_NODE="tezos-node"
 DELPHINET_ENDORSER="tezos-endorser-007-PsDELPH1"
 
 EDONET_NODE="tezos-node"
-EDONET_BAKER="tezos-baker-008-PtEdoTez"
-EDONET_ENDORSER="tezos-endorser-008-PtEdoTez"
+EDONET_BAKER="tezos-baker-008-PtEdo2Zk"
+EDONET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
 
 case $1 in
   delphinet )
