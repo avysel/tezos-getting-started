@@ -7,7 +7,11 @@
 # $3: address or alias of account to use as baker
 #
 # This script will start a tezos node (using given port), baker, endorser (linked to previously started node) for the given network.
-# Data must be changed diretclty in the script: path to tezos binaries, names of binaries, ip address (default 127.0.0.1), data dir.
+# Data must be changed directly in the script: path to tezos binaries, names of binaries, ip address (default 127.0.0.1), data dir.
+#
+# example:
+# ./run-tezos.sh edonet 8732 alex
+#
 
 
 # BIN_DIR=$HOME"/.opam/for_tezos/bin"
@@ -38,7 +42,7 @@ case $1 in
 
   edonet )
     echo "Starting Edonet"
-    DATA_DIR=$HOME"/tezos-edonet"
+    DATA_DIR=$HOME"/.tezos-node"
     BASE_ENDPOINT="127.0.0.1:"$PORT
     NODE=$EDONET_NODE
     BAKER=$EDONET_BAKER
@@ -60,7 +64,7 @@ echo "Go to "$BIN_DIR
 cd $BIN_DIR
 
 echo "Run node: ./"$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG
-./$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG &
+$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG &
 
 sleep 3
 
