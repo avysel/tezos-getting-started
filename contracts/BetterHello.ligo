@@ -3,6 +3,12 @@ type entryPoint =
 | UpdateName(string)
 | SayHello;
 
+// Définition d'un type "storage" pour un storage plus complet
+type storage = {
+    name : string,
+    result : string
+};
+
 // Met à jour le nom stocké
 let changeName = ( ( newName): ( string) ): string => {
     newName;
@@ -21,8 +27,8 @@ let hello = ( (contractStorage): (string) ): string => {
 let main = ((action, contractStorage): (entryPoint, string)) => {
     let newStorage =
     switch (action) {
-    | UpdateName(newName) => changeName((newName))
-    | SayHello => hello((contractStorage))
+    | UpdateName(newName) => changeName(newName)
+    | SayHello => hello(contractStorage)
   };
 (([] : list (operation)), newStorage);
 };

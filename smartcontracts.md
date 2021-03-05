@@ -6,7 +6,7 @@ Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'ex
 - [Liquidity](https://www.liquidity-lang.org/) : développé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/),
 - [SmartPy](https://smartpy.io/) : bibliothèque Python pour le développement de smart contracts Tezos en Python.
 
-Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript.
+Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript (Enfin, disons plutôt moins éloignée du javascript que les autres :) ).
 
 ## LIGO
 
@@ -96,7 +96,13 @@ Nous obtenons le retour suivant :
 ( LIST_EMPTY() , "Hello nobody" )
 ```
 
-Attention, avec ce test, les données modifiée dans le storage ne sont pas conservées d'un appel à l'autre. Si nous voulons tester l'enchainement de nos fonctions, nous devons les appeler successivement en indiquant le bon état initial du storage. Par exemple, tout d'abord faisons-nous saluer alors qu'aucun nom n'a été initialisé. Puis modifions le nom, puis faisons-nous saluer à nouveau. :
+Un smart contract Tezos retourne toujours 2 choses : une **liste d'opérations** et le **nouvel état du storage**.
+
+La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
+
+Le nouvel état du storage est retourné par la fonction main. Cette fonction ne peut donc pas retourner de résultat à proprement parler. Dans notre contrat, le storage sera donc parfois uniquement le nouveau nom, parfois la salutation complète.
+
+Avec ce test, les données modifiée dans le storage ne sont pas conservées d'un appel à l'autre. Si nous voulons tester l'enchainement de nos fonctions, nous devons les appeler successivement en indiquant le bon état initial du storage. Par exemple, tout d'abord faisons-nous saluer alors qu'aucun nom n'a été initialisé. Puis modifions le nom, puis faisons-nous saluer à nouveau. :
 
 ```
 > ligo dry-run SimpleHello.ligo --syntax reasonligo main 'SayHello' '""'
@@ -109,7 +115,7 @@ Attention, avec ce test, les données modifiée dans le storage ne sont pas cons
 ( LIST_EMPTY() , "Hello alex" )
 ```
 
-Un smart contract Tezos 
+Nous pouvons le modifier de cette façon, en explicitant mieux les données que nous manipulons et en utilisant un storage un peu plus complexe.
 
 ## Compilation
 
