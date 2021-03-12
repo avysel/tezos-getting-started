@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "lobster",
+    "gossip",
+    "isolate",
+    "army",
+    "fun",
+    "business",
+    "link",
+    "earth",
+    "ripple",
+    "clay",
+    "hurt",
+    "orchard",
+    "reform",
+    "permit",
+    "until"
+  ],
+  "secret": "4862a17023cdb84959dd1abe0bca244ac11e952a",
+  "amount": "25768324294",
+  "pkh": "tz1eZwi6ncvGZmG4nzVjRqti2DQU61N3X65y",
+  "password": "gZr4MzgMul",
+  "email": "iqxmxdiw.nrkglpya@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "spice",
+    "extend",
+    "place",
+    "exist",
+    "nothing",
+    "absorb",
+    "into",
+    "divide",
+    "will",
+    "music",
+    "humor",
+    "charge",
+    "network",
+    "venue",
+    "heart"
+  ],
+  "secret": "0f327f5ea59da1b4f44cc8c4504fd1f2a27be2dd",
+  "amount": "72855366849",
+  "pkh": "tz1h58qSd1UW3jFZfqMNkcXce1eyM55BA1Hy",
+  "password": "fgiBwSiYrV",
+  "email": "kbryorzb.cstfdrqz@tezos.example.org"
+}

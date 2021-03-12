@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "exchange",
+    "viable",
+    "harvest",
+    "room",
+    "crouch",
+    "venue",
+    "cattle",
+    "rally",
+    "margin",
+    "celery",
+    "satoshi",
+    "industry",
+    "lumber",
+    "page",
+    "surround"
+  ],
+  "secret": "f1c8e52f862075cf7ad2e1bb4d223ac7eb6a6610",
+  "amount": "48881226949",
+  "pkh": "tz1Ny8ycpJAdTWPt5z6WTSpNfY67w6TyDaCE",
+  "password": "wUtbDrDNlI",
+  "email": "wjrullom.qsbjbznv@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "domain",
+    "walk",
+    "antenna",
+    "ozone",
+    "citizen",
+    "iron",
+    "side",
+    "print",
+    "attend",
+    "deliver",
+    "tennis",
+    "keen",
+    "crawl",
+    "cloud",
+    "element"
+  ],
+  "secret": "99248b44b7a5a6bb56d9fec71840b049fd49c5f9",
+  "amount": "45799216813",
+  "pkh": "tz1Rswj43rKdQXXJw3pjJoCuXgUGF3RtHgeq",
+  "password": "lEDM8dE8UT",
+  "email": "ealqjzky.idtsphhf@tezos.example.org"
+}

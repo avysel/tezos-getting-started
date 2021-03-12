@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "mask",
+    "kid",
+    "pass",
+    "gold",
+    "kick",
+    "language",
+    "super",
+    "runway",
+    "main",
+    "grid",
+    "furnace",
+    "number",
+    "pond",
+    "grow",
+    "outdoor"
+  ],
+  "secret": "d50959b4148c6f9e65bbaf11bf31ad5b0f0bddc3",
+  "amount": "53328677275",
+  "pkh": "tz1YpxXQBxspirWEbWpZvDmC8hJDpHLpQ9m4",
+  "password": "tFUet1UvBg",
+  "email": "qyoweeom.wyiswpdv@tezos.example.org"
+}

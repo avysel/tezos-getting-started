@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "drill",
+    "stool",
+    "ocean",
+    "hungry",
+    "story",
+    "rabbit",
+    "recycle",
+    "thunder",
+    "later",
+    "anchor",
+    "throw",
+    "spy",
+    "stamp",
+    "hazard",
+    "apology"
+  ],
+  "secret": "fc3364262fb4732c2364b4761b1e86e96322aa35",
+  "amount": "10291316055",
+  "pkh": "tz1gGr2q463GTfs7tEpUpGbPKLaHRCJCct1Q",
+  "password": "EjI7HNZWvu",
+  "email": "icwgpyar.szzuoois@tezos.example.org"
+}

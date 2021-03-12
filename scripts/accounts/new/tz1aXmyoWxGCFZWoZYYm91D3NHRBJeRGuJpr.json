@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "quick",
+    "goose",
+    "midnight",
+    "source",
+    "possible",
+    "gown",
+    "stairs",
+    "outside",
+    "pact",
+    "saddle",
+    "today",
+    "second",
+    "cigar",
+    "brown",
+    "angle"
+  ],
+  "secret": "56cbfb17b2056261a6730c94f8d6cfc40d3b53b7",
+  "amount": "29893613693",
+  "pkh": "tz1aXmyoWxGCFZWoZYYm91D3NHRBJeRGuJpr",
+  "password": "doq8GfbnfI",
+  "email": "xqolrzek.xlfhyges@tezos.example.org"
+}
