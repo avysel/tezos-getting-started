@@ -116,7 +116,7 @@ Regardons maintenant la dernière instruction de `main` :
 
 ```( ( [] : list (operation) ), newStorage );```
 
-Il s'agit du "return", qui se définit en indiquant tout simplement en fin de fonction la valeur à retourner sans mot clé particulier. 
+Il s'agit du "return", qui se définit en indiquant tout simplement en fin de fonction la valeur à retourner, sans mot clé particulier. 
 
 Le point d'entrée d'un smart contract doit retourner deux éléments : une liste d'opérations et le nouveau storage du contrat. La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
 
@@ -153,11 +153,11 @@ let getHello = ( (contractStorage): (string) ): string => {
 ```
 La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation.
 
-Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs, si nous ne retournons qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
+Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs, si le `main` ne retourne qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
 
 ## Simulation
 
-Une fois le code du contrat écrit, nous pouvons simuler son exécution avec la commande `ligo dry-run`. Cette commande exécute le contrat hors de la blockchain, il n'a donc pas de storage. Nous allons donc devoir indiquer la valeur initiale d'un storage. De même, chaque appel est indépendant et les valeurs de storage, initiales ou modifiées, ne sont pas gardées en mémoire d'un appel à l'autre.
+Une fois le code du contrat écrit, nous pouvons simuler son exécution avec la commande `ligo dry-run`. Cette commande exécute le contrat hors de la blockchain, il n'a donc pas de storage. Nous allons devoir indiquer la valeur initiale d'un storage. De même, chaque appel est indépendant et les valeurs de storage, initiales ou modifiées, ne sont pas gardées en mémoire d'un appel à l'autre.
 
 ```
 ligo dry-run SimpleHello.ligo --syntax reasonligo main 'GetHello' '{"Hello nobody"}'
@@ -194,8 +194,30 @@ La simulation est positive, nous allons maintenant passer aux choses sérieuses 
 Première étape, il faut le compiler. Il doit être transpilé depuis le langage choisi pour l'écriture vers du Michelson.
 
 ```
-ligo compile-contract code.religo mainFunc > code.tz
+ligo compile-contract --syntax reasonligo SimpleHello.ligo main > SimpleHello.tz
 ```
+
+Il est possible de ne pas préciser la syntaxe en utilisant l'extension de fichier spécifique à ReasonML dans notre cas en remplaçant `SimpleHello.ligo` en `SimpleHello.religo` et compiler de cette façon :
+
+```
+ligo compile-contract SimpleHello.religo main > SimpleHello.tz
+```
+
+Nous obtenons un fichier `SimpleHello.tz` comportant le code de notre smart contract écrit en Michelson, avec notre fonction `main` utilisée comme point d'entrée.
+
+```
+{ parameter (or (unit %getHello) (string %updateName)) ;
+  storage string ;
+  code { DUP ;
+         CAR ;
+         IF_LEFT { DROP ; CDR } { SWAP ; DROP ; PUSH string "Hello " ; CONCAT } ;
+         NIL operation ;
+         PAIR } }
+```
+
+Un peu moins facile à lire, n'est-ce pas ?
+
+Il ne reste plus qu'à le déployer.
 
 ## Déploiement
 
