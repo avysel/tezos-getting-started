@@ -263,7 +263,8 @@ Nous pouvons maintenant tester notre contrat.
 
 https://better-call.dev/edo2net/KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz/interact?entrypoint=updateName
 
-```tezos-client transfer 0 from alex to KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz --entrypoint 'updateName' --arg '"toto"' --burn-cap 0.0025
+```
+tezos-client transfer 0 from alex to KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz --entrypoint 'updateName' --arg '"toto"' --burn-cap 0.0025
 
 ```
 
