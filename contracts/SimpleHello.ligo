@@ -1,28 +1,38 @@
 // Définition de type "variant"
-type entryPoint =
+type pseudoEntryPoint =
 | UpdateName(string)
-| SayHello;
+| ResetName
+| DoNothing;
 
-// Met à jour le nom stocké
-let changeName = ( ( newName): ( string) ): string => {
-    newName;
-};
+let reset = ( (contractStorage): (string) ): string => {
 
-// Dit hello avec le nom stocké
-let hello = ( (contractStorage): (string) ): string => {
+    // Reset hello with nobody
+    let result : string = "Hello nobody";
 
-    // Concatenate "hello" and the name into a string
-    let result : string = "Hello "  ++ contractStorage;
-
-    // Return result
+    // return reset hello sentence
     result;
 }
 
-let main = ((action, contractStorage): (entryPoint, string)) => {
+// Met à jour le nom stocké
+let changeName = ( ( newName): ( string) ): string => {
+    // Concatenate "hello" and the name into a string
+    let result : string = "Hello "  ++ newName;
+
+    // Return result
+    result;
+};
+
+// Ne fait rien, prend en entrée le storage et le retourne sans rien modifier
+let nothing = ( (contractStorage): (string) ): string => {
+    contractStorage;
+}
+
+let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
     let newStorage =
     switch (action) {
-    | UpdateName(newName) => changeName((newName))
-    | SayHello => hello((contractStorage))
+    | UpdateName(newName) => changeName(newName)
+    | ResetName => reset(contractStorage)
+    | DoNothing => nothing(contractStorage)
   };
 (([] : list (operation)), newStorage);
 };

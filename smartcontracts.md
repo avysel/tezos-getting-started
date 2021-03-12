@@ -20,57 +20,144 @@ chmod +x ./ligo
 sudo cp ./ligo /usr/local/bin
 ```
 
+### IDE
+
+Il existe un IDE en ligne permettant de faire les premiers tests de smart contracts :
+
+https://ide.ligolang.org/
+
+Leur exécution nécessitera cependant d'avoir le fichier source en local, à portée du compilateur.
+
+
 ## Premier smart contract, SimpleHello
 
 Nous allons développer un premier smart contract SimpleHello. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
 
 ### Principe général
 
-Un contrat Tezos contient une zone de stockage de données. A chaque appel au contrat, le contenu de cette zone sera passée en entrée. Le contrat devra retourner le nouveau contenu.
+Un contrat Tezos contient **une zone de stockage de données** (couramment appelée **storage**) et **un point d'entrée**. 
 
-Les contrats en Ligo ne peuvent aussi contenir qu'une seule fonction appelable depuis l'extérieur. On pourra programmer plusieurs comportements en créant plusieurs fonctions à l'intérieur du contrat et en appliquant un pattern matching sur des paramètres d'entrée.
+**Seul le point d'entrée est appelé**, à la différence d'autres langage où l'on peut définir des fonctions et les appeler distinctement les unes des autres.
 
+Autre spécificité, l'appel au point d'entrée du contrat **retournera toujours l'intégralité des données** stockées dans ce contrat.
 
-### IDE
+En mixant les deux conditions précédentes, nous comprenons vite qu'il ne sera pas possible de développer des getters et setters comme on peut trouver un peu partout.
 
-Il existe un IDE en ligne permettant de faire les premiers tests de smart contracts : 
+Mais nous pourrons tout de même programmer plusieurs comportements en créant plusieurs fonctions à l'intérieur du contrat. Il faudra préciser en entrée du contrat quelle fonction appeler en utilisant un pattern matching sur ces paramètres d'entrée.
 
-https://ide.ligolang.org/
-
-Leur exécution nécessitera cependant d'avoir le fichier source en local, à portée du compilateur.
 
 ### Code
 
+Voyons tout de suite le code de notre contrat exemple : 
+
 ```
 // Définition de type "variant"
-type entryPoint =
+type pseudoEntryPoint =
 | UpdateName(string)
-| SayHello;
+| ResetName
+| DoNothing;
 
 // Met à jour le nom stocké
 let changeName = ( ( newName): ( string) ): string => {
-    newName;
-};
-
-// Dit hello avec le nom stocké
-let hello = ( (contractStorage): (string) ): string => {
-
     // Concatenate "hello" and the name into a string
-    let result : string = "Hello "  ++ contractStorage;
+    let result : string = "Hello "  ++ newName;
 
     // Return result
     result;
+};
+
+let reset = ( (contractStorage): (string) ): string => {
+
+    // Reset hello with nobody
+    let result : string = "Hello nobody";
+
+    // return reset hello sentence
+    result;
 }
 
-let main = ((action, contractStorage): (entryPoint, string)) => {
-    let newStorage =
-    switch (action) {
-    | UpdateName(newName) => changeName((newName))
-    | SayHello => hello((contractStorage))
+// Ne fait rien, prend en entrée le storage et le retourne sans rien modifier
+let nothing = ( (contractStorage): (string) ): string => {
+    contractStorage;
+}
+
+let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
+
+    let newStorage = switch (action) {
+    | UpdateName(newName) => changeName(newName)
+    | ResetName => reset(contractStorage)
+    | DoNothing => nothing(contractStorage)
   };
-(([] : list (operation)), newStorage);
+  
+  (([] : list (operation)), newStorage);
+
 };
 ```
+
+Détaillons ce code.
+
+Tout d'abord, la fonction `main`, qui est le point d'entrée. Elle prend 2 paramètres : `action` qui est le nom de la fonction à appeler et `contractStorage` qui est l'état initial du storage.
+
+`(action, contractStorage): (pseudoEntryPoint, string))` signifie que nous définissons 2 paramètres, action et contractStorage, qui seront respectivement de type `pseudoEntryPoint` et `string`.
+
+Regardons les premières lignes : 
+```
+type pseudoEntryPoint =
+| UpdateName(string)
+| ResetName
+| DoNothing;
+```
+
+Ligo permet de définir des types. Nous définissons ici le type pseudoEntryPoint` qui sera un **variant** (l'équivalent d'un enum en Java par exemple). Ce type pourra prendre différentes valeurs définies dans la liste. Nous utiliseront ce **variant** pour lister les actions possibles dans notre contrat.
+
+Nous définissons ici 3 "actions" :
+- `UpdateName(string)`, qui prend en paramètre un nouveau nom et met à jour la salutation.
+- `ResetName`, qui revient à une salutation générique sans nom particulier
+- `DoNothing`, qui ne fera rien. Cette fonction n'est pas utile en tant que telle mais elle nous permettra d'illustrer certaines spécificités d'un smart contract Ligo.
+
+Regardons le contenu fonction main` :
+
+```
+let newStorage = switch (action) {
+    | UpdateName(newName) => changeName(newName)
+    | ResetName => reset(contractStorage)
+    | DoNothing => nothing(contractStorage)
+  };
+```
+
+Nous initialisons une variable `newStorage` dont l'affectation initiale dépendra de la valeur du paramètre d'entrée `action`. Il est attendu que la valeur passée pour `action` soit une des valeurs définies par `pseudoEntryPoint`. Le switch redirigera alors vers une fonction qui effectuera l'action voulue. C'est le fameux pattern matching.
+
+Regardons maintenant la dernière instruction de `main` : 
+
+```( ( [] : list (operation) ), newStorage );```
+
+Il s'agit du "return", qui se définit en indiquant tout simplement en fin de fonction la valeur à retourner sans mot clé particulier. 
+
+Le point d'entrée d'un smart contract doit retourner deux éléments : une liste d'opérations et le nouveau storage du contrat. La liste d'opération contient un ensemble d'opérations qui seront exécutées une fois l'appel au contrat terminé. Nous y trouverons par exemple des appels à d'autres smart contracts ...
+
+Ici, nous avons donc `[]` de type `list(operation)`, vide, car aucune opération n'est à exécuter ensuite dans notre exemple. Et `newStorage`, la nouvelle valeur du storage, qui aura été modifiée par l'appel à une des fonctions de notre contrat.
+
+Les fonctions se définissent sur le modèle suivant :
+
+```
+let functionName = ( (param1Name, param2Name, ...) : (param1Type, param2Type, ...) ) : returnType => {
+    function body
+}
+```
+
+Voyons donc nos fonctions :
+```
+// Met à jour le nom stocké
+let changeName = ( ( newName): ( string) ): string => {
+    // Concatenate "hello" and the name into a string
+    let result : string = "Hello "  ++ newName;
+
+    // Return result
+    result;
+};
+```
+
+La fonction `changeName` prend un paramètre `newName` de type `string` et elle retourne une string. 
+Elle va concaténer "Hello" avec le nom passé en paramètre pour créer la nouvelle salutation dans la variable `result`, qui sera retournée.
 
 ## Simulation
 
