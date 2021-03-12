@@ -225,18 +225,47 @@ https://better-call.dev/
 
 https://tezosacademy.io/reason/chapter-fa12
 
+Au déploiement d'un contrat, il faut préciser la valeur initiale du storage. Nous l'avons déjà expérimenté précédemment lors de la simulation avec la commande ligo. Le déploiement nécessitera que cette expression soit en Michelson cette fois.
+
+Il existe une commande pour convertir l'expression Ligo vers l'expression Michelson.
 ```
-tezos-client originate contract <contract_name> for <user> transferring <amount_tez> from <from_user> running <tz_file> --init '<initial_storage>' --burn-cap <gaz_fee>
+> ligo compile-storage SimpleHello.ligo --syntax reasonligo main  '{""}'
+""
+```
+Bon, notre storage initial étant une simple chaîne vide, nous obtenons un autre chaine vide, rien d'exceptionnel. Mais pour un contrat nécessitant un storage initial plus complexe, cette commande sera bien utile.
+
+
+Nous pouvons déployer en utilisant `tezos-client`. Cette opération s'appelle l'**origination** d'un contrat.
+```
+tezos-client originate contract SimpleHello transferring 0 from contractor running SimpleHello.tz --init '""' --burn-cap 0.09225
 ```
 
-<contract_name> name given to the contract
-<tz_file> path of the Michelson smart contract code (TZ file).
-<amount_tez> is the quantity of tez being transferred to the newly deployed contract. If a contract balance reaches 0 then it is deactivated.
-<from_user> account from which the tez are taken from (and transferred to the new contract).
-<initial_storage> is a Michelson expression. The --init parameter is used to specify initial state of the storage.
-<gaz_fee> it specifies the the maximal fee the user is willing to pay for this operation (using the --burn-cap parameter).
+```
+tezos-client originate contract <contract_name> transferring <amount_tez> from <originator_address> running <contract_file> --init '<storage_expression>' --burn-cap 0.09225
+```
+
+Détaillons cette commande :
+- tezos-client originate :
+- <contract_name> nom du smart contract
+- <amount_tez> montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
+- <originator_address> l'adresse depuis laquelle prélever les XTZ à envoyer au contrat
+- <contract_file> fichier .tz obtenu lors de la compilation
+- --init '<storage_expression>' initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
+- --burn-cap 0.09225 un montant de XTZ à brûler pour pouvoir déployer le contrat
+  
+Dans le résultat de cette exécution, nous voyons le détail des différentes opérations et des frais payés.
 
 ## Test du smart contract déployé
+
+Nous pouvons maintenant tester notre contrat.
+
++ ligo compile parameter
+
+https://better-call.dev/edo2net/KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz/interact?entrypoint=updateName
+
+```tezos-client transfer 0 from alex to KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz --entrypoint 'updateName' --arg '"toto"' --burn-cap 0.0025
+
+```
 
 ### Avec tezos-client
 
