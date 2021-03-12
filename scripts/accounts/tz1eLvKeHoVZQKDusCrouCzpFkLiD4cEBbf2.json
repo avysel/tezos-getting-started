@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "merge",
+    "citizen",
+    "axis",
+    "bulb",
+    "exercise",
+    "cruise",
+    "gasp",
+    "image",
+    "jump",
+    "clip",
+    "come",
+    "horse",
+    "dune",
+    "document",
+    "silver"
+  ],
+  "secret": "b09b1c78a377a98330516763930f4e81a95048c0",
+  "amount": "22917316055",
+  "pkh": "tz1eLvKeHoVZQKDusCrouCzpFkLiD4cEBbf2",
+  "password": "Bib46kZhaQ",
+  "email": "uwdnsjll.mzfonveu@tezos.example.org"
+}
