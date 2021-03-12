@@ -54,8 +54,7 @@ Voyons tout de suite le code de notre contrat exemple :
 // Définition de type "variant"
 type pseudoEntryPoint =
 | UpdateName(string)
-| ResetName
-| DoNothing;
+| GetHello;
 
 // Met à jour le nom stocké
 let changeName = ( ( newName): ( string) ): string => {
@@ -66,17 +65,8 @@ let changeName = ( ( newName): ( string) ): string => {
     result;
 };
 
-let reset = ( (contractStorage): (string) ): string => {
-
-    // Reset hello with nobody
-    let result : string = "Hello nobody";
-
-    // return reset hello sentence
-    result;
-}
-
-// Ne fait rien, prend en entrée le storage et le retourne sans rien modifier
-let nothing = ( (contractStorage): (string) ): string => {
+// Retourne le storage courant
+let getHello = ( (contractStorage): (string) ): string => {
     contractStorage;
 }
 
@@ -84,16 +74,15 @@ let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
 
     let newStorage = switch (action) {
     | UpdateName(newName) => changeName(newName)
-    | ResetName => reset(contractStorage)
-    | DoNothing => nothing(contractStorage)
+    | GetHello => getHello(contractStorage)
   };
-  
+
   (([] : list (operation)), newStorage);
 
 };
 ```
 
-Détaillons ce code.
+### Détaillons ce code.
 
 Tout d'abord, la fonction `main`, qui est le point d'entrée. Elle prend 2 paramètres : `action` qui est le nom de la fonction à appeler et `contractStorage` qui est l'état initial du storage.
 
@@ -103,28 +92,25 @@ Regardons les premières lignes :
 ```
 type pseudoEntryPoint =
 | UpdateName(string)
-| ResetName
-| DoNothing;
+| GetHello;
 ```
 
-Ligo permet de définir des types. Nous définissons ici le type pseudoEntryPoint` qui sera un **variant** (l'équivalent d'un enum en Java par exemple). Ce type pourra prendre différentes valeurs définies dans la liste. Nous utiliseront ce **variant** pour lister les actions possibles dans notre contrat.
+Ligo permet de définir des types. Nous définissons ici le type `pseudoEntryPoint` qui sera un **variant** (l'équivalent d'un enum en Java par exemple). Ce type pourra prendre différentes valeurs définies dans la liste. Nous utiliseront ce **variant** pour lister les actions possibles dans notre contrat.
 
 Nous définissons ici 3 "actions" :
-- `UpdateName(string)`, qui prend en paramètre un nouveau nom et met à jour la salutation.
-- `ResetName`, qui revient à une salutation générique sans nom particulier
-- `DoNothing`, qui ne fera rien. Cette fonction n'est pas utile en tant que telle mais elle nous permettra d'illustrer certaines spécificités d'un smart contract Ligo.
+- `UpdateName(string)` qui prend en paramètre un nouveau nom et met à jour la salutation.
+- `GetHello` qui retourne la salutation
 
-Regardons le contenu fonction main` :
+Regardons le contenu de la fonction `main` :
 
 ```
 let newStorage = switch (action) {
     | UpdateName(newName) => changeName(newName)
-    | ResetName => reset(contractStorage)
-    | DoNothing => nothing(contractStorage)
+    | GetHello => getHello(contractStorage)
   };
 ```
 
-Nous initialisons une variable `newStorage` dont l'affectation initiale dépendra de la valeur du paramètre d'entrée `action`. Il est attendu que la valeur passée pour `action` soit une des valeurs définies par `pseudoEntryPoint`. Le switch redirigera alors vers une fonction qui effectuera l'action voulue. C'est le fameux pattern matching.
+Nous créons une variable `newStorage` dont l'affectation initiale dépendra de la valeur du paramètre d'entrée `action`. Il est attendu que la valeur passée pour `action` soit une des valeurs définies par `pseudoEntryPoint`. Le switch redirigera alors vers une fonction qui effectuera l'action voulue. C'est le fameux pattern matching.
 
 Regardons maintenant la dernière instruction de `main` : 
 
@@ -132,7 +118,7 @@ Regardons maintenant la dernière instruction de `main` :
 
 Il s'agit du "return", qui se définit en indiquant tout simplement en fin de fonction la valeur à retourner sans mot clé particulier. 
 
-Le point d'entrée d'un smart contract doit retourner deux éléments : une liste d'opérations et le nouveau storage du contrat. La liste d'opération contient un ensemble d'opérations qui seront exécutées une fois l'appel au contrat terminé. Nous y trouverons par exemple des appels à d'autres smart contracts ...
+Le point d'entrée d'un smart contract doit retourner deux éléments : une liste d'opérations et le nouveau storage du contrat. La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
 
 Ici, nous avons donc `[]` de type `list(operation)`, vide, car aucune opération n'est à exécuter ensuite dans notre exemple. Et `newStorage`, la nouvelle valeur du storage, qui aura été modifiée par l'appel à une des fonctions de notre contrat.
 
@@ -157,14 +143,24 @@ let changeName = ( ( newName): ( string) ): string => {
 ```
 
 La fonction `changeName` prend un paramètre `newName` de type `string` et elle retourne une string. 
-Elle va concaténer "Hello" avec le nom passé en paramètre pour créer la nouvelle salutation dans la variable `result`, qui sera retournée.
+Elle va concaténer "Hello" avec le nom passé en paramètre pour créer la nouvelle salutation dans la variable `result`, qui sera retournée. La phrase "Hello <newName>" sera donc la nouvelle valeur du storage du contrat.
+
+```
+// Retourne le storage courant
+let getHello = ( (contractStorage): (string) ): string => {
+    contractStorage;
+}
+```
+La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation.
+
+Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs, si nous ne retournons qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
 
 ## Simulation
 
-Une fois le code du contrat écrit, nous pouvons simuler son exécution.
+Une fois le code du contrat écrit, nous pouvons simuler son exécution avec la commande `ligo dry-run`. Cette commande exécute le contrat hors de la blockchain, il n'a donc pas de storage. Nous allons donc devoir indiquer la valeur initiale d'un storage. De même, chaque appel est indépendant et les valeurs de storage, initiales ou modifiées, ne sont pas gardées en mémoire d'un appel à l'autre.
 
 ```
-ligo dry-run SimpleHello.ligo --syntax reasonligo main 'SayHello' '{"nobody"}'
+ligo dry-run SimpleHello.ligo --syntax reasonligo main 'GetHello' '{"Hello nobody"}'
 ```
 
 Détaillons cette commande :
@@ -173,9 +169,9 @@ Détaillons cette commande :
 - dry-run : pour simuler sans réellement déployer sur la blockchain
 - SimpleHello.ligo : le fichier ligo du smart contract
 - --syntax reasonLigo : la syntaxe choisie
-- main : le nom de la fonction principale à exécuter
-- 'SayHello' : le paramètre indiquant le point d'entrée à exécuter via la fonction main
-- '{"nobody"}' (ou '"nobody"') : l'état initial du storage
+- main : le nom du point d'entrée à exécuter
+- 'GetHello' : le paramètre `action` de notre point d'entrée
+- '{"Hello nobody"}' (ou '"Hello nobody"') : l'état initial du storage, le paramètre `contractStorage`.
 
 Nous obtenons le retour suivant :
 
@@ -183,26 +179,14 @@ Nous obtenons le retour suivant :
 ( LIST_EMPTY() , "Hello nobody" )
 ```
 
-Un smart contract Tezos retourne toujours 2 choses : une **liste d'opérations** et le **nouvel état du storage**.
+Nous voyons bien les 2 choses retournées par un contrat : la **liste d'opérations** (vide, dans notre cas) et le **nouvel état du storage**.
 
-La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
-
-Le nouvel état du storage est retourné par la fonction main. Cette fonction ne peut donc pas retourner de résultat à proprement parler. Dans notre contrat, le storage sera donc parfois uniquement le nouveau nom, parfois la salutation complète.
-
-Avec ce test, les données modifiée dans le storage ne sont pas conservées d'un appel à l'autre. Si nous voulons tester l'enchainement de nos fonctions, nous devons les appeler successivement en indiquant le bon état initial du storage. Par exemple, tout d'abord faisons-nous saluer alors qu'aucun nom n'a été initialisé. Puis modifions le nom, puis faisons-nous saluer à nouveau. :
+Testons maintenant la mise à jour en partant d'un storage initial vide :
 
 ```
-> ligo dry-run SimpleHello.ligo --syntax reasonligo main 'SayHello' '""'
-( LIST_EMPTY() , "Hello " )
-
-> ligo dry-run SimpleHello.ligo --syntax reasonligo main 'UpdateName("alex")' '""'
-( LIST_EMPTY() , "alex" )
-
-> ligo dry-run SimpleHello.ligo --syntax reasonligo main 'SayHello' '"alex"'
+> ligo dry-run SimpleHello.ligo --syntax reasonligo main 'UpdateName("alex")' '{""}'
 ( LIST_EMPTY() , "Hello alex" )
 ```
-
-Nous pouvons le modifier de cette façon, en explicitant mieux les données que nous manipulons et en utilisant un storage un peu plus complexe.
 
 ## Compilation
 
@@ -239,6 +223,17 @@ tezos-client transfer <amount_tez> from <user> to <contract_name> --arg '<entryp
 ```
 
 ### Avec Taquito
+
+## Evolutions
+
+Nous avons vu ici un simple smart contract pour poser les bases du Ligo. De nombreuses autres possibilité existent :
+- Créer un storage complexe, composé d'un structure plus complète, pour gérer un ensemble de valeurs.
+- Recevoir et envoyer des XTZ
+- Interagir avec autre smart contracts
+- Manipuler des collections et des structures de contrôle
+- Gérer des exceptions
+- ...
+
 
 ## Docs
 
