@@ -403,7 +403,7 @@ Tant que le message ```No slot found at level xxxxxx (max_priority = 64)``` s'af
 Si nous ne pouvons pas ou ne voulons pas exploiter un baker, nous pouvons déléguer nos ꜩ à un baker de notre choix.
 
 Pour notre exemple, sur Edonet, nous pouvons trouver la [liste des bakers](https://edo.tzstats.com/bakers), comme vu précédemment.
-Une liste des bakers est disponible pour le mainnet sur [MyTezosBaker](https://mytezosbaker.com/).
+Une liste des bakers est également disponible pour le mainnet sur [TZstats](https://tzstats.com/bakers).
 
 Le choix d'un baker à qui déléguer nos ꜩ se fait sur plusieurs critères. D'abord, la confiance que nous lui accordons pour se comporter convenablement sur le réseau, c'est-à-dire ne pas être hors service trop souvent, ne pas chercher à contourner les règles au risque d'être repéré par un accuser ...
 
