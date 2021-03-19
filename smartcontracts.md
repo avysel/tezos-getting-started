@@ -10,8 +10,6 @@ Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qu
 
 ## LIGO
 
-LIGO est un langage assez difficile à prendre en main si l'on n'est pas familier avec la programmation fonctionnelle. Mais il existe un excellent site, avec des tutos sous forme de petits jeux de programmation, qui permettent de vite prendre les bases en mains : https://tezosacademy.io.
-
 ### Installation
 
 ```shell
@@ -151,7 +149,7 @@ let getHello = ( (contractStorage): (string) ): string => {
     contractStorage;
 }
 ```
-La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation. Cette fonction n'a pas de réelle utilité car elle ne fait rien de particulier, mais elle illustre bien le fonctionnement de Ligo.
+La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation. Cette fonction n'a pas de réelle utilité car elle ne fait rien de particulier, mais elle illustre bien le fonctionnement de Ligo. Nous le verrons plus tard lorsque nous allons essayer de l'appeler.
 
 Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs (nous verrons les types `record` plus tard), si le `main` ne retourne qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
 
@@ -221,18 +219,14 @@ Il ne reste plus qu'à le déployer.
 
 ## Déploiement
 
-https://better-call.dev/
-
-https://tezosacademy.io/reason/chapter-fa12
-
 Au déploiement d'un contrat, il faut préciser la valeur initiale du storage. Nous l'avons déjà expérimenté précédemment lors de la simulation avec la commande ligo. Le déploiement nécessite que cette expression soit en syntaxe Michelson cette fois.
 
 Il existe une commande pour convertir l'expression Ligo vers l'expression Michelson.
 ```
-> ligo compile-storage SimpleHello.ligo --syntax reasonligo main  '{""}'
-""
+> ligo compile-storage SimpleHello.ligo --syntax reasonligo main  '{"Hello nobody"}'
+"Hello nobody"
 ```
-Bon, notre storage initial étant une simple chaîne vide, nous obtenons un autre chaine vide, rien d'exceptionnel. Mais pour un contrat nécessitant un storage initial plus complexe, cette commande sera bien utile.
+Bon, notre storage initial étant une simple chaîne, nous obtenons une autre chaine, rien d'exceptionnel. Mais pour un contrat nécessitant un storage initial plus complexe, cette commande sera bien utile.
 
 
 Nous pouvons déployer en utilisant `tezos-client`. Cette opération s'appelle l'**origination** d'un contrat.
@@ -246,13 +240,13 @@ tezos-client originate contract <contract_name> transferring <amount_tez> from <
 ```
 
 Détaillons cette commande :
-- tezos-client originate :
-- <contract_name> nom du smart contract
-- <amount_tez> montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
-- <originator_address> l'adresse du compte propriétaire du contrat, depuis laquelle prélever les XTZ à envoyer au contrat
-- <contract_file> fichier .tz obtenu lors de la compilation
-- --init '<storage_expression>' initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
-- --burn-cap 0.09225 un montant de XTZ à brûler pour pouvoir déployer le contrat
+- **tezos-client originate**
+- **<contract_name>** nom du smart contract
+- **<amount_tez>** montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
+- **<originator_address>** l'adresse du compte propriétaire du contrat, depuis laquelle prélever les XTZ à envoyer au contrat
+- **<contract_file>** fichier .tz obtenu lors de la compilation
+- **--init '<storage_expression>'** initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
+- **--burn-cap 0.09225** un montant de XTZ à brûler pour pouvoir déployer le contrat
   
 Pour notre contrat, ça donnera : 
 
@@ -270,32 +264,62 @@ Cela montre également la transparence de Tezos, où tous les contrats sont visi
 
 Nous pouvons maintenant tester notre contrat.
 
-+ ligo compile parameter
-
-https://better-call.dev/edo2net/KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz/interact?entrypoint=updateName
-
-```
-tezos-client transfer 0 from alex to KT1NzAQFhs8PmnHaUK4cdFtvnXdezKvTExBz --entrypoint 'updateName' --arg '"toto"' --burn-cap 0.0025
-
-```
-
 ### Avec tezos-client
 
+Pour interagir avec un smart contract, la commande est la suivante :
+
 ```
-tezos-client transfer <amount_tez> from <user> to <contract_name> --arg '<entrypoint_invocation>' --dry-run
+tezos-client transfer <amount_tez> from <user> to <contract_name> --entrypoint '<entry_point>' --arg '<entry_params>' --burn-cap 0.0025 --dry-run
+```
+
+- **tezos client transfer** (tout appel à un contrat est d'abord un transfert de XTZ, fut-il de zéro)
+- **<amount_tez>** le nombre de XTZ à envoyer au contrat avec cette transaction
+- **from <user>** l'adresse tz1 utilisée pour envoyer la transaction d'appel
+- **to <contract_name>** le nom du contrat ou son adresse KT1
+- **--entrypoint <entry_point>** le point d'entrée à appeler
+- **--arg <entry_params>** les paramètres
+- **--burn-cap 0.0025** un montant de XTZ à brûler afin de pouvoir modifier le storage, non obligatoire si le storage n'est pas modifié (si nous passons une chaine vide en paramètre, dans notre exemple)
+- **--dry-run** pour simuler la transaction sans l'envoyer réellement. A ne pas mettre pour envoyer la transaction pour de bon.
+
+```
+tezos-client transfer 0 from tz1... to SimpleHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
+```
+
+Essayons maintenant de lire le storage : 
+```
+tezos-client transfer 0 from tz1... to SimpleHello --entrypoint 'getHello'
+```
+
+Nous n'obtenons aucun retour. Le storage n'est pas retourné lors d'un appel à une fonction. Nous avons donc la confirmation que cette fonction est inutile.
+Nous pouvons accéder directement au storage via la commande :
+
+```
+> tezos-client get contract storage for SimpleHello (ou KT1...)
+"Hello alex"
+```
+
+Nous pouvons aussi directement interroger notre noeud local via RPC si nous en avons un :
+```
+curl http://localhost:8732/chains/main/blocks/head/context/contracts/<adresse KT1 du contrat>/storage
 ```
 
 ### Avec Taquito
 
 ## Evolutions
 
-Nous avons vu ici un simple smart contract pour poser les bases du Ligo. De nombreuses autres possibilité existent :
+Nous avons vu ici un smart contract très simple pour poser les bases du Ligo. 
+
+De nombreuses autres possibilité existent :
 - Créer un storage complexe, composé d'un structure plus complète, pour gérer un ensemble de valeurs.
 - Recevoir et envoyer des XTZ
 - Interagir avec autre smart contracts
 - Manipuler des collections et des structures de contrôle
 - Gérer des exceptions
 - ...
+
+Nous verrons un exemple plus complexe au prochain épisode :)
+
+En attendant, vous pouvez vous entrainer sur LIGO grâce à l'excellent petit site https://tezosacademy.io qui propose des tutos sous forme de jeux.
 
 
 ## Docs
@@ -305,8 +329,6 @@ https://medium.com/chain-accelerator/i-tested-tezos-b254504775be
 https://medium.com/chain-accelerator/how-to-use-tezos-rpcs-16c362f45d64
 
 https://training.nomadic-labs.com/download/interact_with_the_blockchain.pdf
-
-https://hackernoon.com/how-to-build-a-tezos-dapp-using-taquito-and-the-beacon-sdk-0n183ymn (obsolète)
 
 Tezos RPC guide https://tezos.gitlab.io/007/rpc.html
 
