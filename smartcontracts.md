@@ -86,7 +86,7 @@ let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
 
 Tout d'abord, la fonction `main`, qui est le point d'entrée. Elle prend 2 paramètres : `action` qui est le nom de la fonction à appeler et `contractStorage` qui est l'état initial du storage.
 
-`(action, contractStorage): (pseudoEntryPoint, string))` signifie que nous définissons 2 paramètres, action et contractStorage, qui seront respectivement de type `pseudoEntryPoint` et `string`.
+`(action, contractStorage): (pseudoEntryPoint, string))` signifie que nous définissons 2 paramètres, `action` et `contractStorage`, qui seront respectivement de type `pseudoEntryPoint` et `string`.
 
 Regardons les premières lignes : 
 ```
@@ -95,9 +95,9 @@ type pseudoEntryPoint =
 | GetHello;
 ```
 
-Ligo permet de définir des types. Nous définissons ici le type `pseudoEntryPoint` qui sera un **variant** (l'équivalent d'un enum en Java par exemple). Ce type pourra prendre différentes valeurs définies dans la liste. Nous utiliseront ce **variant** pour lister les actions possibles dans notre contrat.
+Ligo permet de définir des types. Nous définissons ici le type `pseudoEntryPoint` qui sera un **variant** (l'équivalent d'un enum en Java par exemple). Ce type pourra prendre différentes valeurs définies dans la liste. Nous utiliserons ce **variant** pour lister les actions possibles dans notre contrat.
 
-Nous définissons ici 3 "actions" :
+Nous définissons ici 2 "actions" :
 - `UpdateName(string)` qui prend en paramètre un nouveau nom et met à jour la salutation.
 - `GetHello` qui retourne la salutation
 
@@ -110,7 +110,7 @@ let newStorage = switch (action) {
   };
 ```
 
-Nous créons une variable `newStorage` dont l'affectation initiale dépendra de la valeur du paramètre d'entrée `action`. Il est attendu que la valeur passée pour `action` soit une des valeurs définies par `pseudoEntryPoint`. Le switch redirigera alors vers une fonction qui effectuera l'action voulue. C'est le fameux pattern matching.
+Nous créons une variable `newStorage` dont l'affectation initiale dépendra de la valeur du paramètre d'entrée `action`. La valeur passée pour `action` doit être une des valeurs définies par `pseudoEntryPoint`. Le switch redirigera alors vers une fonction qui effectuera l'action voulue. C'est le fameux pattern matching.
 
 Regardons maintenant la dernière instruction de `main` : 
 
@@ -151,9 +151,9 @@ let getHello = ( (contractStorage): (string) ): string => {
     contractStorage;
 }
 ```
-La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation.
+La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation. Cette fonction n'a pas de réelle utilité car elle ne fait rien de particulier, mais elle illustre bien le fonctionnement de Ligo.
 
-Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs, si le `main` ne retourne qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
+Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs (nous verrons les types `record` plus tard), si le `main` ne retourne qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
 
 ## Simulation
 
@@ -197,7 +197,7 @@ Première étape, il faut le compiler. Il doit être transpilé depuis le langag
 ligo compile-contract --syntax reasonligo SimpleHello.ligo main > SimpleHello.tz
 ```
 
-Il est possible de ne pas préciser la syntaxe en utilisant l'extension de fichier spécifique à ReasonML dans notre cas en remplaçant `SimpleHello.ligo` en `SimpleHello.religo` et compiler de cette façon :
+Il est possible de ne pas préciser la syntaxe en renommant notre fichier `.ligo` en `.religo`, l'extension spécifique à ReasonLigo :
 
 ```
 ligo compile-contract SimpleHello.religo main > SimpleHello.tz
@@ -225,7 +225,7 @@ https://better-call.dev/
 
 https://tezosacademy.io/reason/chapter-fa12
 
-Au déploiement d'un contrat, il faut préciser la valeur initiale du storage. Nous l'avons déjà expérimenté précédemment lors de la simulation avec la commande ligo. Le déploiement nécessitera que cette expression soit en Michelson cette fois.
+Au déploiement d'un contrat, il faut préciser la valeur initiale du storage. Nous l'avons déjà expérimenté précédemment lors de la simulation avec la commande ligo. Le déploiement nécessite que cette expression soit en syntaxe Michelson cette fois.
 
 Il existe une commande pour convertir l'expression Ligo vers l'expression Michelson.
 ```
@@ -236,9 +236,10 @@ Bon, notre storage initial étant une simple chaîne vide, nous obtenons un autr
 
 
 Nous pouvons déployer en utilisant `tezos-client`. Cette opération s'appelle l'**origination** d'un contrat.
-```
-tezos-client originate contract SimpleHello transferring 0 from contractor running SimpleHello.tz --init '""' --burn-cap 0.09225
-```
+
+Pour déployer un contrat, il faut préciser combien de XTZ le compte de déploiement lui transfert, même si c'est 0 XTZ.
+
+Voilà la commande : 
 
 ```
 tezos-client originate contract <contract_name> transferring <amount_tez> from <originator_address> running <contract_file> --init '<storage_expression>' --burn-cap 0.09225
@@ -248,12 +249,22 @@ Détaillons cette commande :
 - tezos-client originate :
 - <contract_name> nom du smart contract
 - <amount_tez> montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
-- <originator_address> l'adresse depuis laquelle prélever les XTZ à envoyer au contrat
+- <originator_address> l'adresse du compte propriétaire du contrat, depuis laquelle prélever les XTZ à envoyer au contrat
 - <contract_file> fichier .tz obtenu lors de la compilation
 - --init '<storage_expression>' initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
 - --burn-cap 0.09225 un montant de XTZ à brûler pour pouvoir déployer le contrat
   
-Dans le résultat de cette exécution, nous voyons le détail des différentes opérations et des frais payés.
+Pour notre contrat, ça donnera : 
+
+```
+tezos-client originate contract SimpleHello transferring 0 from tz1... running SimpleHello.tz --init '""' --burn-cap 0.09225
+```
+
+Dans le résultat de cette exécution, nous voyons le détail des différentes opérations et des frais payés. Et bien entendu, l'adresse de notre contrat. Elle commence par **KT1**.
+
+Le site [BetterCallDev](https://better-call.dev/) propose une interface web pour visualiser les contrats. Il faut choisir le réseau sur lequel nous avons déployé. Ici, Edo2net. Puis saisir l'adresse KT1 dans le champ de recherche en haut à droite, et si notre contrat est bien déployé, nous pourrons voir les détails : le code Michelson, la valeur du storage ...
+
+Cela montre également la transparence de Tezos, où tous les contrats sont visibles par tout le monde.
 
 ## Test du smart contract déployé
 
