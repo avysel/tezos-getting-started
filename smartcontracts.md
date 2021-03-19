@@ -375,7 +375,7 @@ De nombreuses autres possibilité existent :
 - Gérer des exceptions
 - ...
 
-Nous verrons un exemple plus complexe au prochain épisode :)
+Nous verrons un [exemple plus complexe au prochain épisode](smartcontracts2.md).
 
 En attendant, vous pouvez vous entrainer sur LIGO grâce à l'excellent petit site https://tezosacademy.io qui propose des tutos sous forme de jeux.
 
