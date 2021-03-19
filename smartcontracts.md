@@ -12,6 +12,8 @@ Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qu
 
 ### Installation
 
+Tout d'abord, installons le compilateur LIGO : 
+
 ```shell
 wget https://ligolang.org/bin/linux/ligo
 chmod +x ./ligo
@@ -29,7 +31,7 @@ Leur exécution nécessitera cependant d'avoir le fichier source en local, à po
 
 ## Premier smart contract, SimpleHello
 
-Nous allons développer un premier smart contract SimpleHello. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
+Nous allons développer un premier smart contract **SimpleHello**. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
 
 ### Principe général
 
@@ -37,11 +39,11 @@ Un contrat Tezos contient **une zone de stockage de données** (couramment appel
 
 **Seul le point d'entrée est appelé**, à la différence d'autres langage où l'on peut définir des fonctions et les appeler distinctement les unes des autres.
 
-Autre spécificité, l'appel au point d'entrée du contrat **retournera toujours l'intégralité des données** stockées dans ce contrat.
+Autre spécificité, la fonction de point d'entrée devra toujours **retourner l'intégralité du storage** stockées dans ce contrat. Cette valeur de retour ne sera pas exploitée pour être retournée à l'appelant, mais pour mettre à jour le contenu de la blockchain.
 
-En mixant les deux conditions précédentes, nous comprenons vite qu'il ne sera pas possible de développer des getters et setters comme on peut trouver un peu partout.
+En mixant les deux conditions précédentes, nous comprenons vite qu'il ne sera pas possible de développer des getters et setters comme on peut trouver un peu partout. Mais comme le storage sera toujours disponible en totalité, pas besoin de getters.
 
-Mais nous pourrons tout de même programmer plusieurs comportements en créant plusieurs fonctions à l'intérieur du contrat. Il faudra préciser en entrée du contrat quelle fonction appeler en utilisant un pattern matching sur ces paramètres d'entrée.
+Nous pourrons tout de même programmer plusieurs comportements en créant plusieurs fonctions à l'intérieur du contrat. Il faudra préciser en entrée du contrat quelle fonction appeler en utilisant un pattern matching sur ces paramètres d'entrée.
 
 
 ### Code
@@ -215,6 +217,8 @@ Nous obtenons un fichier `SimpleHello.tz` comportant le code de notre smart cont
 
 Un peu moins facile à lire, n'est-ce pas ?
 
+Notez au passage que les noms des points d'entrée GetHello et UpdateName ont perdu leur majuscule initiale. Pour les appeler, il faudra bien utiliser la syntaxe générée en Michelson.
+
 Il ne reste plus qu'à le déployer.
 
 ## Déploiement
@@ -298,7 +302,7 @@ Nous pouvons accéder directement au storage via la commande :
 "Hello alex"
 ```
 
-Nous pouvons aussi directement interroger notre noeud local via RPC si nous en avons un :
+Nous pouvons aussi directement interroger notre nœud local via RPC si nous en avons un :
 ```
 curl http://localhost:8732/chains/main/blocks/head/context/contracts/<adresse KT1 du contrat>/storage
 ```
