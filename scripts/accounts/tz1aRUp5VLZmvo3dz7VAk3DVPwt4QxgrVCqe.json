@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "define",
+    "rate",
+    "cancel",
+    "convince",
+    "pitch",
+    "that",
+    "someone",
+    "rail",
+    "weasel",
+    "column",
+    "blur",
+    "peasant",
+    "song",
+    "sausage",
+    "error"
+  ],
+  "secret": "d75168943dd4a46aafc5d8cfb372fba075da4b38",
+  "amount": "16944137650",
+  "pkh": "tz1aRUp5VLZmvo3dz7VAk3DVPwt4QxgrVCqe",
+  "password": "bYD8v2Ls0o",
+  "email": "dxdwjahp.jbtpjwcl@tezos.example.org"
+}

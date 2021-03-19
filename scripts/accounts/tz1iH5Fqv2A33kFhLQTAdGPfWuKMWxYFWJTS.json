@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "valid",
+    "height",
+    "strike",
+    "essay",
+    "sick",
+    "tone",
+    "kiss",
+    "start",
+    "south",
+    "gallery",
+    "under",
+    "similar",
+    "session",
+    "gaze",
+    "snack"
+  ],
+  "secret": "80c4277f22b80a90d5d86f72477c15e5da1f8bd6",
+  "amount": "19335892024",
+  "pkh": "tz1iH5Fqv2A33kFhLQTAdGPfWuKMWxYFWJTS",
+  "password": "wdBilpmqI1",
+  "email": "bcjzcoqw.jyuojqxm@tezos.example.org"
+}

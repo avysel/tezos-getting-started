@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "tower",
+    "lumber",
+    "random",
+    "habit",
+    "face",
+    "hello",
+    "velvet",
+    "room",
+    "cotton",
+    "rally",
+    "movie",
+    "design",
+    "gallery",
+    "tag",
+    "wing"
+  ],
+  "secret": "406ac5607fe5f46cdd75b964ec42be4d0e3d4e8d",
+  "amount": "8430432882",
+  "pkh": "tz1YU6Wci7J5bA21CHXtNUiGadq1sPafKG5W",
+  "password": "js6zVeIbU0",
+  "email": "qwumjuya.zdrmbkes@tezos.example.org"
+}

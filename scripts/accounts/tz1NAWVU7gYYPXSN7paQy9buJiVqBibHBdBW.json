@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "alarm",
+    "syrup",
+    "six",
+    "burger",
+    "burst",
+    "must",
+    "smile",
+    "divert",
+    "sting",
+    "buffalo",
+    "sport",
+    "reduce",
+    "reward",
+    "lottery",
+    "submit"
+  ],
+  "secret": "6a2c4bfce2c718ef26c296521c45b054a4b747e3",
+  "amount": "32212472671",
+  "pkh": "tz1NAWVU7gYYPXSN7paQy9buJiVqBibHBdBW",
+  "password": "j4dGtLGwBE",
+  "email": "ytormkqe.cphgajur@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "inhale",
+    "truth",
+    "panic",
+    "embrace",
+    "unfold",
+    "nation",
+    "quantum",
+    "zero",
+    "despair",
+    "cruel",
+    "follow",
+    "three",
+    "pet",
+    "network",
+    "squirrel"
+  ],
+  "secret": "f8d1a16655664182ab7a1b7e90ae70eec7dd050a",
+  "amount": "11057427141",
+  "pkh": "tz1idTKaLx1taxNnWPz4fyzeLfVSUEw78CoY",
+  "password": "GVuhUwKV60",
+  "email": "qlzrfkfw.dgclegxm@tezos.example.org"
+}

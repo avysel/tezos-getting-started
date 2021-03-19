@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "vivid",
+    "busy",
+    "debate",
+    "glue",
+    "develop",
+    "ready",
+    "pretty",
+    "panic",
+    "abuse",
+    "frame",
+    "drama",
+    "sun",
+    "bind",
+    "road",
+    "grab"
+  ],
+  "secret": "ef3c8383ae3da25eeb2aed113657506c10bc6398",
+  "amount": "2839084217",
+  "pkh": "tz1MTMJvbRfbFXaeos3hkiiHKJDmWUkZiEvv",
+  "password": "DvQCO8gHR4",
+  "email": "fajizqmf.bxabdhfn@tezos.example.org"
+}

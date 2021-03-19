@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "gate",
+    "chuckle",
+    "unaware",
+    "base",
+    "agree",
+    "around",
+    "bag",
+    "hair",
+    "bring",
+    "example",
+    "happy",
+    "oblige",
+    "library",
+    "rate",
+    "exact"
+  ],
+  "secret": "34a8bd7d64efe1b7694ab81a21bf186b5aa4dd32",
+  "amount": "27630227174",
+  "pkh": "tz1hk36usQfqDibJQwNkkRyDvFKqTnwjCvbm",
+  "password": "glcebcbwFv",
+  "email": "wrxklkfz.rithfabu@tezos.example.org"
+}

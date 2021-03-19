@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "dry",
+    "cheese",
+    "business",
+    "avoid",
+    "chat",
+    "replace",
+    "script",
+    "silly",
+    "drum",
+    "frozen",
+    "pledge",
+    "sunny",
+    "pitch",
+    "mix",
+    "rely"
+  ],
+  "secret": "ae5fa7af87cc713bae5465da1ead102af365883d",
+  "amount": "34143018775",
+  "pkh": "tz1hWWccN5D6NoT8qPVDL13BHhsQwy5cP1Uz",
+  "password": "c4xz7xBcuU",
+  "email": "lupvzavd.bjybsiww@tezos.example.org"
+}

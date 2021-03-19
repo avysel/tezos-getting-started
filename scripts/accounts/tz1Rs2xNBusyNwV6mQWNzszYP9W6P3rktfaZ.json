@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "brown",
+    "rich",
+    "health",
+    "kiwi",
+    "loan",
+    "figure",
+    "awful",
+    "knife",
+    "yard",
+    "access",
+    "spread",
+    "point",
+    "mandate",
+    "country",
+    "custom"
+  ],
+  "secret": "d6be395f77b94efd64f7cf8fdd1f3437e119bf37",
+  "amount": "30011773210",
+  "pkh": "tz1Rs2xNBusyNwV6mQWNzszYP9W6P3rktfaZ",
+  "password": "eYp3kCCNqP",
+  "email": "xyajfqbo.auhlztli@tezos.example.org"
+}

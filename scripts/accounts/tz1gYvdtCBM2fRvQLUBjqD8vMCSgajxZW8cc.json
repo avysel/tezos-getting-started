@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "link",
+    "cancel",
+    "quit",
+    "discover",
+    "wise",
+    "initial",
+    "wolf",
+    "supreme",
+    "collect",
+    "evoke",
+    "guide",
+    "differ",
+    "amateur",
+    "cruel",
+    "crime"
+  ],
+  "secret": "fdebb701a9fc0d8b7d0e6aed423f34c1f6dbdf38",
+  "amount": "54317804562",
+  "pkh": "tz1gYvdtCBM2fRvQLUBjqD8vMCSgajxZW8cc",
+  "password": "7XzAuzX0vs",
+  "email": "ezzugseb.tblrmmmy@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "legal",
+    "miracle",
+    "radar",
+    "meadow",
+    "wreck",
+    "copper",
+    "mesh",
+    "sniff",
+    "recycle",
+    "photo",
+    "nation",
+    "position",
+    "weird",
+    "turkey",
+    "twin"
+  ],
+  "secret": "23ed86c7a7ad99913ae823e4228d684e93c80099",
+  "amount": "52068443368",
+  "pkh": "tz1V9LN9PMW6euULSmdqM23rEMiZ2mFCivqe",
+  "password": "WdFC7odEU5",
+  "email": "jvzrdeql.dwnnlpdm@tezos.example.org"
+}
