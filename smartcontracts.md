@@ -305,6 +305,64 @@ curl http://localhost:8732/chains/main/blocks/head/context/contracts/<adresse KT
 
 ### Avec Taquito
 
+Nous allons essayer de faire la même chose avec [Taquito](https://tezostaquito.io/), le framework Typescript pour Tezos [que nous avons vu précédemment](lien vers article precedent).
+
+Cette fois, nous allons modifier la blockchain, donc nous allons de voir initialiser le framework avec notre clé privée afin de signer la transaction.
+Dans l'exemple, nous allons passer notre clé directement dans le code. Taquito fourni aussi des extensions pour importer une clé depuis un wallet dans le navigateur, beaucoup plus sécurisé.
+
+Pour obtenir la clé privé du compte qui enverra la transaction :
+
+```tezos-client show address tz1... -S```
+
+Dans notre exemple, nous allons d'abord lire et afficher le storage du contrat, puis le modifier pour obtenir "Hello from Taquito" et enfin, lire le nouveau storage.
+
+Notre code est le suivant :
+
+```javascript
+import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner, importKey } from '@taquito/signer';
+
+// L'adresse du smart contract
+const contractAddress = "KT1...";
+
+// Connexion au noeud local.
+const Tezos = new TezosToolkit('http://127.0.0.1:8732');
+
+// Import de la clé privée pour signer la transaction
+Tezos.setProvider({ signer: new InMemorySigner('<YOUR_PRIVATE_KEY>') });
+
+// Tout est Promise, nous devons être async
+(async () => {
+
+    // Chargement du smart contract
+    let contract = await Tezos.contract.at(contractAddress);
+
+    // lecture du storage courant
+    console.log(`Read current storage: `+await contract.storage());
+
+    console.log(`Update with "Hello from Taquito":`);
+
+    // Appel de la methode "updateName"
+    contract.methods.updateName("from Taquito").send()
+      .then((op) => {
+        // la transaction est créée, elle attend d'être confirmée
+        console.log(`Waiting for ${op.hash} to be confirmed...`);
+
+        // Après 1 confirmation, nous la considérons comme validée. Nous renvoyons le hash.
+        return op.confirmation(1).then(() => op.hash);
+      })
+      .then( async (hash) => {
+            // Le hash de la transaction est obtenu, elle est validée, nous affichons le lien pour l'afficher dans tzstats
+            console.log(`Operation injected: https://edo.tzstats.com/${hash}`);
+
+            // Affichage du nouveau storage
+            console.log(`Read new storage: `+await contract.storage());
+        })
+      .catch(console.error);
+
+})().catch(console.error);
+```
+
 ## Evolutions
 
 Nous avons vu ici un smart contract très simple pour poser les bases du Ligo. 

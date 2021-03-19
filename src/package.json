@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@taquito/taquito": "^7.1.0-beta.0"
+    "@taquito/signer": "^8.0.6-beta.0",
+    "@taquito/taquito": "^7.1.0-beta.0",
+    "@taquito/tezbridge-signer": "^8.0.6-beta.0"
   }
 }
