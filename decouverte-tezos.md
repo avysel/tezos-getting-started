@@ -77,6 +77,10 @@ Enfin, la période d'**adoption**, ajoutée par le protocole Edo en février 202
 
 La promotion d'une nouvelle fonctionnalité prend donc 25 cycles, soit environ 2 mois et 10 jours. Le développeur a la possibilité d'inclure dans le code de sa proposition le montant de la récompense qu'il recevra si elle est déployée. Il peut mettre le montant qu'il veut, mais ce montant sera inspecté par les bakers et influera sur la décision finale. Cela encourage donc à ne pas être trop gourmand.
 
+## En résumé
+
+![Fonctionnement de Tezos](tezos1.png)
+
 ## Composants
 
 - **tezos-node** : c'est le cœur de la blockchain, il gère le protocole.
