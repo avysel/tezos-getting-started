@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # How to run:
-# ./run-tezos.sh [delphinet|edonet] [8732] [xtz1...|alias]
+# ./run-tezos.sh [delphinet|edonet|florencenet] [8732] [xtz1...|alias]
 # $1: name of network
 # $2: port of node
 # $3: address or alias of account to use as baker
@@ -29,6 +29,10 @@ EDONET_NODE="tezos-node"
 EDONET_BAKER="tezos-baker-008-PtEdo2Zk"
 EDONET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
 
+FLORENCENET_NET_NODE="tezos-node"
+FLORENCENETBAKER="tezos-baker-008-PtEdo2Zk"
+FLORENCENET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
+
 case $1 in
   delphinet )
     echo "Starting Delphinet"
@@ -49,7 +53,15 @@ case $1 in
     ENDORSER=$EDONET_ENDORSER
     LOG="log-edonet.txt"
     ;;
-
+  florencenet )
+    echo "Starting Florencenet"
+    DATA_DIR=$HOME"/.tezos-florencenet"
+    BASE_ENDPOINT="127.0.0.1:"$PORT
+    NODE=$EDONET_NODE
+    BAKER=$EDONET_BAKER
+    ENDORSER=$EDONET_ENDORSER
+    LOG="log-edonet.txt"
+    ;;
   mainnet )
     echo "Starting mainnet"
 
