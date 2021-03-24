@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "bike",
+    "item",
+    "midnight",
+    "denial",
+    "swap",
+    "bulb",
+    "friend",
+    "sail",
+    "rough",
+    "civil",
+    "label",
+    "glue",
+    "canyon",
+    "nasty",
+    "minute"
+  ],
+  "secret": "594fe73f49d8f71cf2016c1a4eb4fe0317ed7c32",
+  "amount": "48126677172",
+  "pkh": "tz1R58krSTYfDHN9Tmdo42wmundrhWnQurAr",
+  "password": "PqGtz7JNrK",
+  "email": "ewwltzjv.grzjhyjo@tezos.example.org"
+}

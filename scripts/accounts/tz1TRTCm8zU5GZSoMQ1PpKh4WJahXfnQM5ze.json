@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "moment",
+    "stage",
+    "hamster",
+    "erase",
+    "addict",
+    "change",
+    "quick",
+    "thrive",
+    "test",
+    "parrot",
+    "belt",
+    "carbon",
+    "swap",
+    "bag",
+    "arch"
+  ],
+  "secret": "6a15c19b7add2e836fa934d9f416def42b56018d",
+  "amount": "39929280174",
+  "pkh": "tz1TRTCm8zU5GZSoMQ1PpKh4WJahXfnQM5ze",
+  "password": "tOwLH17R1V",
+  "email": "tlwldztp.nqgecaqx@tezos.example.org"
+}

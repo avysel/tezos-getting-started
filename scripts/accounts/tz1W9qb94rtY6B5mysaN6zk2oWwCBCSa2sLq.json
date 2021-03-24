@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "fold",
+    "message",
+    "laundry",
+    "bitter",
+    "lemon",
+    "poverty",
+    "fame",
+    "safe",
+    "build",
+    "master",
+    "sphere",
+    "offer",
+    "print",
+    "pitch",
+    "void"
+  ],
+  "secret": "27fe0919b09656258fae9e2d3aa32c596fe98c37",
+  "amount": "67585452819",
+  "pkh": "tz1W9qb94rtY6B5mysaN6zk2oWwCBCSa2sLq",
+  "password": "jmnBOVyChJ",
+  "email": "mhzdskrt.fdanrtyg@tezos.example.org"
+}
