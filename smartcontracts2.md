@@ -178,7 +178,7 @@ Maintenant que le contrat ramène un peu d'argent, en tant que propriétaire, no
 
 Nous allons mettre en place plusieurs choses :
 - une constante qui contient notre adresse, seule autorisée à retirer les XTZ.
-- une fonction qui effectue le transfert
+- une fonction `Withdraw` qui effectue le transfert vers notre adresse uniquement si nous l'appelons depuis celle-ci.
 
 ### Le code
 
@@ -205,7 +205,7 @@ type storage = {
 
 type return = ( list(operation), storage);
 
-let ownerAddress : address = ("tz1TGu6TN5GSez2ndXXeDX6LgUDvLzPLqgYV" : address);
+let ownerAddress : address = ("tz1..." : address);
 
 let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
 
@@ -220,15 +220,20 @@ let changeName = ( ( newName, contractStorage): ( string, storage) ): return => 
 
 let withdraw = ( (contractStorage): (storage) ): return => {
 
-    let receiver : contract(unit) =
-      switch ( Tezos.get_contract_opt (ownerAddress): option(contract(unit)) ) {
-      | Some(contract) => contract
-      | None => (failwith ("Not a contract") : (contract(unit)))
-      };
+    if (Tezos.sender != ownerAddress) {
+        ( failwith("Operation not allowed") : return);
+    }
+    else {
+        let receiver : contract(unit) =
+          switch ( Tezos.get_contract_opt (ownerAddress): option(contract(unit)) ) {
+          | Some(contract) => contract
+          | None => (failwith ("Not a contract") : (contract(unit)))
+          };
 
-    let withdrawOperation : operation = Tezos.transaction (unit, amount, receiver) ;
-    let operations : list (operation) = [withdrawOperation];
-    (operations, contractStorage);
+        let withdrawOperation : operation = Tezos.transaction (unit, amount, receiver) ;
+        let operations : list (operation) = [withdrawOperation];
+        (operations, contractStorage);
+    }
 }
 
 let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
@@ -238,6 +243,93 @@ let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
   };
 };
 ```
+
+Détaillons ces changements : 
+
+```
+type pseudoEntryPoint =
+| UpdateName(string)
+| Withdraw;
+```
+Nous ajoutons la valeur `Withdraw` pour le pattern matching des points d'entrée.
+
+```
+let ownerAddress : address = ("tz1..." : address);
+``` 
+Nous créons `ownerAddress` qui contient notre adresse Tezos, celle avec laquelle nous devons appeler `withdraw` et qui recevra l'argent.
+
+```
+type return = ( list(operation), storage);
+```
+Nous définissions un type qui s'appelle `return` et qui contient une liste d'opérations et un `storage`. C'est le type de retour attendu pour `main`. Nous l'appliquons à toutes les fonctions du pattern matching appliqué dans `main`.
+
+```
+let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
+
+    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+        let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
+         (([] : list (operation)), newStorage);
+    }
+    else {
+      (failwith("Must pay 1 tez to change name"): return);
+    }
+};
+```
+
+`changeName` retourne maintenant un `return`. La modification du storage est placée dans une variable `newStorage` qui sera retournée conjointement à une liste d'opérations vide afin de correspondre à la définition de `return`.
+
+L'annotation sur le `failwith` est également modifiée pour `return`.
+
+```
+let withdraw = ( (contractStorage): (storage) ): return => {
+
+    if (Tezos.sender != ownerAddress) {
+        ( failwith("Operation not allowed") : return);
+    }
+    else {
+        let receiver : contract(unit) =
+          switch ( Tezos.get_contract_opt(ownerAddress): option(contract(unit)) ) {
+          | Some(contract) => contract
+          | None => (failwith ("Not a contract") : (contract(unit)))
+          };
+
+        let withdrawOperation : operation = Tezos.transaction (unit, Tezos.balance, receiver) ;
+        let operations : list (operation) = [withdrawOperation];
+        (operations, contractStorage);
+    }
+}
+```
+
+Nous créons la fonction `withdraw` pour retirer l'argent accumulé sur le contrat.
+
+Tout d'abord, nous vérifions avec `Tezos.sender != ownerAddress` que personne d'autre que nous ne puisse exécuter cette fonction.
+
+Ensuite, nous chargeons le contrat correspondant à notre adresse (dans Tezos, tout est considéré comme un contrat, même les simples adresses de comptes) avec `Tezos.get_contract_opt(ownerAddress): option(contract(unit)) `
+Cette instruction signifie que nous appelons `Tezos.get_contract_opt(ownerAddress)` qui peut retourner un `option(contract(unit))`.
+
+C'est ce que l'on appel un `Optional`. Ca signifie que cette fonction retournera soit un objet de type `contract` soit rien (si le contrat n'existe pas, ou que l'adresse est erronée par exemple). Pour exploiter un `optional`, nous allons appliquer un pattern matching sur les valeurs `Some(value)`, qui signifie que la valeur espérée est présente dans le champ `value`, soit `None` qui indique qu'il n'y a pas de donnée retournée.
+
+Le `unit` de `contract(unit)` représente un type de donnée qui ne contient aucune valeur (comme `null` dans d'autres langages). Un `contract` peut prendre des paramètres en ... paramètre. Nous n'avons pas besoin d'en passer ici, donc nous utilisons `unit`.
+
+Le résultat de cet appel est stocké dans la variable `receiver`, qui représente l'entité à qui l'on peut envoyer des fonds.
+
+```
+let withdrawOperation : operation = Tezos.transaction (unit, Tezos.balance, receiver) ;
+```
+Maintenant nous créons l'opération de transfer avec `Tezos.transaction` qui prend en paramètres des options (`unit` pour nous, car pas d'option spéciale dans notre cas), le montant à transférer (ici `Tezos.balance`, la balance du contrat), et le destinataire (le `receiver` que nous avons défini au-dessus).  
+
+Puis nous créons une liste d'opérations que nous retournons conjointement au `storage` du contrat que nous n'avons pas exploité. Mais que nous devons quand même retourner pour qu'il ne soit pas écrasé.
+
+```
+let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
+    switch (action) {
+    | UpdateName(newName) => changeName(newName, contractStorage)
+    | Withdraw => withdraw(contractStorage)
+  };
+};
+```
+
+Et pour finir nous modifions `main` en ajoutant le pattern matching avec `Withdraw` et en simplifiant la gestion du retour étant donné que les deux fonctions retournent la même chose maintenant.
 
 ### Le test
 

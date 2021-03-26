@@ -25,15 +25,20 @@ let changeName = ( ( newName, contractStorage): ( string, storage) ): return => 
 
 let withdraw = ( (contractStorage): (storage) ): return => {
 
-    let receiver : contract(unit) =
-      switch ( Tezos.get_contract_opt (ownerAddress): option(contract(unit)) ) {
-      | Some(contract) => contract
-      | None => (failwith ("Not a contract") : (contract(unit)))
-      };
+    if (Tezos.sender != ownerAddress) {
+        ( failwith("Operation not allowed") : return);
+    }
+    else {
+        let receiver : contract(unit) =
+          switch ( Tezos.get_contract_opt (ownerAddress): option(contract(unit)) ) {
+          | Some(contract) => contract
+          | None => (failwith ("Not a contract") : (contract(unit)))
+          };
 
-    let withdrawOperation : operation = Tezos.transaction (unit, amount, receiver) ;
-    let operations : list (operation) = [withdrawOperation];
-    (operations, contractStorage);
+        let withdrawOperation : operation = Tezos.transaction (unit, Tezos.balance, receiver) ;
+        let operations : list (operation) = [withdrawOperation];
+        (operations, contractStorage);
+    }
 }
 
 let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
