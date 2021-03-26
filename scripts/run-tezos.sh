@@ -29,8 +29,8 @@ EDONET_NODE="tezos-node"
 EDONET_BAKER="tezos-baker-008-PtEdo2Zk"
 EDONET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
 
-FLORENCENET_NET_NODE="tezos-node"
-FLORENCENETBAKER="tezos-baker-008-PtEdo2Zk"
+FLORENCENET_NODE="tezos-node"
+FLORENCENET_BAKER="tezos-baker-008-PtEdo2Zk"
 FLORENCENET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
 
 case $1 in
@@ -57,10 +57,10 @@ case $1 in
     echo "Starting Florencenet"
     DATA_DIR=$HOME"/.tezos-florencenet"
     BASE_ENDPOINT="127.0.0.1:"$PORT
-    NODE=$EDONET_NODE
-    BAKER=$EDONET_BAKER
-    ENDORSER=$EDONET_ENDORSER
-    LOG="log-edonet.txt"
+    NODE=$FLORENCENET_NODE
+    BAKER=$FLORENCENET_BAKER
+    ENDORSER=$FLORENCENET_ENDORSER
+    LOG="log-florencenet.txt"
     ;;
   mainnet )
     echo "Starting mainnet"
