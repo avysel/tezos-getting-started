@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "keep",
+    "outside",
+    "market",
+    "lady",
+    "ticket",
+    "harbor",
+    "coffee",
+    "slight",
+    "subway",
+    "winter",
+    "unique",
+    "ginger",
+    "learn",
+    "sniff",
+    "junk"
+  ],
+  "secret": "04dd8315dfb5a56d6cdc0ab174d5ed0c905dfae7",
+  "amount": "36634394187",
+  "pkh": "tz1NzQQwekxxf1KtwiWKxHPBRD4g1nuF2UKQ",
+  "password": "yXC0TOYMZ1",
+  "email": "uqhgrufr.qivwsvfb@tezos.example.org"
+}

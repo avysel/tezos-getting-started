@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "memory",
+    "music",
+    "peace",
+    "tunnel",
+    "bone",
+    "grace",
+    "pencil",
+    "fragile",
+    "share",
+    "put",
+    "arch",
+    "danger",
+    "half",
+    "enjoy",
+    "sock"
+  ],
+  "secret": "fba38a0ad01c68e44a7caab5872e868bd67afe66",
+  "amount": "27031128100",
+  "pkh": "tz1iVjzKcoM34eAfejDoKfbXuvA1GTFAgNkS",
+  "password": "912E4ncXQv",
+  "email": "jkuncsrg.yunbqghv@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "casual",
+    "reason",
+    "mail",
+    "paddle",
+    "priority",
+    "health",
+    "annual",
+    "ranch",
+    "pottery",
+    "behave",
+    "grape",
+    "dentist",
+    "else",
+    "upgrade",
+    "marine"
+  ],
+  "secret": "42adc440d45bceffe8e250b961e659038a96a467",
+  "amount": "29213434694",
+  "pkh": "tz1W7xCPtgFjJ2rAgKqXN6yCVHweEsTT7axf",
+  "password": "u7MHgwiJNZ",
+  "email": "koondkug.nrzpsjxv@tezos.example.org"
+}
