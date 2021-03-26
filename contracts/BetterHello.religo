@@ -7,13 +7,14 @@ type storage = {
   update_date   : timestamp
 };
 
-//type return = (list (operation), storage);
-
 let changeName = ( ( newName, contractStorage): ( string, storage) ): storage => {
-     ...contractStorage,
-     hello: "Hello "  ++ newName,
-     update_user: Tezos.sender,
-     update_date: Tezos.now
+
+    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+        { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now }
+    }
+    else {
+      (failwith("Must pay 1 tez to change name"): storage);
+    }
 };
 
 let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {

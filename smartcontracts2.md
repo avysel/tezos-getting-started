@@ -13,6 +13,8 @@ Voilà ce que nous allons lui faire :
 
 Voici donc notre point de départ, le code de **SimpleHello** (dont nous avons supprimé *getHello* qui ne servait à rien).
 
+Cette fois, notre fichier s'appelle `BetterHello.religo`.
+
 ```
 type pseudoEntryPoint =
 | UpdateName(string);
@@ -58,7 +60,7 @@ let changeName = ( ( newName, contractStorage): ( string, storage) ): storage =>
 };
 ```
 
-Nous lui avons ajouté un paramètre `contractStorage` de type `storage` défini précédemment. Il contiendra l'état du **storage** du contrat, que nous allons devoir modifier et retourner en intégralité.
+Nous lui avons ajouté un paramètre `contractStorage` de type `storage` défini précédemment. Il contiendra l'état du **storage** du contrat, que nous allons devoir modifier et retourner en intégralité. Nous avons donc aussi modifié le type de retour en `storage`.
 
 Analysons le corps de la fonction. Il contient une seule expression, écrite sur plusieurs lignes pour la lisibilité, mais qui peut également être écrite en une seule ligne.
 
@@ -92,9 +94,76 @@ Nous obtenons en retour :
 ```
 La salutation dans le champ `hello` a bien été mise à jour. La date est mise à jour avec `1` car `ligo dry-run` n'est lié à aucune blockchain donc nous serons toujours à la première seconde d'une simili-blockchain générée temporairement pour l'occasion. `update_user` est bien alimenté avec une adresse temporaire générée, elle aussi, pour l'occasion.
 
-
-
 ## Rendre le changement de nom payant
+
+### Le code
+
+Nous allons exiger de recevoir 1 XTZ pour autoriser le changement de nom. Si nous ne les recevons pas, l'exécution du contrat tombera en échec.
+
+Voilà le code modifié de `changeName` : 
+
+```
+let changeName = ( ( newName, contractStorage): ( string, storage) ): storage => {
+
+    if (Tezos.amount >= 1tez) {
+        { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now }
+    }
+    else {
+      (failwith("Must pay 1 tez to change name"): storage);
+    }
+};
+```
+
+Nous utilisons `Tezos.amount` pour connaître le montant de XTZ transférés au contrat. Le nombre obtenu peut être exploité avec 2 type : `tez` (un nombre de XTZ) ou `mutez` un millionième de `tez`.
+
+Nous pouvons écrire notre condition de plusieurs façons :
+- `Tezos.amount >= 1 tez`
+- `Tezos.amount >= 1 tz`, `tz` étant un alias de `tez`.
+- `Tezos.amount >= 1000000 mutez`
+- ou encore `Tezos.amount >= 1_000_000 mutez` parce qu'il est permis d'ajouter des underscores afin d'améliorer la lisibilité des grands nombres.
+- ou pourquoi pas `Tezos.amount >= (0.5 tz + 500_000 mutez)`parce que les `tez` sont avant tout des nombres comme les autres.
+
+Regardons maintenant ce qui se passe dans le `else` :
+
+``` 
+( failwith("Must pay 1 tez to change name"): storage);
+```
+`failwith("Must pay 1 tez to change name")` permet d'interrompre l'exécution du script et de retourner un message d'erreur.
+
+Le problème est que notre fonction doit retourner un objet de type `storage`. Si on l'interrompt, elle ne retourne rien, ce qui n'est pas accepté dans un langage fortement et statiquement typé comme Ligo.
+Pour ça, nous allons utiliser une **annotation**. C'est une syntaxe qui va permettre d'aider le compilateur en indiquant quel type l'expression annotée aurait du avoir.
+
+`( expression : type attendu)`
+
+Nous annotons donc notre `failwith` avec le type `storage`.
+
+### Le test
+
+Ajoutons `--amount 1` à notre instruction de test pour simuler l'envoi de 1 XTZ :
+
+```
+ligo dry-run BetterHello.religo  main 'UpdateName("toto")' '{hello:"nobody",update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}' --amount 1
+```
+
+Le retour :
+```
+( LIST_EMPTY() ,
+  record[hello -> "Hello toto" ,
+         update_date -> +1 ,
+         update_user -> @"tz1..."] )
+
+```
+
+Testons maintenant en envoyant une somme inférieure : 
+```
+ligo dry-run BetterHello.religo  main 'UpdateName("toto")' '{hello:"nobody",update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}' --amount 0.5
+```
+
+Le constat est alors sans appel :
+
+```
+failwith("Must pay 1 tez to change name")
+```
 
 ## Récupérer les XTZ
 

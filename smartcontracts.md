@@ -48,7 +48,7 @@ Nous pourrons tout de même programmer plusieurs comportements en créant plusie
 
 ### Code
 
-Voyons tout de suite le code de notre contrat exemple : 
+Voyons tout de suite le code de notre contrat exemple, que nous avons écrit dans un fichier `SimpleHello.ligo` :
 
 ```
 // Définition de type "variant"
