@@ -7,10 +7,13 @@ type storage = {
   update_date   : timestamp
 };
 
-type return = (list (operation), storage);
+//type return = (list (operation), storage);
 
-let changeName = ( ( newName, contractStorage): ( string, string) ): storage => {
-    { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now }
+let changeName = ( ( newName, contractStorage): ( string, storage) ): storage => {
+     ...contractStorage,
+     hello: "Hello "  ++ newName,
+     update_user: Tezos.sender,
+     update_date: Tezos.now
 };
 
 let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
@@ -24,7 +27,7 @@ let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
 
 (record [hello="nobody"; update_user=unit;update_date=0])
 
-'{hello:"nobody",update_user:unit, update_date:0}'
+'{hello:"nobody",update_user:("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}'
 
 */
 
