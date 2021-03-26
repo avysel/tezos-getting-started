@@ -1,4 +1,4 @@
-# Smart contracts, 2ème partie
+# Smart contracts, 2ᵉ partie
 
 Nous allons reprendre notre contrat **SimpleHello** de l'étape précédente nous allons l'améliorer pour qu'il devienne **BetterHello**.
 
@@ -72,6 +72,11 @@ La modification d'un **record** se fait en générant un nouveau record et en pr
 
 Remarquons l'utilisation de `Tezos.sender` qui contient l'adresse qui a invoqué le contrat et `Tezos.now` qui contient le timestamp du bloc courant.
 
+
+#### Sender vs source
+Dans le cas d'un utilisateur qui appelle un contrat A qui lui-même appelle un contrat B, dans B `Tezos.sender` sera l'adresse de A. L'adresse de l'utilisateur à l'origine de la chaîne sera `Tezos.source`.
+
+#### Date et heure
 Il n'est pas possible d'obtenir le timestamp de l'heure "réelle" car cette instruction sera exécutée sur un réseau distribué, donc sans serveur central qui peut fournir une horloge "officielle". Chaque noeud peut avoir une heure locale légèrement différente des autres, cette donnée ne peut donc pas être exploitée. C'est le timestamp du bloc, créé par le baker, qui est utilisé comme repère temporel.
 
 ## Le test
@@ -96,9 +101,11 @@ La salutation dans le champ `hello` a bien été mise à jour. La date est mise 
 
 ## Rendre le changement de nom payant
 
-### Le code
-
 Nous allons exiger de recevoir 1 XTZ pour autoriser le changement de nom. Si nous ne les recevons pas, l'exécution du contrat tombera en échec.
+
+Le contrat sera propriétaire des XTZ envoyés.
+
+### Le code
 
 Voilà le code modifié de `changeName` : 
 
@@ -131,7 +138,7 @@ Regardons maintenant ce qui se passe dans le `else` :
 `failwith("Must pay 1 tez to change name")` permet d'interrompre l'exécution du script et de retourner un message d'erreur.
 
 Le problème est que notre fonction doit retourner un objet de type `storage`. Si on l'interrompt, elle ne retourne rien, ce qui n'est pas accepté dans un langage fortement et statiquement typé comme Ligo.
-Pour ça, nous allons utiliser une **annotation**. C'est une syntaxe qui va permettre d'aider le compilateur en indiquant quel type l'expression annotée aurait du avoir.
+Pour ça, nous allons utiliser une **annotation**. C'est une syntaxe qui va permettre d'aider le compilateur en indiquant quel type l'expression annotée aurait dû avoir.
 
 `( expression : type attendu)`
 
@@ -167,6 +174,73 @@ failwith("Must pay 1 tez to change name")
 
 ## Récupérer les XTZ
 
+Maintenant que le contrat ramène un peu d'argent, en tant que propriétaire, nous souhaitons retirer tous ces XTZ sur notre wallet. Mais il ne faut pas que tout le monde puisse le faire ! 
+
+Nous allons mettre en place plusieurs choses :
+- une constante qui contient notre adresse, seule autorisée à retirer les XTZ.
+- une fonction qui effectue le transfert
+
+### Le code
+
+Nous avons vu précédemment qu'il n'est pas possible d'appeler un autre contrat ou de transférer des XTZ pendant l'exécution d'un contrat. Ces opérations sont listées pendant l'exécution, retournées une fois l'appel terminé puis exécutées.
+
+Nous allons devoir remplir le fameux champ `([] : list (operation)` retourné par le point d'entrée `main`.
+
+Notre fonction de retrait va donc devoir retourner une liste d'opérations et la nouvelle valeur du storage (qui ne devrait pas changer lors de l'exécution de cette fonction).
+
+Nous allons également devoir modifier la fonction `changeName` pour qu'elle retourne également ces deux éléments. Ainsi, l'appel à nos deux fonctions retournera un résultat compatible avec ce que `main` attend.
+
+Nous obtenons alors le code suivant :
+
+```
+type pseudoEntryPoint =
+| UpdateName(string)
+| Withdraw;
+
+type storage = {
+  hello         : string,
+  update_user   : address,
+  update_date   : timestamp
+};
+
+type return = ( list(operation), storage);
+
+let ownerAddress : address = ("tz1TGu6TN5GSez2ndXXeDX6LgUDvLzPLqgYV" : address);
+
+let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
+
+    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+        let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
+         (([] : list (operation)), newStorage);
+    }
+    else {
+      (failwith("Must pay 1 tez to change name"): return);
+    }
+};
+
+let withdraw = ( (contractStorage): (storage) ): return => {
+
+    let receiver : contract(unit) =
+      switch ( Tezos.get_contract_opt (ownerAddress): option(contract(unit)) ) {
+      | Some(contract) => contract
+      | None => (failwith ("Not a contract") : (contract(unit)))
+      };
+
+    let withdrawOperation : operation = Tezos.transaction (unit, amount, receiver) ;
+    let operations : list (operation) = [withdrawOperation];
+    (operations, contractStorage);
+}
+
+let main = ((action, contractStorage): (pseudoEntryPoint, storage)) => {
+    switch (action) {
+    | UpdateName(newName) => changeName(newName, contractStorage)
+    | Withdraw => withdraw(contractStorage)
+  };
+};
+```
+
+### Le test
+
 ## Répercuter le changement **SimpleHello**
 
 ## Historique des changements
@@ -183,3 +257,15 @@ ligo compile-parameter --syntax reasonligo SimpleHello.ligo main 'UpdateName("to
 ## Déploiement
 
 ## Test
+
+## Conclusion
+
+Dans cette seconde partie, nous avons appris à 
+- Gérer un storage complexe avec des *records*
+- Exploiter des 'build-in' Tezos (sender, source, amount ...)
+- Recevoir et transférer des XTZ
+- Manipuler des dates, des adresses, des nombres et des XTZ
+- Interrompre une exécution de contrat
+- Appeler un autre contrat
+- Exploiter des structures de données
+- Conditionner des opérations au propriétaire du contrat
