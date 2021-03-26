@@ -333,6 +333,36 @@ Et pour finir nous modifions `main` en ajoutant le pattern matching avec `Withdr
 
 ### Le test
 
+Testons :
+```
+ligo dry-run BetterHello.religo  main 'Withdraw' '{hello:"nobody",update_user:("tz1" : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}' --amount 1
+```
+
+Le résultat :
+```
+failwith("Operation not allowed")
+```
+Effectivement, nous ne l'appelons pas de la bonne adresse.
+
+Ajoutons `--sender tz1...` pour préciser notre adresse d'appel, qui doit être la même que `ownerAddress` et `--balance 10` pour définir la balance de notre contrat pour ce test à 10 XTZ :
+
+```
+ligo dry-run BetterHello.religo  main 'Withdraw' '{hello:"nobody",update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}' --amount 1 --sender tz1... --balance 10
+```
+
+Nous obtenons :
+
+```
+( CONS(Operation(0135a1ec49145785df89178dcb6e96c9a9e1e71e0a0000000180ade204000053c1edca8bd5c21c61d6f1fd091fa51d562aff1d00) ,
+       LIST_EMPTY()) ,
+  record[hello -> "nobody" ,
+         update_date -> +946721410 ,
+         update_user -> @"tz1..."] )
+
+```
+
+Notre opération apparaît bien dans la liste retournée. Mais `ligo dry-run` ne nous permet pas de vérifier son exécution. Nous le testerons par la suite.
+
 ## Répercuter le changement **SimpleHello**
 
 ## Historique des changements
