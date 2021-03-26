@@ -10,12 +10,22 @@ type storage = {
 
 type return = ( list(operation), storage);
 
-let ownerAddress : address = ("tz1TGu6TN5GSez2ndXXeDX6LgUDvLzPLqgYV" : address);
+let ownerAddress : address = ("tz1XPw3CHUauRF1qmmBwB8BgJQRSGkoTU7BY" : address);
+let simpleHelloAddress : address = ("KT1Qgeo4RBWq9HzXaQDa7su8Kz9jCD3zCyhv" : address);
 
 let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
 
-    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+    if (Tezos.amount >= 1tez) {
         let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
+
+        let simpleHelloContract : contract(string) =
+            switch( Tezos.get_entrypoint_opt("%UpdateName", simpleHelloAddress): option(contract(string)) ) {
+              | Some(contract) => contract
+              | None => (failwith ("SimpleHello not found") : (contract(string)))
+            };
+
+          let callOperation : operation = Tezos.transaction (newName, 0tez, simpleHelloContract) ;
+
          (([] : list (operation)), newStorage);
     }
     else {

@@ -81,10 +81,10 @@ Il n'est pas possible d'obtenir le timestamp de l'heure "réelle" car cette inst
 
 ## Le test
 
-Pour tester, nous utilisons la commande `ligo dry-run` que nous avons déjà vu dans l'[article précédent](smartcontracts.md)
+Pour tester, nous utilisons la commande `ligo dry-run` que nous avons déjà vu dans l'[article précédent](smartcontracts.md). Nous y ajoutons `--sender tz1...` pour indiquer l'adresse avec laquelle nous appelons.
 
 ```
-ligo dry-run BetterHello.religo  main 'UpdateName("toto")' '{hello:"nobody", update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}'
+ligo dry-run BetterHello.religo  main 'UpdateName("toto")' '{hello:"nobody", update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}' --sender tz1...
 ```
 
 L'état initial du storage que nos devons utiliser ici est plus complexe parce qu'elle doit comporter tous les champs du **record**. Chaque valeur du record **doit être initialisée**.
@@ -97,7 +97,7 @@ Nous obtenons en retour :
          update_user -> @"tz1..."] )
 
 ```
-La salutation dans le champ `hello` a bien été mise à jour. La date est mise à jour avec `1` car `ligo dry-run` n'est lié à aucune blockchain donc nous serons toujours à la première seconde d'une simili-blockchain générée temporairement pour l'occasion. `update_user` est bien alimenté avec une adresse temporaire générée, elle aussi, pour l'occasion.
+La salutation dans le champ `hello` a bien été mise à jour. La date est mise à jour avec `1` car `ligo dry-run` n'est lié à aucune blockchain donc nous serons toujours à la première seconde d'une simili-blockchain générée temporairement pour l'occasion. `update_user` est bien alimenté avec l'adresse indiquée par `--sender`.
 
 ## Rendre le changement de nom payant
 
@@ -124,11 +124,11 @@ let changeName = ( ( newName, contractStorage): ( string, storage) ): storage =>
 Nous utilisons `Tezos.amount` pour connaître le montant de XTZ transférés au contrat. Le nombre obtenu peut être exploité avec 2 type : `tez` (un nombre de XTZ) ou `mutez` un millionième de `tez`.
 
 Nous pouvons écrire notre condition de plusieurs façons :
-- `Tezos.amount >= 1 tez`
-- `Tezos.amount >= 1 tz`, `tz` étant un alias de `tez`.
-- `Tezos.amount >= 1000000 mutez`
-- ou encore `Tezos.amount >= 1_000_000 mutez` parce qu'il est permis d'ajouter des underscores afin d'améliorer la lisibilité des grands nombres.
-- ou pourquoi pas `Tezos.amount >= (0.5 tz + 500_000 mutez)`parce que les `tez` sont avant tout des nombres comme les autres.
+- `Tezos.amount >= 1tez`
+- `Tezos.amount >= 1tz`, `tz` étant un alias de `tez`.
+- `Tezos.amount >= 1000000mutez`
+- ou encore `Tezos.amount >= 1_000_000mutez` parce qu'il est permis d'ajouter des underscores afin d'améliorer la lisibilité des grands nombres.
+- ou pourquoi pas `Tezos.amount >= (0.5tz + 500_000mutez)`parce que les `tez` sont avant tout des nombres comme les autres.
 
 Regardons maintenant ce qui se passe dans le `else` :
 
@@ -209,7 +209,7 @@ let ownerAddress : address = ("tz1..." : address);
 
 let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
 
-    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+    if (Tezos.amount >= 1tez) {
         let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
          (([] : list (operation)), newStorage);
     }
@@ -266,7 +266,7 @@ Nous définissions un type qui s'appelle `return` et qui contient une liste d'op
 ```
 let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
 
-    if (Tezos.amount >= (0.5tz + 500_000mutez)) {
+    if (Tezos.amount >= 1tez) {
         let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
          (([] : list (operation)), newStorage);
     }
@@ -367,18 +367,54 @@ Notre opération apparaît bien dans la liste retournée. Mais `ligo dry-run` ne
 
 ## Historique des changements
 
-## Compilation
+## Compilation et déploiement
 
+Notre contrat est au point, nous allons pouvoir le compiler.
+
+```
+ligo compile-contract BetterHello.religo main > BetterHello.tz
+```
+
+Nous devons également compiler la valeur initiale de notre storage, plus complexe cette fois :
+```
+ligo compile-storage BetterHello.religo main  '{hello:"nobody",update_user:("tz1..." : address), update_date:("2000-01-01t10:10:10Z" : timestamp)}'
+```
+On obtient :
+```
+(Pair (Pair "nobody" "2000-01-01T10:10:10Z") "tz1...")
+```
+
+Nous pouvons déployer :
+
+```
+tezos-client originate contract BetterHello transferring 0 from tz1... running BetterHello.tz --init '(Pair (Pair "nobody" "2000-01-01T10:10:10Z") "tz1...")' --burn-cap 0.224
+```
+Vous aurez peut-être un message qui vous demande d'augmenter le burn-cap. Ce contrat étant plus gros que SimpleHello, il nécessite plus de ressources.
+
+/*
 Même opération avec les paramètres d'entrée :
 
 ```
 ligo compile-parameter --syntax reasonligo SimpleHello.ligo main 'UpdateName("toto")'
 > (Right "toto")
 ```
-
-## Déploiement
+*/
 
 ## Test
+
+Nous pouvons le tester.
+
+Changer le nom sans payer :
+```
+tezos-client transfer 0 from contractor to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
+```
+La transaction n'est même pas envoyée, le client Tezos repère tout de suite qu'un condition n'est pas remplie. C'est l'avantage avec la validation formelle, pas besoin d'exécution, donc de payer des frais de transactions pour rien, pour se rendre compte que ça ne fonctionnera pas.
+
+Donc on paye :
+```
+tezos-client transfer 1 from contractor to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
+```
+
 
 ## Conclusion
 
