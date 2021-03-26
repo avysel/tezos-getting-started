@@ -7,7 +7,6 @@ Voilà ce que nous allons lui faire :
 - Rendre le changement de nom payant, 1 XTZ à chaque fois
 - Permettre à son propriétaire de récupérer tous ces XTZ
 - Répercuter le changement de nom dans **SimpleHello** précédemment déployé
-- Maintenir un historique des changements
 
 ## Point de départ
 
@@ -98,6 +97,7 @@ Nous obtenons en retour :
 
 ```
 La salutation dans le champ `hello` a bien été mise à jour. La date est mise à jour avec `1` car `ligo dry-run` n'est lié à aucune blockchain donc nous serons toujours à la première seconde d'une simili-blockchain générée temporairement pour l'occasion. `update_user` est bien alimenté avec l'adresse indiquée par `--sender`.
+
 
 ## Rendre le changement de nom payant
 
@@ -278,6 +278,8 @@ let changeName = ( ( newName, contractStorage): ( string, storage) ): return => 
 
 `changeName` retourne maintenant un `return`. La modification du storage est placée dans une variable `newStorage` qui sera retournée conjointement à une liste d'opérations vide afin de correspondre à la définition de `return`.
 
+Le fait de regrouper plusieurs valeurs pour les utiliser ou les retourner conjointement s'appelle un **tuple**. (x,y,z) ou (listOperations, storage) sont des tuples. Un tuple diffère d'un **record** car il n'a pas besoin d'être déclaré avant d'être utilisé.
+
 L'annotation sur le `failwith` est également modifiée pour `return`.
 
 ```
@@ -365,7 +367,55 @@ Notre opération apparaît bien dans la liste retournée. Mais `ligo dry-run` ne
 
 ## Répercuter le changement **SimpleHello**
 
-## Historique des changements
+Maintenant, à chaque fois que quelqu'un paye pour modifier le nom dans **BetterHello**, nous lui offrons la mise à jour dans **SimpleHello** que nous avons déjà déployé précédemment.
+
+Nous allons créer une nouvelle variable qui contient l'adresse de SimpleHello, une fonction `callSimpleHello` qui fera l'appel et nous l'appelerons depuis `changeName`.
+
+Ajoutons donc une variable avec l'adresse de SimpleHello
+
+```
+let simpleHelloAddress : address = ("KT1Qgeo4RBWq9HzXaQDa7su8Kz9jCD3zCyhv" : address);
+```
+
+
+Et le reste du code :
+```
+let callSimpleHello = ( (newName): (string) ): operation => {
+       let simpleHelloContract : contract(string) =
+            switch( Tezos.get_entrypoint_opt("%updateName", simpleHelloAddress): option(contract(string)) ) {
+              | Some(contract) => contract
+              | None => (failwith ("SimpleHello not found") : (contract(string)))
+            };
+
+       let callOperation : operation = Tezos.transaction (newName, 0tez, simpleHelloContract) ;
+       callOperation;
+}
+```
+Elle fonctionne de la même façon que `withdraw`. Sauf que cette fois, nous utilisons `Tezos.get_entrypoint_opt("%updateName", simpleHelloAddress)` pour créer l'objet à utiliser pour interagir avec le contrat. Il prend en paramètre le nom du point d'entrée préfixé par "%". Attention également à bien prendre le point d'entrée en syntaxe Michelson, celui dans le fichier SimpleHello.tz. Dans notre cas, celui du fichier Ligo commence par une majuscule. Si nous avions utilisé celui là, l'optional aurait retourné `None` car `UpdateName` avec majuscule n'existe pas dans le contrat déployé en Michelson.
+
+Nous manipulons un object `contract(string)` parce que notre fonction `updateName` de **SimpleHello** prend une `string` en paramètre.
+
+Nous créons l'opération avec `Tezos.transaction` qui prend en premier paramètre `newName`, la valeur à passer en paramètre de l'autre côté. Les deuxième et troisième paramètres sont toujours le montant à transférer et le destinataire.
+
+Enfin, nous retournons l'opération.
+
+Cette fois, pas besoin de retourner le storage étant donné que notre fonction sera appelée depuis une autre fonction et non `main`.
+
+```
+let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
+
+    if (Tezos.amount >= 1tez) {
+        let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
+        let callOperation : operation = callSimpleHello(newName);
+
+         (([callOperation] : list (operation)), newStorage);
+    }
+    else {
+      (failwith("Must pay 1 tez to change name"): return);
+    }
+};
+```
+Dans `changeName`, il suffit d'appeler `callSimpleHello`, et de mettre l'opération récupérée dans la liste passée en résultat.
 
 ## Compilation et déploiement
 
@@ -391,14 +441,6 @@ tezos-client originate contract BetterHello transferring 0 from tz1... running B
 ```
 Vous aurez peut-être un message qui vous demande d'augmenter le burn-cap. Ce contrat étant plus gros que SimpleHello, il nécessite plus de ressources.
 
-/*
-Même opération avec les paramètres d'entrée :
-
-```
-ligo compile-parameter --syntax reasonligo SimpleHello.ligo main 'UpdateName("toto")'
-> (Right "toto")
-```
-*/
 
 ## Test
 
@@ -406,15 +448,21 @@ Nous pouvons le tester.
 
 Changer le nom sans payer :
 ```
-tezos-client transfer 0 from contractor to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
+tezos-client transfer 0 from tz1... to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
 ```
-La transaction n'est même pas envoyée, le client Tezos repère tout de suite qu'un condition n'est pas remplie. C'est l'avantage avec la validation formelle, pas besoin d'exécution, donc de payer des frais de transactions pour rien, pour se rendre compte que ça ne fonctionnera pas.
+La transaction n'est même pas envoyée, le client Tezos repère tout de suite qu'une condition n'est pas remplie. C'est l'avantage avec la validation formelle, pas besoin d'exécution, donc de payer des frais de transactions pour rien, pour se rendre compte que ça ne fonctionnera pas.
 
 Donc on paye :
 ```
-tezos-client transfer 1 from contractor to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
+tezos-client transfer 1 from tz1... to BetterHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
 ```
+Dans un explorateur de bloc, nous pouvons aller inspecter cette transaction et notre contrat. Nous devons trouver qu'il a bien émis une transaction vers SimpleHello et que sa balance et maintenant de 1 XTZ.
 
+Essayons de récupérer cet argent :
+```
+tezos-client transfer 0 from tz1... to BetterHello --entrypoint 'withdraw'  --burn-cap 0.0055
+```
+Nous pouvons constater que 1 XTZ a été transféré depuis le contrat vers notre adresse. Il est également intéressant de constater que les appels entre nos deux contrats ne coûtent rien du tout. 
 
 ## Conclusion
 
@@ -425,5 +473,8 @@ Dans cette seconde partie, nous avons appris à
 - Manipuler des dates, des adresses, des nombres et des XTZ
 - Interrompre une exécution de contrat
 - Appeler un autre contrat
-- Exploiter des structures de données
 - Conditionner des opérations au propriétaire du contrat
+
+Il est possible d'aller encore plus loin :
+- Historiser les changements de nom grâce à des structures de données telles que Maps ou des Lists
+- 

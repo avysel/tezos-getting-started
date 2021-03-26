@@ -43,13 +43,15 @@
                   PAIR ;
                   PAIR ;
                   PUSH address "KT1Qgeo4RBWq9HzXaQDa7su8Kz9jCD3zCyhv" ;
-                  CONTRACT %UpdateName string ;
+                  CONTRACT %updateName string ;
                   IF_NONE { PUSH string "SimpleHello not found" ; FAILWITH } {} ;
                   PUSH mutez 0 ;
                   DIG 3 ;
                   TRANSFER_TOKENS ;
-                  DROP ;
+                  SWAP ;
                   NIL operation ;
+                  DIG 2 ;
+                  CONS ;
                   PAIR }
                 { DROP 2 ; PUSH string "Must pay 1 tez to change name" ; FAILWITH } }
            { DROP ;

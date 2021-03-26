@@ -13,25 +13,30 @@ type return = ( list(operation), storage);
 let ownerAddress : address = ("tz1XPw3CHUauRF1qmmBwB8BgJQRSGkoTU7BY" : address);
 let simpleHelloAddress : address = ("KT1Qgeo4RBWq9HzXaQDa7su8Kz9jCD3zCyhv" : address);
 
-let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
-
-    if (Tezos.amount >= 1tez) {
-        let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
-
-        let simpleHelloContract : contract(string) =
-            switch( Tezos.get_entrypoint_opt("%UpdateName", simpleHelloAddress): option(contract(string)) ) {
+let callSimpleHello = ( (newName): (string) ): operation => {
+       let simpleHelloContract : contract(string) =
+            switch( Tezos.get_entrypoint_opt("%updateName", simpleHelloAddress): option(contract(string)) ) {
               | Some(contract) => contract
               | None => (failwith ("SimpleHello not found") : (contract(string)))
             };
 
-          let callOperation : operation = Tezos.transaction (newName, 0tez, simpleHelloContract) ;
+       let callOperation : operation = Tezos.transaction (newName, 0tez, simpleHelloContract) ;
+       callOperation;
+}
 
-         (([] : list (operation)), newStorage);
+let changeName = ( ( newName, contractStorage): ( string, storage) ): return => {
+
+    if (Tezos.amount >= 1tez) {
+        let newStorage = { ...contractStorage, hello: "Hello "  ++ newName, update_user: Tezos.sender, update_date: Tezos.now };
+        let callOperation : operation = callSimpleHello(newName);
+
+         (([callOperation] : list (operation)), newStorage);
     }
     else {
       (failwith("Must pay 1 tez to change name"): return);
     }
 };
+
 
 let withdraw = ( (contractStorage): (storage) ): return => {
 
