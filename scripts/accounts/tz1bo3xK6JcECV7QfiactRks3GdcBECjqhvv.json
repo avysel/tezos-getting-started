@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "link",
+    "copper",
+    "basket",
+    "flame",
+    "afraid",
+    "ladder",
+    "very",
+    "lion",
+    "girl",
+    "ketchup",
+    "couch",
+    "drastic",
+    "critic",
+    "sand",
+    "prosper"
+  ],
+  "secret": "255f6701f94fdc5e9d3ac3bf703b9dcbbcc0d535",
+  "amount": "68736097041",
+  "pkh": "tz1bo3xK6JcECV7QfiactRks3GdcBECjqhvv",
+  "password": "3GZz1NkRUF",
+  "email": "oqjznzar.icuefpdh@tezos.example.org"
+}

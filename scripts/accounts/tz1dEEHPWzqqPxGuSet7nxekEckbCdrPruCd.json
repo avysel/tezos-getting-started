@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "flower",
+    "follow",
+    "wedding",
+    "tip",
+    "tackle",
+    "double",
+    "gloom",
+    "knife",
+    "satoshi",
+    "oxygen",
+    "lunch",
+    "sauce",
+    "skull",
+    "enlist",
+    "foot"
+  ],
+  "secret": "98e5b39fd526f0580cb3cd6741c73cb7e334da79",
+  "amount": "85376865241",
+  "pkh": "tz1dEEHPWzqqPxGuSet7nxekEckbCdrPruCd",
+  "password": "bke0UmXUsv",
+  "email": "smzwbsql.qoushopr@tezos.example.org"
+}
