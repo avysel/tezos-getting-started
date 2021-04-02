@@ -1,10 +1,10 @@
 # Les smart contracts avec Tezos
 
-Les smart contracts sur Tezos sont écrits en Michelson. Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés, plus faciles d'utilisation et destinés à être compilés en Michelson, afin de faciliter le développement des smart contracts.
+Les smart contracts sur Tezos sont écrits en [Michelson](https://www.michelson.org/). Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés afin de produire du code plus facilement, et qui sont compilés pour donner du Michelson :
 
 - [Ligo](https://ligolang.org/) : il propose 3 syntaxes différentes, ReasonLIGO, PascalLIGO et CamlLIGO, inspirées respectivement de [ReasonML](https://reasonml.github.io/), Pascal et Caml.
-- [Liquidity](https://www.liquidity-lang.org/) : développé par [OCamlPro](https://www.ocamlpro.com/), il s'inspire de la syntaxe de [OCaml](http://ocaml.org/) et de [ReasonML](https://reasonml.github.io/),
 - [SmartPy](https://smartpy.io/) : bibliothèque Python pour le développement de smart contracts Tezos en Python.
+- [Morley](https://serokell.io/project-morley) : bibliothèque Haskell
 
 Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript (Enfin, disons plutôt moins éloignée du javascript que les autres :) ).
 
@@ -309,7 +309,7 @@ curl http://localhost:8732/chains/main/blocks/head/context/contracts/<adresse KT
 
 ### Avec Taquito
 
-Nous allons essayer de faire la même chose avec [Taquito](https://tezostaquito.io/), le framework Typescript pour Tezos [que nous avons vu précédemment](lien vers article precedent).
+Nous allons essayer de faire la même chose avec [Taquito](https://tezostaquito.io/), le framework Typescript pour Tezos [que nous avons vu précédemment](https://blog.ineat-group.com/2021/03/demarrer-avec-la-blockchain-tezos/).
 
 Cette fois, nous allons modifier la blockchain, donc nous allons de voir initialiser le framework avec notre clé privée afin de signer la transaction.
 Dans l'exemple, nous allons passer notre clé directement dans le code. Taquito fourni aussi des extensions pour importer une clé depuis un wallet dans le navigateur, beaucoup plus sécurisé.
@@ -381,21 +381,19 @@ De nombreuses autres possibilité existent :
 
 Nous verrons un [exemple plus complexe au prochain épisode](smartcontracts2.md).
 
-En attendant, vous pouvez vous entrainer sur LIGO grâce à l'excellent petit site https://tezosacademy.io qui propose des tutos sous forme de jeux.
+En attendant, vous pouvez vous entrainer avec d'excellents petits sites : [Tezos Academy](https://tezosacademy.io) pour Ligo et [Cryptocode School](https://cryptocodeschool.in/tezos/) pour SmartPy, qui proposent des tutos sous forme de jeux.
 
 
 ## Docs
 
-https://medium.com/chain-accelerator/i-tested-tezos-b254504775be
+[Découverte de Tezos](https://blog.ineat-group.com/2021/03/demarrer-avec-la-blockchain-tezos/)
 
-https://medium.com/chain-accelerator/how-to-use-tezos-rpcs-16c362f45d64
+[Michelson](https://www.michelson.org/), [Ligo](https://ligolang.org/), [SmartPy](https://smartpy.io/), [Morley](https://serokell.io/project-morley).
 
-https://training.nomadic-labs.com/download/interact_with_the_blockchain.pdf
+[BetterCallDev](https://better-call.dev/)
 
-Tezos RPC guide https://tezos.gitlab.io/007/rpc.html
+[Tezos RPC guide](https://tezos.gitlab.io/007/rpc.html)
 
-Taquito https://tezostaquito.io/docs/quick_start
+[Taquito](https://tezostaquito.io/docs/quick_start)
 
-Liquidity compiler https://www.liquidity-lang.org/edit/
-
-Ligo https://ligolang.org/docs/next/language-basics/types
+[Tezos Academy](https://tezosacademy.io), [Cryptocode School](https://cryptocodeschool.in/tezos/)
