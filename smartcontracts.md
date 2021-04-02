@@ -26,12 +26,14 @@ Il existe un IDE en ligne permettant de faire les premiers tests de smart contra
 
 https://ide.ligolang.org/
 
-Leur exécution nécessitera cependant d'avoir le fichier source en local, à portée du compilateur.
+Leur exécution nécessitera cependant d'avoir le fichier source en local, à portée du compilateur. 
+
+Pour nos exemples, un simple éditeur de texte et le compilateur Ligo suffiront.
 
 
 ## Premier smart contract, SimpleHello
 
-Nous allons développer un premier smart contract **SimpleHello**. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
+Nous allons développer un premier smart contract `SimpleHello`. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
 
 ### Principe général
 
