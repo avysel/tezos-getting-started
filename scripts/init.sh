@@ -1,9 +1,13 @@
 #!/bin/bash
 
 #BIN_DIR="/usr/local/bin/tezos/8.2/"
-BASE_DIR="/home/alexandrevan/.tezos-node"
-BASE_ENDPOINT="http://127.0.0.1:8732"
+#BASE_DIR="/home/alexandrevan/.tezos-node"
+#BASE_ENDPOINT="http://127.0.0.1:8732"
 BAKER_ACCOUNT="tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d"
+
+BASE_DIR="/home/alexandrevan/tezos-florencenet/"
+BASE_ENDPOINT="http://127.0.0.1:8733"
+CLIENT="/home/alexandrevan/tezos/tezos/tezos-client"
 
 isnum() { awk -v a="$1" 'BEGIN {print (a == a + 0)}'; }
 
@@ -32,16 +36,16 @@ do
           echo $name ":" $amount;
 
           #create account from file
-          echo "tezos-client --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" activate account "$name" with \"$entry\""
-          tezos-client --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR activate account $name with "$entry"
+          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" activate account "$name" with \"$entry\""
+          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR activate account $name with "$entry"
 
           #transfer amount to baker
-          echo "tezos-client --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
-          tezos-client --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
+          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
+          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
 
           #set delegate to baker
-          echo "tezos-client --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
-          tezos-client --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
+          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
+          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
       fi
     fi
 
