@@ -384,11 +384,13 @@ Nous verrons un [exemple plus complexe au prochain épisode](smartcontracts2.md)
 En attendant, vous pouvez vous entrainer avec d'excellents petits sites : [Tezos Academy](https://tezosacademy.io) pour Ligo et [Cryptocode School](https://cryptocodeschool.in/tezos/) pour SmartPy, qui proposent des tutos sous forme de jeux.
 
 
-## Docs
+## Liens
 
 [Découverte de Tezos](https://blog.ineat-group.com/2021/03/demarrer-avec-la-blockchain-tezos/)
 
 [Michelson](https://www.michelson.org/), [Ligo](https://ligolang.org/), [SmartPy](https://smartpy.io/), [Morley](https://serokell.io/project-morley).
+
+[IDE Ligo en ligne](https://ide.ligolang.org/)
 
 [BetterCallDev](https://better-call.dev/)
 
