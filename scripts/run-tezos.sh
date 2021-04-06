@@ -30,8 +30,8 @@ EDONET_BAKER="tezos-baker-008-PtEdo2Zk"
 EDONET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
 
 FLORENCENET_NODE="/home/alexandrevan/tezos/tezos/tezos-node"
-FLORENCENET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-009-PsFLorBA"
-FLORENCENET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-009-PsFLorBA"
+FLORENCENET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-009-PsFLoren"
+FLORENCENET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-009-PsFLoren"
 
 case $1 in
   delphinet )
@@ -75,13 +75,13 @@ esac
 echo "Go to "$BIN_DIR
 cd $BIN_DIR
 
-echo "Run node: ./"$NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG
+echo "Run node: ./"$NODE" run --rpc-addr "$BASE_ENDPOINT" --data-dir "$DATA_DIR" --log-output="$DATA_DIR"/"$LOG
 $NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG &
 
 sleep 3
 
-echo "Run baker: "$BAKER --endpoint "http://"$BASE_ENDPOINT run with local node $DATA_DIR $ACCOUNT
-$BAKER --endpoint "http://"$BASE_ENDPOINT run with local node $DATA_DIR $ACCOUNT &
+echo "Run baker: "$BAKER" --endpoint http://"$BASE_ENDPOINT" --base-dir "$DATA_DIR" run with local node "$DATA_DIR $ACCOUNT
+$BAKER --endpoint "http://"$BASE_ENDPOINT --base-dir $DATA_DIR run with local node $DATA_DIR $ACCOUNT &
 
-echo "Run endorser: "$ENDORSER --endpoint "http://"$BASE_ENDPOINT run $ACCOUNT
-$ENDORSER --endpoint "http://"$BASE_ENDPOINT run $ACCOUNT &
+echo "Run endorser: "$ENDORSER" --endpoint http://"$BASE_ENDPOINT" --base-dir "$DATA_DIR" run "$ACCOUNT
+$ENDORSER --endpoint "http://"$BASE_ENDPOINT --base-dir $DATA_DIR run $ACCOUNT &
