@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "jump",
+    "mask",
+    "level",
+    "thumb",
+    "lecture",
+    "truck",
+    "vendor",
+    "modify",
+    "region",
+    "orange",
+    "broccoli",
+    "wet",
+    "tomorrow",
+    "unfold",
+    "into"
+  ],
+  "secret": "61fe7b4f8f81b9055a5b85b7e3bf8f074397b443",
+  "amount": "55779158070",
+  "pkh": "tz1VBvSSwFpHGKgJnFPgGg899cux2QJjckAD",
+  "password": "8dloDFUEDZ",
+  "email": "xihgcfqt.esaloldd@tezos.example.org"
+}

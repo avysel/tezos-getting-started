@@ -11,7 +11,7 @@ CLIENT="/home/alexandrevan/tezos/tezos/tezos-client"
 
 isnum() { awk -v a="$1" 'BEGIN {print (a == a + 0)}'; }
 
-# move to directory that contains acocunts files
+# move to directory that contains account files
 cd accounts/new
 
 # for each file in given directory
@@ -46,6 +46,8 @@ do
           #set delegate to baker
           echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
           $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
+
+          mv $entry "./.."
       fi
     fi
 
