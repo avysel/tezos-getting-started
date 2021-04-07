@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "squeeze",
+    "soccer",
+    "twelve",
+    "brass",
+    "enable",
+    "equip",
+    "brass",
+    "coconut",
+    "vault",
+    "tape",
+    "relax",
+    "group",
+    "decline",
+    "bonus",
+    "truck"
+  ],
+  "secret": "8f5f83385ef9e7d4ec08ebc86d894d9e2ff314c9",
+  "amount": "19819281697",
+  "pkh": "tz1dskPpAB2gAzGt4WBJGemezjCqVREXurYD",
+  "password": "2EYa6yCXLt",
+  "email": "cncoxufc.zraospzh@tezos.example.org"
+}

@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "monitor",
+    "birth",
+    "thing",
+    "joy",
+    "oak",
+    "diamond",
+    "torch",
+    "moment",
+    "august",
+    "mammal",
+    "broccoli",
+    "open",
+    "wear",
+    "trophy",
+    "birth"
+  ],
+  "secret": "339837db3a00c70f0ad1cdc707820775ae35230e",
+  "amount": "29681573234",
+  "pkh": "tz1encUDcRn3ZX8ic3rnwLv1RV46CuH3p8fJ",
+  "password": "U9QTOI0NUQ",
+  "email": "swksrdts.xqpccwxj@tezos.example.org"
+}

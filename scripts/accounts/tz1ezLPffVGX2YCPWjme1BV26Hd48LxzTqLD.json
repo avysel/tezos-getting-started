@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "solid",
+    "cage",
+    "picnic",
+    "air",
+    "plug",
+    "oxygen",
+    "neutral",
+    "super",
+    "menu",
+    "negative",
+    "visa",
+    "sight",
+    "clap",
+    "resist",
+    "roast"
+  ],
+  "secret": "eada0369c190ba306ffe4d2b0f6148abf6b5646f",
+  "amount": "16606509633",
+  "pkh": "tz1ezLPffVGX2YCPWjme1BV26Hd48LxzTqLD",
+  "password": "FXSbLxGNxL",
+  "email": "yimyvmjp.drcutfgs@tezos.example.org"
+}

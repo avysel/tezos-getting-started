@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "eye",
+    "rate",
+    "raven",
+    "blast",
+    "regular",
+    "garlic",
+    "assist",
+    "horn",
+    "loan",
+    "hat",
+    "false",
+    "shrug",
+    "ski",
+    "faculty",
+    "grant"
+  ],
+  "secret": "fddae3f788b45500253b8fb08e98214060a0ecaa",
+  "amount": "64303834246",
+  "pkh": "tz1N7t6m1pacA7Q1mSvPu4Vq7b4qUVn9S3nY",
+  "password": "CkFeWGvFsg",
+  "email": "opywmeqy.pujtqftl@tezos.example.org"
+}

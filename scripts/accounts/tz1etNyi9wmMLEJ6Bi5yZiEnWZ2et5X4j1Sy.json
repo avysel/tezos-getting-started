@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "dial",
+    "invest",
+    "road",
+    "junior",
+    "orange",
+    "story",
+    "lunar",
+    "sure",
+    "steak",
+    "force",
+    "ghost",
+    "floor",
+    "shadow",
+    "squeeze",
+    "spend"
+  ],
+  "secret": "0fbc8ae8cd5480e869048ddcd7f4dbd4c99db592",
+  "amount": "15113165301",
+  "pkh": "tz1etNyi9wmMLEJ6Bi5yZiEnWZ2et5X4j1Sy",
+  "password": "ANce9pazjU",
+  "email": "pqmsmlkf.gbnlcgav@tezos.example.org"
+}

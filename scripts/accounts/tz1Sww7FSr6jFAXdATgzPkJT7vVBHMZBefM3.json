@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "region",
+    "glide",
+    "view",
+    "oven",
+    "chunk",
+    "cost",
+    "weekend",
+    "renew",
+    "flag",
+    "mistake",
+    "topple",
+    "soon",
+    "off",
+    "gorilla",
+    "soul"
+  ],
+  "secret": "a82444190e32cd6831d8c1cb6036f842a87a4009",
+  "amount": "22566733246",
+  "pkh": "tz1Sww7FSr6jFAXdATgzPkJT7vVBHMZBefM3",
+  "password": "aDbFycZRIh",
+  "email": "aakjswft.eemcibtk@tezos.example.org"
+}

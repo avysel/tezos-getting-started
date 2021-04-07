@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "sentence",
+    "wing",
+    "below",
+    "common",
+    "trial",
+    "build",
+    "shuffle",
+    "setup",
+    "recycle",
+    "february",
+    "boat",
+    "disorder",
+    "brother",
+    "carbon",
+    "body"
+  ],
+  "secret": "ec093300b2c017dc6b8cf3880355a7d98ba89019",
+  "amount": "39064414962",
+  "pkh": "tz1WV7mHveV85t5AReJqYVrVFQSCo7kYp643",
+  "password": "R9XMBhCwyr",
+  "email": "cbwnoieb.opyamgwy@tezos.example.org"
+}
