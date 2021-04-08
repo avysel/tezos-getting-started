@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "north",
+    "latin",
+    "glare",
+    "twin",
+    "ten",
+    "cabbage",
+    "sting",
+    "essay",
+    "dry",
+    "tenant",
+    "quiz",
+    "enable",
+    "bullet",
+    "erode",
+    "math"
+  ],
+  "secret": "dd62b6fd3365ec1563922be15e74c1455e7933dc",
+  "amount": "33797852951",
+  "pkh": "tz1QiQ7Z3hBJB7rgvZo9CcugxStHSp5ZLgkr",
+  "password": "6kckjfsEEV",
+  "email": "azdhrzbc.rgqmzmng@tezos.example.org"
+}

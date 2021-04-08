@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "example",
+    "improve",
+    "long",
+    "pact",
+    "pottery",
+    "summer",
+    "observe",
+    "alien",
+    "traffic",
+    "kit",
+    "rotate",
+    "bronze",
+    "kitten",
+    "open",
+    "steel"
+  ],
+  "secret": "00aad83f80c66c005adeb536264b7c292dd24f41",
+  "amount": "70793309528",
+  "pkh": "tz1Vdght1XJhKSjwpevsxFSJChh1mJZ5GhAt",
+  "password": "jDudKKXMQS",
+  "email": "rqzhopsp.lhgrzyol@tezos.example.org"
+}

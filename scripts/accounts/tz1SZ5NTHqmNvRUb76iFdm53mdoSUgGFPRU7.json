@@ -1,0 +1,24 @@
+{
+  "mnemonic": [
+    "lecture",
+    "acid",
+    "brief",
+    "subject",
+    "dial",
+    "theme",
+    "abstract",
+    "road",
+    "horror",
+    "laugh",
+    "history",
+    "test",
+    "salt",
+    "drama",
+    "ostrich"
+  ],
+  "secret": "c0281691c6e3e5dcc875b7d9c16b2cb2a6936fe5",
+  "amount": "61454890818",
+  "pkh": "tz1SZ5NTHqmNvRUb76iFdm53mdoSUgGFPRU7",
+  "password": "FLVoDPV4x0",
+  "email": "zkoexwcc.oipopqnl@tezos.example.org"
+}
