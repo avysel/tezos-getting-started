@@ -88,7 +88,14 @@ let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
 
 Tout d'abord, la fonction `main`, qui est le point d'entrée. Elle prend 2 paramètres : `action` qui est le nom de la fonction à appeler et `contractStorage` qui est l'état initial du storage.
 
-`(action, contractStorage): (pseudoEntryPoint, string))` signifie que nous définissons 2 paramètres, `action` et `contractStorage`, qui seront respectivement de type `pseudoEntryPoint` et `string`.
+Les fonctions se définissent sur le modèle suivant :
+
+```
+let functionName = ( (param1Name, param2Name, ...) : (param1Type, param2Type, ...) ) : returnType => {
+    function body
+}
+```
+Donc `(action, contractStorage): (pseudoEntryPoint, string))` signifie que nous définissons 2 paramètres, `action` et `contractStorage`, qui seront respectivement de type `pseudoEntryPoint` et `string`.
 
 Regardons les premières lignes : 
 ```
@@ -120,17 +127,10 @@ Regardons maintenant la dernière instruction de `main` :
 
 Il s'agit du "return", qui se définit en indiquant tout simplement en fin de fonction la valeur à retourner, sans mot clé particulier. 
 
-Le point d'entrée d'un smart contract doit retourner deux éléments : une liste d'opérations et le nouveau storage du contrat. La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
+Le point d'entrée d'un smart contract doit retourner deux éléments : **une liste d'opérations et le nouveau storage du contrat**. La liste d'opération va servir, par exemple, à indiquer des appels à d'autres smart contracts à effectuer une fois que le contrat actuel a terminé son exécution sans erreur. (A noter qu'aucun appel à un autre smart contract ne peut avoir lieu pendant l'exécution d'un smart contract, les appels sont forcément mis dans celle liste d'opérations)
 
 Ici, nous avons donc `[]` de type `list(operation)`, vide, car aucune opération n'est à exécuter ensuite dans notre exemple. Et `newStorage`, la nouvelle valeur du storage, qui aura été modifiée par l'appel à une des fonctions de notre contrat.
 
-Les fonctions se définissent sur le modèle suivant :
-
-```
-let functionName = ( (param1Name, param2Name, ...) : (param1Type, param2Type, ...) ) : returnType => {
-    function body
-}
-```
 
 Voyons donc nos fonctions :
 ```
@@ -145,7 +145,7 @@ let changeName = ( ( newName): ( string) ): string => {
 ```
 
 La fonction `changeName` prend un paramètre `newName` de type `string` et elle retourne une string. 
-Elle va concaténer "Hello" avec le nom passé en paramètre pour créer la nouvelle salutation dans la variable `result`, qui sera retournée. La phrase "Hello <newName>" sera donc la nouvelle valeur du storage du contrat.
+Elle va concaténer "Hello" avec le nom passé en paramètre pour créer la nouvelle salutation dans la variable `result`, qui sera retournée. La phrase "Hello newName" sera donc la nouvelle valeur du storage du contrat.
 
 ```
 // Retourne le storage courant
@@ -153,7 +153,7 @@ let getHello = ( (contractStorage): (string) ): string => {
     contractStorage;
 }
 ```
-La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation. Cette fonction n'a pas de réelle utilité car elle ne fait rien de particulier, mais elle illustre bien le fonctionnement de Ligo. Nous le verrons plus tard lorsque nous allons essayer de l'appeler.
+La fonction `getHello` va retourner le storage courant du contrat. Il va donc nous retourner la salutation. Le storage d'un contrat est toujours entièrement accessible. Donc cette fonction n'a pas de réelle utilité car elle ne fait rien de particulier, mais elle illustre bien le fonctionnement de Ligo. Nous le verrons plus tard lorsque nous allons essayer de l'appeler.
 
 Attention : cet exemple fonctionne parce que notre storage ne contient qu'une seule valeur. Dans le cas de storage comprenant plusieurs valeurs (nous verrons les types `record` plus tard), si le `main` ne retourne qu'une seule d'entre elles, elle deviendra le nouveau storage et le reste sera écrasé.
 
@@ -167,13 +167,13 @@ ligo dry-run SimpleHello.ligo --syntax reasonligo main 'GetHello' '{"Hello nobod
 
 Détaillons cette commande :
 
-- ligo : l'exécutable ligo que nous venons d'installer
-- dry-run : pour simuler sans réellement déployer sur la blockchain
-- SimpleHello.ligo : le fichier ligo du smart contract
-- --syntax reasonLigo : la syntaxe choisie
-- main : le nom du point d'entrée à exécuter
-- 'GetHello' : le paramètre `action` de notre point d'entrée
-- '{"Hello nobody"}' (ou '"Hello nobody"') : l'état initial du storage, le paramètre `contractStorage`.
+- `ligo` : l'exécutable ligo que nous venons d'installer
+- `dry-run` : pour simuler sans réellement déployer sur la blockchain
+- `SimpleHello.ligo` : le fichier contenant le code du smart contract
+- `--syntax reasonLigo` : la syntaxe Ligo choisie
+- `main` : le nom du point d'entrée à exécuter
+- `'GetHello'` : le paramètre `action` de notre point d'entrée
+- `'{"Hello nobody"}' (ou '"Hello nobody"')` : l'état initial du storage, le paramètre `contractStorage`. Notez bien les `'` qui délimitent la valeur du storage initial et les `"` qui délimitent une chaine de caractère dans ce storage initial.
 
 Nous obtenons le retour suivant :
 
@@ -183,12 +183,13 @@ Nous obtenons le retour suivant :
 
 Nous voyons bien les 2 choses retournées par un contrat : la **liste d'opérations** (vide, dans notre cas) et le **nouvel état du storage**.
 
-Testons maintenant la mise à jour en partant d'un storage initial vide :
+Testons maintenant la mise à jour en partant d'un storage initial vide en appelant le pseudo point d'entrée `UpdateName(string)` :
 
 ```
 > ligo dry-run SimpleHello.ligo --syntax reasonligo main 'UpdateName("alex")' '{""}'
 ( LIST_EMPTY() , "Hello alex" )
 ```
+Ca fonctionne !
 
 ## Compilation
 
@@ -198,6 +199,11 @@ Première étape, il faut le compiler. Il doit être transpilé depuis le langag
 ```
 ligo compile-contract --syntax reasonligo SimpleHello.ligo main > SimpleHello.tz
 ```
+
+En détail :
+- `ligo compile-contract` : la commande de compilation
+- `--syntax reasonligo` : la syntaxe choisie
+- `SimpleHello.ligo main > SimpleHello.tz` : nom du fichier Ligo, nom du point d'entrée, `>` et nom du fichier `.tz` pour la sortie du résultat Michelson. 
 
 Il est possible de ne pas préciser la syntaxe en renommant notre fichier `.ligo` en `.religo`, l'extension spécifique à ReasonLigo :
 
@@ -219,7 +225,7 @@ Nous obtenons un fichier `SimpleHello.tz` comportant le code de notre smart cont
 
 Un peu moins facile à lire, n'est-ce pas ?
 
-Notez au passage que les noms des points d'entrée GetHello et UpdateName ont perdu leur majuscule initiale. Pour les appeler, il faudra bien utiliser la syntaxe générée en Michelson.
+Notez au passage que les noms des points d'entrée GetHello et UpdateName ont perdu leur majuscule initiale (Nous aurions très bien pu l'écrire en camelCase dès le départ). Pour les appeler, il faudra bien utiliser la syntaxe générée en Michelson.
 
 Il ne reste plus qu'à le déployer.
 
@@ -232,8 +238,8 @@ Il existe une commande pour convertir l'expression Ligo vers l'expression Michel
 > ligo compile-storage SimpleHello.ligo --syntax reasonligo main  '{"Hello nobody"}'
 "Hello nobody"
 ```
-Bon, notre storage initial étant une simple chaîne, nous obtenons une autre chaine, rien d'exceptionnel. Mais pour un contrat nécessitant un storage initial plus complexe, cette commande sera bien utile.
 
+Bon, notre storage initial étant une simple chaîne, nous obtenons une autre chaine, rien d'exceptionnel. Mais pour un contrat nécessitant un storage initial plus complexe, cette commande sera bien utile.
 
 Nous pouvons déployer en utilisant `tezos-client`. Cette opération s'appelle l'**origination** d'un contrat.
 
@@ -246,13 +252,13 @@ tezos-client originate contract <contract_name> transferring <amount_tez> from <
 ```
 
 Détaillons cette commande :
-- **tezos-client originate**
-- **<contract_name>** nom du smart contract
-- **<amount_tez>** montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
-- **<originator_address>** l'adresse du compte propriétaire du contrat, depuis laquelle prélever les XTZ à envoyer au contrat
-- **<contract_file>** fichier .tz obtenu lors de la compilation
-- **--init '<storage_expression>'** initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
-- **--burn-cap 0.09225** un montant de XTZ à brûler pour pouvoir déployer le contrat
+- `tezos-client originate contract` commande de déploiement
+- `<contract_name>` nom du smart contract
+- `transferring <amount_tez>` montant de XTZ à transférer au contrat depuis <originator_address>. Un contrat ne doit pas avoir 0 XTZ sinon il est désactivé.
+- `from <originator_address>` l'adresse du compte propriétaire du contrat, depuis laquelle prélever les XTZ à envoyer au contrat
+- `running file <contract_file>` fichier .tz à déployer
+- `--init '<storage_expression>'` initialise la valeur initiale de storage au moyen de l'expression michelson obtenue précédemment
+- `--burn-cap 0.09225` un montant de XTZ à brûler pour pouvoir déployer le contrat (au cas où la valeur indiquée serait trop juste, un message d'erreur donnera la bonne valeur)
   
 Pour notre contrat, ça donnera : 
 
@@ -264,7 +270,7 @@ Dans le résultat de cette exécution, nous voyons le détail des différentes o
 
 Le site [BetterCallDev](https://better-call.dev/) propose une interface web pour visualiser les contrats. Il faut choisir le réseau sur lequel nous avons déployé. Ici, Edo2net. Puis saisir l'adresse KT1 dans le champ de recherche en haut à droite, et si notre contrat est bien déployé, nous pourrons voir les détails : le code Michelson, la valeur du storage ...
 
-Cela montre également la transparence de Tezos, où tous les contrats sont visibles par tout le monde.
+Cela montre également la transparence de Tezos, où tous les contrats, code et storage, sont visibles par tout le monde.
 
 ## Test du smart contract déployé
 
@@ -278,14 +284,14 @@ Pour interagir avec un smart contract, la commande est la suivante :
 tezos-client transfer <amount_tez> from <user> to <contract_name> --entrypoint '<entry_point>' --arg '<entry_params>' --burn-cap 0.0025 --dry-run
 ```
 
-- **tezos client transfer** (tout appel à un contrat est d'abord un transfert de XTZ, fut-il de zéro)
-- **<amount_tez>** le nombre de XTZ à envoyer au contrat avec cette transaction
-- **from <user>** l'adresse tz1 utilisée pour envoyer la transaction d'appel
-- **to <contract_name>** le nom du contrat ou son adresse KT1
-- **--entrypoint <entry_point>** le point d'entrée à appeler
-- **--arg <entry_params>** les paramètres
-- **--burn-cap 0.0025** un montant de XTZ à brûler afin de pouvoir modifier le storage, non obligatoire si le storage n'est pas modifié (si nous passons une chaine vide en paramètre, dans notre exemple)
-- **--dry-run** pour simuler la transaction sans l'envoyer réellement. A ne pas mettre pour envoyer la transaction pour de bon.
+- `tezos client transfer` (tout appel à un contrat est d'abord un transfert de XTZ, fut-il de zéro)
+- `<amount_tez>` le nombre de XTZ à envoyer au contrat avec cette transaction
+- `from <user>` l'adresse tz1 utilisée pour envoyer la transaction d'appel
+- `to <contract_name>` le nom du contrat ou son adresse KT1
+- `--entrypoint <entry_point>` le point d'entrée à appeler
+- `--arg <entry_params>` les paramètres d'appel au point d'entrée
+- `--burn-cap 0.0025` un montant de XTZ à brûler afin de pouvoir modifier le storage, non obligatoire si le storage n'est pas modifié (si nous passons une chaine vide en paramètre, dans notre exemple)
+- `--dry-run` pour simuler la transaction sans l'envoyer réellement. A ne pas mettre pour envoyer la transaction pour de bon.
 
 ```
 tezos-client transfer 0 from tz1... to SimpleHello --entrypoint 'updateName' --arg '"alex"' --burn-cap 0.0025
