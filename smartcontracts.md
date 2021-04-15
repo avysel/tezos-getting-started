@@ -1,4 +1,4 @@
-# Les smart contracts avec Tezos
+# Les smart contracts avec Tezos #1, prise en mains
 
 Les smart contracts sur Tezos sont écrits en [Michelson](https://www.michelson.org/). Ce langage à pile d'exécution est assez compliqué à utiliser. Plusieurs langages ont été créés afin de produire du code plus facilement, et qui sont compilés pour donner du Michelson :
 

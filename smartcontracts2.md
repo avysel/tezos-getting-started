@@ -1,4 +1,4 @@
-# Smart contracts, 2ᵉ partie
+# Les smart contracts avec Tezos #2, notions avancées
 
 Nous allons reprendre notre contrat `SimpleHello` de l'étape précédente nous allons l'améliorer pour qu'il devienne **BetterHello**.
 
@@ -477,4 +477,7 @@ Dans cette seconde partie, nous avons appris à
 
 Il est possible d'aller encore plus loin :
 - Historiser les changements de nom grâce à des structures de données telles que Maps ou des Lists
-- 
+- Exploiter l'intégralité des built-in Tezos offerts par Ligo
+- Optimiser l'écriture du contrat pour optimiser les coûts de déploiement
+
+Mais avec tout ce que nous avons vu, nous avons déjà largement de quoi écrire des applications décentralisées complètes avec Tezos !
