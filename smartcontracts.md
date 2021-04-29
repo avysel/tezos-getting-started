@@ -8,6 +8,8 @@ Les smart contracts sur Tezos sont écrits en [Michelson](https://www.michelson.
 
 Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript (Enfin, disons plutôt moins éloignée du javascript que les autres :) ).
 
+A l'heure où cet article est écrit, une syntaxe JsLIGO encore plus proche du javascript est en cours de développement mais encore au stade expérimental.
+
 ## LIGO
 
 ### Installation
