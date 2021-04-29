@@ -14,7 +14,7 @@ A l'heure où cet article est écrit, une syntaxe JsLIGO encore plus proche du j
 
 ### Installation
 
-Tout d'abord, installons le compilateur LIGO : 
+Tout d'abord, installons le compilateur LIGO. Il n'existe qu'un seul compilateur qui prend en charge les multiples syntaxes.
 
 ```shell
 wget https://ligolang.org/bin/linux/ligo
