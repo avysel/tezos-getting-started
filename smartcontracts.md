@@ -33,13 +33,13 @@ Pour nos exemples, un simple éditeur de texte et le compilateur Ligo suffiront.
 
 ## Premier smart contract, SimpleHello
 
-Nous allons développer un premier smart contract `SimpleHello`. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
+Nous allons développer un premier smart contract `SimpleHello`. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stocké. Une autre fonction permettra de se faire saluer.
 
 ### Principe général
 
 Un contrat Tezos contient **une zone de stockage de données** (couramment appelée **storage**) et **un point d'entrée**. 
 
-**Seul le point d'entrée est appelé**, à la différence d'autres langage où l'on peut définir des fonctions et les appeler distinctement les unes des autres.
+**Seul le point d'entrée est appelé**, à la différence d'autres langages où l'on peut définir des fonctions et les appeler distinctement les unes des autres.
 
 Autre spécificité, la fonction de point d'entrée devra toujours **retourner l'intégralité du storage** stockées dans ce contrat. Cette valeur de retour ne sera pas exploitée pour être retournée à l'appelant, mais pour mettre à jour le contenu de la blockchain.
 
@@ -322,7 +322,7 @@ Nous allons essayer de faire la même chose avec [Taquito](https://tezostaquito.
 Cette fois, nous allons modifier la blockchain, donc nous allons de voir initialiser le framework avec notre clé privée afin de signer la transaction.
 Dans l'exemple, nous allons passer notre clé directement dans le code. Taquito fourni aussi des extensions pour importer une clé depuis un wallet dans le navigateur, beaucoup plus sécurisé.
 
-Pour obtenir la clé privé du compte qui enverra la transaction :
+Pour obtenir la clé privée du compte qui enverra la transaction :
 
 ```tezos-client show address tz1... -S```
 
@@ -379,8 +379,8 @@ Tezos.setProvider({ signer: new InMemorySigner('<YOUR_PRIVATE_KEY>') });
 
 Nous avons vu ici un smart contract très simple pour poser les bases du Ligo. 
 
-De nombreuses autres possibilité existent :
-- Créer un storage complexe, composé d'un structure plus complète, pour gérer un ensemble de valeurs.
+De nombreuses autres possibilités existent :
+- Créer un storage complexe, composé d'une structure plus complète, pour gérer un ensemble de valeurs.
 - Recevoir et envoyer des XTZ
 - Interagir avec autre smart contracts
 - Manipuler des collections et des structures de contrôle
