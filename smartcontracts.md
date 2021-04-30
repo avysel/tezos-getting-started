@@ -8,11 +8,13 @@ Les smart contracts sur Tezos sont écrits en [Michelson](https://www.michelson.
 
 Les exemples que nous allons utiliser seront en Ligo avec la syntaxe ReasonML qui est assez proche du javascript (Enfin, disons plutôt moins éloignée du javascript que les autres :) ).
 
+A l'heure où cet article est écrit, une syntaxe JsLIGO encore plus proche du javascript est en cours de développement mais encore au stade expérimental.
+
 ## LIGO
 
 ### Installation
 
-Tout d'abord, installons le compilateur LIGO : 
+Tout d'abord, installons le compilateur LIGO. Il n'existe qu'un seul compilateur qui prend en charge les multiples syntaxes.
 
 ```shell
 wget https://ligolang.org/bin/linux/ligo
@@ -33,7 +35,7 @@ Pour nos exemples, un simple éditeur de texte et le compilateur Ligo suffiront.
 
 ## Premier smart contract, SimpleHello
 
-Nous allons développer un premier smart contract `SimpleHello`. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stocké. Une autre fonction permettra de se faire saluer.
+Nous allons développer un premier smart contract `SimpleHello`. Comme un HelloWorld classique, son objectif sera de dire bonjour. Ce contrat va contenir une variable, le nom de la personne à saluer. Une fonction permettra de modifier le nom stockée. Une autre fonction permettra de se faire saluer.
 
 ### Principe général
 
@@ -41,7 +43,7 @@ Un contrat Tezos contient **une zone de stockage de données** (couramment appel
 
 **Seul le point d'entrée est appelé**, à la différence d'autres langages où l'on peut définir des fonctions et les appeler distinctement les unes des autres.
 
-Autre spécificité, la fonction de point d'entrée devra toujours **retourner l'intégralité du storage** stockées dans ce contrat. Cette valeur de retour ne sera pas exploitée pour être retournée à l'appelant, mais pour mettre à jour le contenu de la blockchain.
+Autre spécificité, la fonction de point d'entrée devra toujours **retourner l'intégralité du storage** stocké dans ce contrat. Cette valeur de retour ne sera pas exploitée pour être retournée à l'appelant, mais pour mettre à jour le contenu de la blockchain.
 
 En mixant les deux conditions précédentes, nous comprenons vite qu'il ne sera pas possible de développer des getters et setters comme on peut trouver un peu partout. Mais comme le storage sera toujours disponible en totalité, pas besoin de getters.
 
@@ -84,7 +86,7 @@ let main = ((action, contractStorage): (pseudoEntryPoint, string)) => {
 };
 ```
 
-### Détaillons ce code.
+### Détaillons ce code
 
 Tout d'abord, la fonction `main`, qui est le point d'entrée. Elle prend 2 paramètres : `action` qui est le nom de la fonction à appeler et `contractStorage` qui est l'état initial du storage.
 

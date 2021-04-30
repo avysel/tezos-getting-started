@@ -1,6 +1,6 @@
 # Les smart contracts avec Tezos #2, notions avancées
 
-Nous allons reprendre notre contrat `SimpleHello` de l'étape précédente nous allons l'améliorer pour qu'il devienne **BetterHello**.
+Nous allons reprendre notre contrat `SimpleHello` de l'étape précédente et nous allons l'améliorer pour qu'il devienne **BetterHello**.
 
 Voilà ce que nous allons lui faire :
 - Enregistrer l'adresse de celui qui demande à changer de nom
