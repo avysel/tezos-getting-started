@@ -14,8 +14,6 @@
 #
 
 
-# BIN_DIR=$HOME"/.opam/for_tezos/bin"
-BIN_DIR=$HOME#"/usr/local/bin/tezos/8.2"
 PORT=$2
 ACCOUNT=$3
 
@@ -25,24 +23,15 @@ DELPHINET_BAKER="tezos-baker-007-PsDELPH1"
 DELPHINET_NODE="tezos-node"
 DELPHINET_ENDORSER="tezos-endorser-007-PsDELPH1"
 
-EDONET_NODE="tezos-node"
-EDONET_BAKER="tezos-baker-008-PtEdo2Zk"
-EDONET_ENDORSER="tezos-endorser-008-PtEdo2Zk"
+EDONET_NODE="/home/alexandrevan/tezos/tezos/tezos-node"
+EDONET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-008-PtEdo2Zk"
+EDONET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-008-PtEdo2Zk"
 
 FLORENCENET_NODE="/home/alexandrevan/tezos/tezos/tezos-node"
 FLORENCENET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-009-PsFLoren"
 FLORENCENET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-009-PsFLoren"
 
 case $1 in
-  delphinet )
-    echo "Starting Delphinet"
-    DATA_DIR=$HOME"/.tezos-node"
-    BASE_ENDPOINT="127.0.0.1:"$PORT
-    NODE=$DELPHINET_NODE
-    BAKER=$DELPHINET_BAKER
-    ENDORSER=$DELPHINET_ENDORSER
-    LOG="log-delphinet.txt"
-    ;;
 
   edonet )
     echo "Starting Edonet"
@@ -72,10 +61,7 @@ case $1 in
     ;;
 esac
 
-echo "Go to "$BIN_DIR
-cd $BIN_DIR
-
-echo "Run node: ./"$NODE" run --rpc-addr "$BASE_ENDPOINT" --data-dir "$DATA_DIR" --log-output="$DATA_DIR"/"$LOG
+echo "Run node: "$NODE" run --rpc-addr "$BASE_ENDPOINT" --data-dir "$DATA_DIR" --log-output="$DATA_DIR"/"$LOG
 $NODE run --rpc-addr $BASE_ENDPOINT --data-dir $DATA_DIR --log-output=$DATA_DIR"/"$LOG &
 
 sleep 3
