@@ -6,7 +6,7 @@
 BAKER_ACCOUNT="tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d"
 
 BASE_DIR=$HOME"/tezos/hangzhounet/"
-BASE_ENDPOINT="http://127.0.0.1:8733"
+BASE_ENDPOINT="http://127.0.0.1:8732"
 CLIENT="tezos-client"
 
 isnum() { awk -v a="$1" 'BEGIN {print (a == a + 0)}'; }
@@ -40,12 +40,12 @@ do
           $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR activate account $name with "$entry"
 
           #transfer amount to baker
-          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
-          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
+         # echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
+         # $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
 
           #set delegate to baker
-          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
-          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
+         # echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
+         # $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
 
           mv $entry "./.."
       fi
