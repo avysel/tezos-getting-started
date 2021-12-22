@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # How to run:
-# ./run-tezos.sh [delphinet|edonet|florencenet] [8732] [xtz1...|alias]
+# ./run-tezos.sh [hangzhounet] [8732] [xtz1...|alias]
 # $1: name of network
 # $2: port of node
 # $3: address or alias of account to use as baker
@@ -19,37 +19,21 @@ ACCOUNT=$3
 
 echo "Run $1 on port $PORT for account $ACCOUNT"
 
-DELPHINET_BAKER="tezos-baker-007-PsDELPH1"
-DELPHINET_NODE="tezos-node"
-DELPHINET_ENDORSER="tezos-endorser-007-PsDELPH1"
 
-EDONET_NODE="/home/alexandrevan/tezos/tezos/tezos-node"
-EDONET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-008-PtEdo2Zk"
-EDONET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-008-PtEdo2Zk"
-
-FLORENCENET_NODE="/home/alexandrevan/tezos/tezos/tezos-node"
-FLORENCENET_BAKER="/home/alexandrevan/tezos/tezos/tezos-baker-009-PsFLoren"
-FLORENCENET_ENDORSER="/home/alexandrevan/tezos/tezos/tezos-endorser-009-PsFLoren"
+HANGZHOU2NET_NODE="tezos-node"
+HANGZHOU2NET_BAKER="tezos-baker-011-PtHangz2"
+HANGZHOU2NET_ENDORSER="tezos-endorser-011-PtHangz2"
 
 case $1 in
 
-  edonet )
-    echo "Starting Edonet"
-    DATA_DIR=$HOME"/.tezos-node"
+  hangzhounet )
+    echo "Starting Hangzhou2net"
+    DATA_DIR=$HOME"/tezos/hangzhounet"
     BASE_ENDPOINT="127.0.0.1:"$PORT
-    NODE=$EDONET_NODE
-    BAKER=$EDONET_BAKER
-    ENDORSER=$EDONET_ENDORSER
-    LOG="log-edonet.txt"
-    ;;
-  florencenet )
-    echo "Starting Florencenet"
-    DATA_DIR=$HOME"/tezos-florencenet"
-    BASE_ENDPOINT="127.0.0.1:"$PORT
-    NODE=$FLORENCENET_NODE
-    BAKER=$FLORENCENET_BAKER
-    ENDORSER=$FLORENCENET_ENDORSER
-    LOG="log-florencenet.txt"
+    NODE=$HANGZHOU2NET_NODE
+    BAKER=$HANGZHOU2NET_BAKER
+    ENDORSER=$HANGZHOU2NET_ENDORSER
+    LOG="log-hangzhounet.txt"
     ;;
   mainnet )
     echo "Starting mainnet"

@@ -5,9 +5,9 @@
 #BASE_ENDPOINT="http://127.0.0.1:8732"
 BAKER_ACCOUNT="tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d"
 
-BASE_DIR="/home/alexandrevan/tezos-florencenet/"
+BASE_DIR=$HOME"/tezos/hangzhounet/"
 BASE_ENDPOINT="http://127.0.0.1:8733"
-CLIENT="/home/alexandrevan/tezos/tezos/tezos-client"
+CLIENT="tezos-client"
 
 isnum() { awk -v a="$1" 'BEGIN {print (a == a + 0)}'; }
 
