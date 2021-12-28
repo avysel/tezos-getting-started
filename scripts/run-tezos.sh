@@ -24,6 +24,10 @@ HANGZHOU2NET_NODE="tezos-node"
 HANGZHOU2NET_BAKER="tezos-baker-011-PtHangz2"
 HANGZHOU2NET_ENDORSER="tezos-endorser-011-PtHangz2"
 
+ITHACANET_NODE="tezos-node"
+ITHACANET_BAKER="tezos-baker-012-"
+ITHACANET_ENDORSER="tezos-endorser-012-"
+
 case $1 in
 
   hangzhounet )
@@ -35,6 +39,14 @@ case $1 in
     ENDORSER=$HANGZHOU2NET_ENDORSER
     LOG="log-hangzhounet.txt"
     ;;
+  ithacanet )
+    echo "Starting Ithacanet"
+    DATA_DIR=$HOME"/tezos/ithacanet"
+    BASE_ENDPOINT="127.0.0.1:"$PORT
+    NODE=$ITHACANET_NODE
+    BAKER=$ITHACANET_BAKER
+    ENDORSER=$ITHACANET_ENDORSER
+    LOG="log-ithacanet.txt"
   mainnet )
     echo "Starting mainnet"
 
