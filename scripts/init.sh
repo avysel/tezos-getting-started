@@ -3,7 +3,7 @@
 #BIN_DIR="/usr/local/bin/tezos/8.2/"
 #BASE_DIR="/home/alexandrevan/.tezos-node"
 #BASE_ENDPOINT="http://127.0.0.1:8732"
-BAKER_ACCOUNT="tz1fj3tzFejSmPyZZ2xsqehBxQE9GGr3rK8d"
+BAKER_ACCOUNT="tz1cBHUzXNFEHc21QZTc9oyT8Xig1Yv7Wqtp"
 
 BASE_DIR=$HOME"/tezos/hangzhounet/"
 BASE_ENDPOINT="http://127.0.0.1:8732"
@@ -33,6 +33,7 @@ do
           #remove mutez and let 1 tez for account
           amount=$(($amount/1000000));
           amount=$(($amount-1))
+          echo "---------- New account ----------"
           echo $name ":" $amount;
 
           #create account from file
@@ -40,12 +41,12 @@ do
           $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR activate account $name with "$entry"
 
           #transfer amount to baker
-         # echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
-         # $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
+          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" transfer "$amount" from "$name" to "$BAKER_ACCOUNT
+          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR transfer $amount from $name to $BAKER_ACCOUNT
 
           #set delegate to baker
-         # echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
-         # $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
+          echo $CLIENT" --endpoint "$BASE_ENDPOINT" --base-dir "$BASE_DIR" set delegate for "$name" to "$BAKER_ACCOUNT
+          $CLIENT --endpoint $BASE_ENDPOINT --base-dir $BASE_DIR set delegate for $name to $BAKER_ACCOUNT
 
           mv $entry "./.."
       fi

@@ -10,7 +10,7 @@
 # Data must be changed directly in the script: path to tezos binaries, names of binaries, ip address (default 127.0.0.1), data dir.
 #
 # example:
-# ./run-tezos.sh edonet 8732 alex
+# ./run-tezos.sh hangzhounet 8732 baker
 #
 
 
