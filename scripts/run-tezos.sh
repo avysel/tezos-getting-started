@@ -47,9 +47,9 @@ case $1 in
     BAKER=$ITHACANET_BAKER
     ENDORSER=$ITHACANET_ENDORSER
     LOG="log-ithacanet.txt"
+    ;;
   mainnet )
     echo "Starting mainnet"
-
     ;;
 
   * )
